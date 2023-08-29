@@ -1,7 +1,5 @@
 package com.seb45_main_031.routine.member.entity;
 
-import com.seb45_main_031.routine.routine.entity.Routine;
-import com.seb45_main_031.routine.todo.entity.Todo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
