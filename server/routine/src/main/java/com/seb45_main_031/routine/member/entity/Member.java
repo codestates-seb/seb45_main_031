@@ -1,5 +1,6 @@
 package com.seb45_main_031.routine.member.entity;
 
+import com.seb45_main_031.routine.todo.entity.Todo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +27,6 @@ public class Member {
 
     @Column(nullable = false)
     private String nickname;
-
 
 
 }

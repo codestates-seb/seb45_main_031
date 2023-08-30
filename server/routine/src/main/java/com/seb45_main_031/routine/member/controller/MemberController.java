@@ -1,7 +1,8 @@
 package com.seb45_main_031.routine.member.controller;
 
 import com.seb45_main_031.routine.dto.MultiResponseDto;
-import com.seb45_main_031.routine.dto.SingeResponseDto;
+//import com.seb45_main_031.routine.dto.SingeResponseDto;
+import com.seb45_main_031.routine.dto.SingleResponseDto;
 import com.seb45_main_031.routine.member.dto.MemberDto;
 import com.seb45_main_031.routine.member.entity.Member;
 import com.seb45_main_031.routine.member.mapper.MemberMapper;
@@ -52,8 +53,9 @@ public class MemberController {
 
         Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 
-        return new ResponseEntity(new SingeResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.OK);
     }
+
 
 
     @GetMapping("/myPage/{member-id}")
@@ -61,7 +63,7 @@ public class MemberController {
 
         Member member = memberService.findMember(memberId);
 
-        return new ResponseEntity(new SingeResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.OK);
 
     }
 
