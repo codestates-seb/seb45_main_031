@@ -210,29 +210,6 @@ const TodoBody = styled.body`
   align-items: center;
 `;
 
-const ElementContainer = styled.div`
-  width: 430px;
-
-  background-color: #ececec;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const ListContainer = styled.div`
-  width: 430px;
-  height: 100%;
-
-  background-color: #ececec;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  overflow: scroll;
-`;
-
 const ModalBackground = styled.div`
   width: 100vw;
   height: 100vh;
@@ -450,6 +427,16 @@ function ElementComponent({
   );
 }
 
+const ElementContainer = styled.div`
+  width: 430px;
+
+  background-color: #ececec;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 function DateComponent({ date, OpenCalender, calenderDisplay }) {
   return (
     <>
@@ -633,6 +620,19 @@ function ListComponent({ todos, ChangeTodo }) {
     </>
   );
 }
+
+const ListContainer = styled.div`
+  width: 430px;
+  height: 100%;
+
+  background-color: #ececec;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow: scroll;
+`;
 
 const TodoList = styled.ul`
   width: 390px;
