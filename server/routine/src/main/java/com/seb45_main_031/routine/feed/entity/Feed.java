@@ -1,7 +1,7 @@
 package com.seb45_main_031.routine.feed.entity;
 
 import com.seb45_main_031.routine.audit.Auditable;
-import com.seb45_main_031.routine.comment.entity.Comment;
+//import com.seb45_main_031.routine.comment.entity.Comment;
 import com.seb45_main_031.routine.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class Feed extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
-    private List<Comment> comments = new ArrayList<>();
+//    @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
+//    private List<Comment> comments = new ArrayList<>();
 
 }
