@@ -20,6 +20,7 @@ const defaultFilterList = ["전체"];
 const defaultFilter = "전체";
 // const defaultDate = new Date();
 const defaultDate = "2023-08-25";
+const ExitText = "X";
 
 export default function TodoPage() {
   const navigate = useNavigate();
@@ -97,6 +98,17 @@ export default function TodoPage() {
     }
   }
 
+  // x버튼을 눌러 모달창을 닫습니다.
+  function ExitTodoModal() {
+    try {
+      setTodo({});
+      setModalBackDisplay(!modalBackDisplay);
+      setTodoModalDisplay(!todoModalDisplay);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       <TodoBody>
@@ -109,17 +121,17 @@ export default function TodoPage() {
             <Exit>
               <button
                 onClick={() => {
-                  setTodo({});
-                  setModalBackDisplay(!modalBackDisplay);
-                  setTodoModalDisplay(!todoModalDisplay);
+                  ExitTodoModal();
                 }}
               >
-                X
+                {ExitText}
               </button>
             </Exit>
             <TodoSection>
-              <TagDiv>{todo.tag}</TagDiv>
-              <TitleDiv>{todo.title}</TitleDiv>
+              <ElDiv>
+                <TagDiv>{todo.tag}</TagDiv>
+                <TitleDiv>{todo.title}</TitleDiv>
+              </ElDiv>
               <EmojiDiv>{todo.complete ? todo.emoji : ""}</EmojiDiv>
             </TodoSection>
             <TodoModalButton>
@@ -436,9 +448,25 @@ const Exit = styled.div`
 
 const TodoSection = styled.section`
   width: 300px;
+  height: 150px;
 
-  border: 1px solid #fff7cc;
+  margin-bottom: 30px;
+  border: 1px solid #ffd900;
   border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+`;
+
+const ElDiv = styled.div`
+  width: 300px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const TodoModalButton = styled.button`
