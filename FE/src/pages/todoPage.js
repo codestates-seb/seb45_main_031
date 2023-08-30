@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 //캘린더 라이브러리
-import Calendar from "react-calendar";
+import { Calendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
 
 //삭제 할 더미 데이터들
 import { todoList } from "../data/dummy";
 import trophyLevel1 from "../assets/images/trophyLevel1.png";
-const percentBase = 0;
 
 //사용 텍스트 변수들 (유지보수를 편하게 하기 위하여 상단에서 변수로 선언하여 관리 )
 const dateButtonText = ["달력보기", "달력닫기"];
@@ -20,6 +19,7 @@ const defaultFilterList = ["전체"];
 const defaultFilter = "전체";
 // const defaultDate = new Date();
 const defaultDate = "2023-08-25";
+const defaultPercent = 0;
 const ExitText = "X";
 
 export default function TodoPage() {
@@ -29,6 +29,7 @@ export default function TodoPage() {
   //삭제 될 더미데이터
   const dummyTodo = todoList.todos.filter((t) => t.date === date);
   const [allData, setAllData] = useState(dummyTodo);
+  //
   const [todo, setTodo] = useState({});
   const [todos, setTodos] = useState(allData);
   const [filterList, setFilterList] = useState(defaultFilterList);
@@ -36,10 +37,24 @@ export default function TodoPage() {
   const [modalBackDisplay, setModalBackDisplay] = useState(false);
   const [calenderDisplay, setCalenderDisplay] = useState(false);
   const [todoModalDisplay, setTodoModalDisplay] = useState(false);
+  const [percent, setPercent] = useState(defaultPercent);
 
-  //새로운 정보를 불러올 때 필터 분류를 설정합니다.
+  // 달성량 계산 및 적용 함수
+  function PercentData(part, whole) {
+    const newPercent = Math.round((part / whole) * 100);
+    setPercent(newPercent);
+  }
+
+  //새로운 정보를 불러올 때
+  // 1. 데이터 정리
+  // 2. 달성 퍼센트 계산
+  // 3. 필터 분류
   useEffect(() => {
     try {
+      //api연결 시 데이터 수정
+      setTodos(allData);
+      PercentData(todoList.completeCount, todoList.todoCount);
+
       todos.map((t) => {
         const value = filterList.filter((f) => f === t.tag);
         if (value.length === 0) setFilterList([...filterList, t.tag]);
@@ -48,6 +63,16 @@ export default function TodoPage() {
       console.error(error);
     }
   }, [filterList]);
+
+  //할 일 목록 데이터 api
+  function TodoListApi() {
+    try {
+      // 데이터를 불러 올 api 필요
+      console.log("데이터를 불러옵니다.");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   //필터 버튼을 눌러 할 일 목록을 필터링 합니다.
   function Filtering(value) {
@@ -79,6 +104,8 @@ export default function TodoPage() {
       });
       setAllData(newAllData);
       setTodos([...newAllData]);
+      //달성량에 들어가는 변수 수정 필요
+      PercentData(todoList.completeCount, todoList.todoCount);
 
       setCalenderDisplay(!calenderDisplay);
       setModalBackDisplay(!modalBackDisplay);
@@ -109,6 +136,34 @@ export default function TodoPage() {
     }
   }
 
+  //할 일 완료 / 취소 버튼
+  function ChangeComplete() {
+    try {
+      //할 일의 complete이 변하는 로직 구현 필요
+      console.log("complete change");
+      //데이터가 변하면 api 재호출
+      TodoListApi();
+
+      ExitTodoModal();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //할 일 삭제 버튼
+  function DeleteTodo(value) {
+    try {
+      //삭제 api 구현 필요
+      console.log(value.todoId);
+      //데이터가 변하면 api 재호출
+      TodoListApi();
+
+      ExitTodoModal();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       <TodoBody>
@@ -134,13 +189,19 @@ export default function TodoPage() {
               </ElDiv>
               <EmojiDiv>{todo.complete ? todo.emoji : ""}</EmojiDiv>
             </TodoSection>
-            <TodoModalButton>
+            <TodoModalButton
+              onClick={() => {
+                ChangeComplete();
+              }}
+            >
               {todo.complete ? todoModalButtonText[1] : todoModalButtonText[0]}
             </TodoModalButton>
             <TodoModalButton onClick={() => navigate("/todo/modify")}>
               {todoModalButtonText[2]}
             </TodoModalButton>
-            <TodoModalButton>{todoModalButtonText[3]}</TodoModalButton>
+            <TodoModalButton onClick={() => DeleteTodo(todo)}>
+              {todoModalButtonText[3]}
+            </TodoModalButton>
           </TodoModal>
         )}
         <ElementContainer>
@@ -161,7 +222,7 @@ export default function TodoPage() {
               <BarChart />
               <PercentDiv>
                 <ChartText>{chartText}</ChartText>
-                <Percent>{percentBase}%</Percent>
+                <Percent>{`${percent} %`}</Percent>
               </PercentDiv>
             </ChartSection>
           </UserSection>

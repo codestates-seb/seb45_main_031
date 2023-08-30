@@ -1,6 +1,6 @@
 import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import TodoPage from "./pages/todoPage";
 
