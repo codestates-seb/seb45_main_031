@@ -1,36 +1,36 @@
 import { styled } from "styled-components";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 
+// common
+const MaxContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled.div`
-  height: 932px;
+  height: 100vh;
   width: 430px;
   background-color: #ececec;
   gap: 10px;
   display: flex;
-  flex-wrap: wrap;
-
-  btn {
-    background-color: #fff;
-    color: #949597;
-    border: 1px solid #ececec;
-    width: 190px;
-    height: 35px;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    padding: 5px 10px 5px 10px;
-  }
-
-  btn:hover {
-    background-color: #ececec;
-    cursor: pointer;
-    color: #232629;
-  }
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
 `;
 
 const Title = styled.div`
+  width: 100%;
   font-size: 1.2rem;
   color: #232629;
   font-weight: bold;
+  margin-bottom: 20px;
+`;
+
+const SubTitle = styled.div`
+  font-size: 1.2rem;
+  color: #232629;
 `;
 
 // 내 정보
@@ -41,11 +41,42 @@ const MyInfo = styled.div`
   width: 430px;
   padding: 20px;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 `;
 
+const EditButton = styled.button`
+  width: 190px;
+  height: 35px;
+  padding: 10px;
+  background-color: #fff;
+  color: #949597;
+  border: 1px solid #ececec;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: #ececec;
+    cursor: pointer;
+    color: #232629;
+  }
+`;
+
 const ProfileContent = styled.div`
-  margin-left: 10px;
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  grid-template-rows: repeat(2, 1fr)
+  margin: 2rem 3rem;
+
+  ProfileSVG {
+    grid-row: span 2;
+  }
+
+  p {
+    color: #949597;
+    line-height: 2rem;
+  }
 `;
 
 // 내 게시물 보기
@@ -58,19 +89,23 @@ const MyPost = styled.div`
 
 export const MyPage = () => {
   return (
-    <>
+    <MaxContainer>
       <Container>
         <MyInfo>
           <Title>내 정보</Title>
-          <ProfileSvg />
           <ProfileContent>
-            <btn>프로필 편집</btn>
+            <ProfileSvg />
+            <div>
+              <SubTitle>🐣 삐약이</SubTitle>
+              <p>lalala@gmail.com</p>
+              <EditButton>프로필 편집</EditButton>
+            </div>
           </ProfileContent>
         </MyInfo>
         <MyPost>
           <Title>내 게시물 보기</Title>
         </MyPost>
       </Container>
-    </>
+    </MaxContainer>
   );
 };
