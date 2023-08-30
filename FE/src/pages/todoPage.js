@@ -89,6 +89,12 @@ export default function TodoPage() {
     }
   }
 
+  //캘린더 모달을 엽니다.
+  function OpenCalender() {
+    setModalBackDisplay(true);
+    setCalenderDisplay(true);
+  }
+
   //날짜를 바꿔 해당 일자의 할 일 목록을 불러옵니다.
   function ChangeDate(value) {
     try {
@@ -98,6 +104,7 @@ export default function TodoPage() {
       //백엔드와 연결되면 로직을 바꿔야하는 부분
       const newAllData = todoList.todos.filter((t) => t.date === newDate);
       setFilterList(defaultFilterList);
+      setFilter(defaultFilter);
       newAllData.map((t) => {
         const value = filterList.filter((f) => f === t.tag);
         if (value.length === 0) setFilterList([...filterList, t.tag]);
@@ -172,86 +179,24 @@ export default function TodoPage() {
           <CalendarModal onChange={(e) => ChangeDate(e)} value={date} />
         )}
         {todoModalDisplay && (
-          <TodoModal>
-            <Exit>
-              <button
-                onClick={() => {
-                  ExitTodoModal();
-                }}
-              >
-                {ExitText}
-              </button>
-            </Exit>
-            <TodoSection>
-              <ElDiv>
-                <TagDiv>{todo.tag}</TagDiv>
-                <TitleDiv>{todo.title}</TitleDiv>
-              </ElDiv>
-              <EmojiDiv>{todo.complete ? todo.emoji : ""}</EmojiDiv>
-            </TodoSection>
-            <TodoModalButton
-              onClick={() => {
-                ChangeComplete();
-              }}
-            >
-              {todo.complete ? todoModalButtonText[1] : todoModalButtonText[0]}
-            </TodoModalButton>
-            <TodoModalButton onClick={() => navigate("/todo/modify")}>
-              {todoModalButtonText[2]}
-            </TodoModalButton>
-            <TodoModalButton onClick={() => DeleteTodo(todo)}>
-              {todoModalButtonText[3]}
-            </TodoModalButton>
-          </TodoModal>
+          <TodoModalComponent
+            todo={todo}
+            ExitTodoModal={ExitTodoModal}
+            ChangeComplete={ChangeComplete}
+            navigate={navigate}
+            DeleteTodo={DeleteTodo}
+          />
         )}
-        <ElementContainer>
-          <DateSection>
-            <DateP>{moment(date).format("YYYY년 MM월 DD일")}</DateP>
-            <DateButton
-              onClick={() => {
-                setModalBackDisplay(!modalBackDisplay);
-                setCalenderDisplay(!calenderDisplay);
-              }}
-            >
-              {calenderDisplay ? dateButtonText[1] : dateButtonText[0]}
-            </DateButton>
-          </DateSection>
-          <UserSection>
-            <TrophyImg src={trophyLevel1} />
-            <ChartSection>
-              <BarChart />
-              <PercentDiv>
-                <ChartText>{chartText}</ChartText>
-                <Percent>{`${percent} %`}</Percent>
-              </PercentDiv>
-            </ChartSection>
-          </UserSection>
-          <FilterSection>
-            {filterList.map((f, idx) => (
-              <FilterButton
-                key={idx}
-                onClick={() => Filtering(f)}
-                filter={filter}
-                value={f}
-              >
-                {f}
-              </FilterButton>
-            ))}
-          </FilterSection>
-        </ElementContainer>
-        <ListContainer>
-          <TodoList>
-            {todos.map((t) => (
-              <>
-                <TodoLi onClick={() => ChangeTodo(t)}>
-                  <TagDiv>{t.tag}</TagDiv>
-                  <TitleDiv>{t.title}</TitleDiv>
-                  <EmojiDiv>{t.complete ? t.emoji : ""}</EmojiDiv>
-                </TodoLi>
-              </>
-            ))}
-          </TodoList>
-        </ListContainer>
+        <ElementComponent
+          date={date}
+          OpenCalender={OpenCalender}
+          calenderDisplay={calenderDisplay}
+          percent={percent}
+          filterList={filterList}
+          Filtering={Filtering}
+          filter={filter}
+        />
+        <ListComponent todos={todos} ChangeTodo={ChangeTodo} />
       </TodoBody>
     </>
   );
@@ -288,6 +233,240 @@ const ListContainer = styled.div`
   overflow: scroll;
 `;
 
+const ModalBackground = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background: rgb(0, 0, 0, 0.5);
+
+  z-index: 10;
+`;
+
+const CalendarModal = styled(Calendar)`
+  width: 390px;
+
+  border-radius: 15px;
+
+  position: absolute;
+  top: 115px;
+
+  z-index: 100;
+`;
+
+//TodoModalComponent ===================================
+function TodoModalComponent({
+  todo,
+  ExitTodoModal,
+  ChangeComplete,
+  navigate,
+  DeleteTodo,
+}) {
+  return (
+    <>
+      <TodoModal>
+        <ExitComponent ExitTodoModal={ExitTodoModal} />
+        <TodoComponent todo={todo} />
+        <TodoModalButtons
+          todo={todo}
+          ChangeComplete={ChangeComplete}
+          navigate={navigate}
+          DeleteTodo={DeleteTodo}
+        />
+      </TodoModal>
+    </>
+  );
+}
+
+const TodoModal = styled.div`
+  width: 340px;
+
+  border: 1px solid #fff7cc;
+  border-radius: 15px;
+
+  background-color: #ffffff;
+
+  padding: 20px;
+
+  position: absolute;
+  top: 30%;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TodoSection = styled.section`
+  width: 300px;
+  height: 150px;
+
+  margin-bottom: 30px;
+  border: 1px solid #ffd900;
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+`;
+
+const ElDiv = styled.div`
+  width: 300px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ExitComponent = styled(Exit)`
+  width: 300px;
+  height: 20px;
+
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: end;
+  justify-content: end;
+`;
+
+function Exit({ ExitTodoModal }) {
+  return (
+    <ExitBody>
+      <ExitButton
+        onClick={() => {
+          ExitTodoModal();
+        }}
+      >
+        {ExitText}
+      </ExitButton>
+    </ExitBody>
+  );
+}
+
+const ExitBody = styled.div`
+  width: 100%;
+
+  margin-top: -5px;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: end;
+`;
+
+const ExitButton = styled.button`
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid #ffb039;
+  border-radius: 50%;
+
+  &: hover {
+    background-color: #ffb039;
+  }
+`;
+
+function TodoComponent({ todo }) {
+  return (
+    <>
+      <TodoSection>
+        <ElDiv>
+          <TagDiv>{todo.tag}</TagDiv>
+          <TitleDiv>{todo.title}</TitleDiv>
+        </ElDiv>
+        <EmojiDiv>{todo.complete ? todo.emoji : ""}</EmojiDiv>
+      </TodoSection>
+    </>
+  );
+}
+
+function TodoModalButtons({ todo, ChangeComplete, navigate, DeleteTodo }) {
+  return (
+    <>
+      <TodoModalButton
+        onClick={() => {
+          ChangeComplete();
+        }}
+      >
+        {todo.complete ? todoModalButtonText[1] : todoModalButtonText[0]}
+      </TodoModalButton>
+      <TodoModalButton onClick={() => navigate("/todo/modify")}>
+        {todoModalButtonText[2]}
+      </TodoModalButton>
+      <TodoModalButton onClick={() => DeleteTodo(todo)}>
+        {todoModalButtonText[3]}
+      </TodoModalButton>
+    </>
+  );
+}
+
+const TodoModalButton = styled.button`
+  width: 250px;
+  height: 35px;
+  font-size: 0.85rem;
+
+  margin: 10px;
+  border-radius: 15px;
+
+  background-color: #ececec;
+
+  &: hover {
+    background-color: #d0d0d0;
+  }
+`;
+
+//ElementComponent ===================================
+function ElementComponent({
+  date,
+  OpenCalender,
+  calenderDisplay,
+  percent,
+  filterList,
+  Filtering,
+  filter,
+}) {
+  return (
+    <>
+      <ElementContainer>
+        <DateComponent
+          date={date}
+          OpenCalender={OpenCalender}
+          calenderDisplay={calenderDisplay}
+        />
+        <UserComponent percent={percent} />
+        <FilterComponent
+          filterList={filterList}
+          Filtering={Filtering}
+          filter={filter}
+        />
+      </ElementContainer>
+    </>
+  );
+}
+
+function DateComponent({ date, OpenCalender, calenderDisplay }) {
+  return (
+    <>
+      <DateSection>
+        <DateP>{moment(date).format("YYYY년 MM월 DD일")}</DateP>
+        <DateButton
+          onClick={() => {
+            OpenCalender();
+          }}
+        >
+          {calenderDisplay ? dateButtonText[1] : dateButtonText[0]}
+        </DateButton>
+      </DateSection>
+    </>
+  );
+}
+
 const DateSection = styled.section`
   width: 100%;
   height: 40px;
@@ -317,6 +496,16 @@ const DateButton = styled.button`
   }
 `;
 
+function UserComponent({ percent }) {
+  return (
+    <>
+      <UserSection>
+        <TrophyImg src={trophyLevel1} />
+        <ChartComponent percent={percent} />
+      </UserSection>
+    </>
+  );
+}
 const UserSection = styled.section`
   width: 100%;
   height: 150px;
@@ -336,6 +525,20 @@ const TrophyImg = styled.img`
 
   margin: 10px;
 `;
+
+function ChartComponent({ percent }) {
+  return (
+    <>
+      <ChartSection>
+        <BarChart />
+        <PercentDiv>
+          <ChartText>{chartText}</ChartText>
+          <Percent>{`${percent} %`}</Percent>
+        </PercentDiv>
+      </ChartSection>
+    </>
+  );
+}
 
 const ChartSection = styled.section`
   height: 60%;
@@ -375,6 +578,25 @@ const Percent = styled.div`
   margin: 5px;
 `;
 
+function FilterComponent({ filterList, Filtering, filter }) {
+  return (
+    <>
+      <FilterSection>
+        {filterList.map((f, idx) => (
+          <FilterButton
+            key={idx}
+            onClick={() => Filtering(f)}
+            filter={filter}
+            value={f}
+          >
+            {f}
+          </FilterButton>
+        ))}
+      </FilterSection>
+    </>
+  );
+}
+
 const FilterSection = styled.section`
   width: 100%;
   height: 50px;
@@ -397,6 +619,21 @@ const FilterButton = styled.button`
   padding: 10px 20px 10px 20px;
 `;
 
+//ListComponent ===================================
+function ListComponent({ todos, ChangeTodo }) {
+  return (
+    <>
+      <ListContainer>
+        <TodoList>
+          {todos.map((value, idx) => (
+            <TodoLiComponent key={idx} value={value} ChangeTodo={ChangeTodo} />
+          ))}
+        </TodoList>
+      </ListContainer>
+    </>
+  );
+}
+
 const TodoList = styled.ul`
   width: 390px;
 
@@ -406,6 +643,18 @@ const TodoList = styled.ul`
   flex-direction: column;
   align-items: center;
 `;
+
+function TodoLiComponent({ value, ChangeTodo }) {
+  return (
+    <>
+      <TodoLi onClick={() => ChangeTodo(value)}>
+        <TagDiv>{value.tag}</TagDiv>
+        <TitleDiv>{value.title}</TitleDiv>
+        <EmojiDiv>{value.complete ? value.emoji : ""}</EmojiDiv>
+      </TodoLi>
+    </>
+  );
+}
 
 const TodoLi = styled.li`
   width: 390px;
@@ -453,97 +702,4 @@ const EmojiDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
-`;
-
-const CalendarModal = styled(Calendar)`
-  width: 390px;
-
-  border-radius: 15px;
-
-  position: absolute;
-  top: 115px;
-
-  z-index: 100;
-`;
-
-const TodoModal = styled.div`
-  width: 340px;
-
-  border: 1px solid #fff7cc;
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  padding: 20px;
-
-  position: absolute;
-  top: 30%;
-
-  z-index: 100;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Exit = styled.div`
-  width: 300px;
-  height: 20px;
-
-  margin-bottom: 10px;
-
-  display: flex;
-  justify-content: end;
-`;
-
-const TodoSection = styled.section`
-  width: 300px;
-  height: 150px;
-
-  margin-bottom: 30px;
-  border: 1px solid #ffd900;
-  border-radius: 15px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: end;
-`;
-
-const ElDiv = styled.div`
-  width: 300px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const TodoModalButton = styled.button`
-  width: 250px;
-  height: 35px;
-  font-size: 0.85rem;
-
-  margin: 10px;
-  border-radius: 15px;
-
-  background-color: #ececec;
-
-  &: hover {
-    background-color: #d0d0d0;
-  }
 `;
