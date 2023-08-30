@@ -319,6 +319,9 @@ const FilterSection = styled.section`
   height: 50px;
 
   background-color: #ffffff;
+
+  overflow: scroll;
+  white-space: nowrap;
 `;
 
 const FilterButton = styled.button`
@@ -329,8 +332,8 @@ const FilterButton = styled.button`
   border-radius: 15px;
 
   margin-top: 3px;
-  margin-left: 15px;
-  padding: 10px;
+  margin-left: 10px;
+  padding: 10px 20px 10px 20px;
 `;
 
 const TodoList = styled.ul`
