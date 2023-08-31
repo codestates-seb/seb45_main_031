@@ -32,6 +32,9 @@ public class Todo {
     private Complete complete = Complete.NONE;
 
     @Column(nullable = false)
+    private int todoCount;
+
+    @Column(nullable = false)
     private String todoEmoji;
 
 
