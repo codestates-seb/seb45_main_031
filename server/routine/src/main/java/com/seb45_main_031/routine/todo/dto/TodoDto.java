@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.util.List;
 
 public class TodoDto {
 
@@ -67,12 +68,23 @@ public class TodoDto {
         private String todoEmoji;
         private Todo.Complete complete;
 
+
+
         // todoCount
         // completCount
         // todoTag
 
 
+    }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class AllResponse{
+        private List<TodoDto.Response> todoResponse;
+
+        private int todoCount;
+        private int completeCount;
     }
 
 }

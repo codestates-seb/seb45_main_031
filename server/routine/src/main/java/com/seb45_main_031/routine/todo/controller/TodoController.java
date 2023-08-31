@@ -71,7 +71,7 @@ public class TodoController {
 
         List<Todo> todos = todoService.findTodos(date, memberId);
 
-        return new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoResponseDtos(todos)), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoAllResponseDtos(todos)), HttpStatus.OK);
 
     }
 

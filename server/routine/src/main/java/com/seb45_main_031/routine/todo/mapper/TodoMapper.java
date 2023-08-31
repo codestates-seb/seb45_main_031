@@ -40,5 +40,34 @@ public interface TodoMapper {
 
     TodoDto.Response todoToTodoResponseDto(Todo todo);
 
-    List<TodoDto.Response> todosToTodoResponseDtos(List<Todo> todos);
+    java.util.List<TodoDto.Response> todosToTodoResponseDtos(List<Todo> todos);
+
+
+    default TodoDto.AllResponse todosToTodoAllResponseDtos(List<Todo> todos){
+
+        List<TodoDto.Response> responses = todosToTodoResponseDtos(todos);
+
+        int todoCount = (int) responses.stream().count();
+
+        //중간 연산 도중 값이 변할 수 있음
+//        int completeCount = (int) responses.stream()
+//                .filter(response -> String.valueOf(response.getComplete()).equals("DONE"))
+//                .count();
+
+        // map 방식 -> 데이터 변환
+        int completeCount = (int) responses.stream()
+                .map(response -> response.getComplete())
+                .filter(complete -> complete == Todo.Complete.DONE)
+                .count();
+
+
+
+        TodoDto.AllResponse allResponse = TodoDto.AllResponse.builder()
+                .todoCount(todoCount)
+                .completeCount(completeCount)
+                .todoResponse(responses)
+                .build();
+
+        return allResponse;
+    }
 }
