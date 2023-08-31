@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
+import CommunityPage from "./pages/CommunityPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/todo" element={<TodoPage />} />
           <Route path="/todo/edit" element={<TodoEditPage />} />
+          <Route path="/community" element={<CommunityPage />} />
         </Routes>
       </Body>
     </>
