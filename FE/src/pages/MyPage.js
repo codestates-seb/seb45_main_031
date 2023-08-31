@@ -87,6 +87,25 @@ const MyPost = styled.div`
   padding: 20px;
 `;
 
+//로그아웃 버튼
+const LogoutButton = styled.button`
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+  background-color: #fff;
+  color: #949597;
+  border: 1px solid #ececec;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: #ececec;
+    cursor: pointer;
+    color: #232629;
+  }
+`;
+
 export const MyPage = () => {
   return (
     <MaxContainer>
@@ -104,6 +123,7 @@ export const MyPage = () => {
         </MyInfo>
         <MyPost>
           <Title>내 게시물 보기</Title>
+          <LogoutButton>로그아웃</LogoutButton>
         </MyPost>
       </Container>
     </MaxContainer>
