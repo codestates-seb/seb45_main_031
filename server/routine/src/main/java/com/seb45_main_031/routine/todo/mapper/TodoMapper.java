@@ -64,7 +64,7 @@ public interface TodoMapper {
         TodoDto.AllResponse allResponse = TodoDto.AllResponse.builder()
                 .todoCount(todoCount)
                 .completeCount(completeCount)
-                .todoResponse(responses)
+                .todoResponses(responses)
                 .build();
 
         return allResponse;
