@@ -80,7 +80,7 @@ public class TodoDto {
     @Setter
     @Builder
     public static class AllResponse{
-        private List<Response> todoResponse;
+        private List<Response> todoResponses;
 
         private int todoCount;
         private int completeCount;
