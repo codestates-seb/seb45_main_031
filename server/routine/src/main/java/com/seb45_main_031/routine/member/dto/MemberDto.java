@@ -26,6 +26,11 @@ public class MemberDto {
         private String nickname;
     }
 
+    @Getter
+    @Setter
+    public static class Password{
+        private String password;
+    }
 
     @Getter
     @Setter
