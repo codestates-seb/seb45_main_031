@@ -21,6 +21,7 @@ public class FeedDto {
 
         @NotBlank(message = "내용을 작성해주세요.")
         private String content;
+
     }
 
     @Getter
@@ -43,7 +44,9 @@ public class FeedDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private List<CommentResponse> comments;
+
     }
+
 
     @Getter
     @Setter

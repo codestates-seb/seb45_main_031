@@ -31,4 +31,5 @@ public class Feed extends Auditable {
     @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
+
 }

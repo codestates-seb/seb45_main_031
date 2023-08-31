@@ -4,6 +4,7 @@ import com.seb45_main_031.routine.comment.entity.Comment;
 import com.seb45_main_031.routine.feed.dto.FeedDto;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.member.entity.Member;
+
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface FeedMapper {
+
     default Feed feedPostDtoToFeed(FeedDto.Post feedPostDto) {
 
         Member member = new Member();
@@ -51,6 +53,10 @@ public interface FeedMapper {
                 ).collect(Collectors.toList());
 
         feedResponseDto.setComments(commentResponses);
+
+
+
+
 
         return feedResponseDto;
     }
