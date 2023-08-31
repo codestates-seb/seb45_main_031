@@ -2,16 +2,12 @@ package com.seb45_main_031.routine.todo.service;
 
 import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
-import com.seb45_main_031.routine.member.entity.Member;
-import com.seb45_main_031.routine.member.repository.MemberRepository;
 import com.seb45_main_031.routine.todo.entity.Todo;
 import com.seb45_main_031.routine.todo.repository.TodoRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
