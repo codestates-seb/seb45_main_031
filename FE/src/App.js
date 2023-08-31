@@ -1,17 +1,18 @@
 import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
-import TodoPage from "./pages/todoPage";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <>
       <GlobalStyles />
       <Body>
-        <Routes>
-          <Route path="/todo" element={<TodoPage />} />
-        </Routes>
+        <Header />
+        <Routes></Routes>
+        <Footer />
       </Body>
     </>
   );
