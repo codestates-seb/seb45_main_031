@@ -13,9 +13,10 @@ function App() {
       <GlobalStyles />
       <Body>
         <Header />
-        <Routes> 
+        <Routes>
           <Route path="/todo" element={<TodoPage />} />
-          <Route path="/todo/edit" element={<TodoEditPage />} /></Routes>
+          <Route path="/todo/edit" element={<TodoEditPage />} />
+        </Routes>
         <Footer />
       </Body>
     </>

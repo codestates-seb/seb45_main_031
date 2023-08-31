@@ -39,7 +39,7 @@ const HeaderStyle = styled.header`
   border: 1px solid #d0d0d0;
   border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 4px -4px #d0d0d0;
-  width: 390px;
+  width: 430px;
 
   display: flex;
   align-items: center;
@@ -68,7 +68,6 @@ const LogoLink = styled(Link)`
     cursor: pointer;
   }
 `;
-
 const Infrom = styled.button`
   > img {
     width: 30px;
@@ -76,7 +75,6 @@ const Infrom = styled.button`
     cursor: pointer;
   }
 `;
-
 const InfromSign = styled.div`
   background-color: #ff3838;
   border: 1px solid #ff3838;
