@@ -517,7 +517,9 @@ function ChartComponent({ percent }) {
   return (
     <>
       <ChartSection>
-        <BarChart />
+        <BarChart>
+          <ProgressBar percent={percent} />
+        </BarChart>
         <PercentDiv>
           <ChartText>{chartText}</ChartText>
           <Percent>{`${percent} %`}</Percent>
@@ -537,6 +539,16 @@ const ChartSection = styled.section`
 
 const BarChart = styled.div`
   width: 230px;
+  height: 30px;
+
+  background-color: #d0d0d0;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+`;
+const ProgressBar = styled.div`
+  width: ${(props) => props.percent + "%"};
   height: 30px;
 
   background-color: #ffe866;
