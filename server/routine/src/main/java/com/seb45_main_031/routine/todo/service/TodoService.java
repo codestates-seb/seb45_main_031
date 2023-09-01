@@ -51,6 +51,9 @@ public class TodoService {
         Optional.ofNullable(todo.getTodoEmoji())
                 .ifPresent(todoEmoji -> findTodo.setTodoEmoji(todoEmoji));
 
+        Optional.ofNullable(todo.getTag())
+                .ifPresent(tagId -> findTodo.setTag(tagId));
+
 
         /* complete Test
        findTodo.setComplete(todo.isComplete());*/

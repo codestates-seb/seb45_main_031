@@ -1,6 +1,7 @@
 package com.seb45_main_031.routine.todo.entity;
 
 import com.seb45_main_031.routine.member.entity.Member;
+import com.seb45_main_031.routine.tag.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,8 +32,8 @@ public class Todo {
     @Enumerated(EnumType.STRING)
     private Complete complete = Complete.NONE;
 
-    @Column(nullable = false)
-    private int todoCount;
+//    @Column(nullable = false)
+//    private int todoCount;
 
     @Column(nullable = false)
     private String todoEmoji;
@@ -41,6 +42,11 @@ public class Todo {
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+
+    @ManyToOne
+    @JoinColumn(name = "TAG_ID")
+    private Tag tag;
 
 
 
