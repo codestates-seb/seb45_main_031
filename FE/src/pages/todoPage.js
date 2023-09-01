@@ -344,7 +344,7 @@ const ExitButton = styled.button`
   border: 1px solid #ffb039;
   border-radius: 50%;
 
-  &: hover {
+  &:hover {
     background-color: #ffb039;
   }
 `;
@@ -393,7 +393,7 @@ const TodoModalButton = styled.button`
 
   background-color: #ececec;
 
-  &: hover {
+  &:hover {
     background-color: #d0d0d0;
   }
 `;
@@ -478,7 +478,7 @@ const DateP = styled.p`
 const DateButton = styled.button`
   color: #949597;
 
-  &: hover {
+  &:hover {
     color: #676767;
   }
 `;
@@ -517,7 +517,9 @@ function ChartComponent({ percent }) {
   return (
     <>
       <ChartSection>
-        <BarChart />
+        <BarChart>
+          <ProgressBar percent={percent} />
+        </BarChart>
         <PercentDiv>
           <ChartText>{chartText}</ChartText>
           <Percent>{`${percent} %`}</Percent>
@@ -537,6 +539,16 @@ const ChartSection = styled.section`
 
 const BarChart = styled.div`
   width: 230px;
+  height: 30px;
+
+  background-color: #d0d0d0;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+`;
+const ProgressBar = styled.div`
+  width: ${(props) => props.percent + "%"};
   height: 30px;
 
   background-color: #ffe866;
