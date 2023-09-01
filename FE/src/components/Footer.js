@@ -4,24 +4,34 @@ import list from "../assets/images/list.png";
 import community from "../assets/images/community.png";
 import mypage from "../assets/images/mypage.png";
 
+import { Link } from "react-router-dom";
+import moment from "moment";
+
 const Footer = () => {
+  let today = moment(new Date()).format("YYYY-MM-DD");
   return (
     <Container>
       <FooterStyle>
         <Footercon>
           <Logo>
-            <LogoItem>
-              <img src={write} alt="작성하기 버튼" />
-              작성하기
-            </LogoItem>
-            <LogoItem to="/">
-              <img src={list} alt="할일목록 버튼" />
-              할일목록
-            </LogoItem>
-            <LogoItem to="/">
-              <img src={community} alt="커뮤니티 버튼" />
-              커뮤니티
-            </LogoItem>
+            <Link to="/todo/edit">
+              <LogoItem>
+                <img src={write} alt="작성하기 버튼" />
+                작성하기
+              </LogoItem>
+            </Link>
+            <Link to={`/todo/${today}`}>
+              <LogoItem>
+                <img src={list} alt="할일목록 버튼" />
+                할일목록
+              </LogoItem>
+            </Link>
+            <Link to="/community">
+              <LogoItem>
+                <img src={community} alt="커뮤니티 버튼" />
+                커뮤니티
+              </LogoItem>
+            </Link>
             <LogoItem to="/">
               <img src={mypage} alt="마이페이지 버튼" />
               마이페이지
