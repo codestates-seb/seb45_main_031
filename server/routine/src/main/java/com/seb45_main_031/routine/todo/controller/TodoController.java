@@ -64,8 +64,21 @@ public class TodoController {
     }
 
 
+
+    // Todo 단일 조회
+    @GetMapping("/single/{todo-id}")
+    public ResponseEntity getTodo(@PathVariable("todo-id") long todoId){
+
+        Todo todos = todoService.findTodo(todoId);
+
+        return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todos)), HttpStatus.OK);
+
+    }
+
+
+    // Todo 리스트 조회
     @GetMapping("/{member-id}")
-    public ResponseEntity getTodo(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+    public ResponseEntity getTodos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
                                   @PathVariable("member-id") long memberId){
 
         List<Todo> todos = todoService.findTodos(date, memberId);

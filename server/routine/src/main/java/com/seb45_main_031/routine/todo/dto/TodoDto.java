@@ -36,8 +36,6 @@ public class TodoDto {
     @Builder
     public static class Patch{
 
-        @Positive
-        @NotNull
         private long todoId;
 
         private LocalDate date;
