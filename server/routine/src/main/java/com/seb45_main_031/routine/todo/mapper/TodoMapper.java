@@ -1,6 +1,7 @@
 package com.seb45_main_031.routine.todo.mapper;
 
 import com.seb45_main_031.routine.member.entity.Member;
+import com.seb45_main_031.routine.tag.entity.Tag;
 import com.seb45_main_031.routine.todo.dto.TodoDto;
 import com.seb45_main_031.routine.todo.entity.Todo;
 import org.mapstruct.Mapper;
@@ -16,17 +17,43 @@ public interface TodoMapper {
         Member member = new Member();
         member.setMemberId(todoPostDto.getMemberId());
 
+        Tag tag = new Tag();
+        tag.setTagId(todoPostDto.getTagId());
+
+
         Todo todo = new Todo();
         todo.setMember(member);
+        todo.setTag(tag);
+
         todo.setContent(todoPostDto.getContent());
         todo.setDate(todoPostDto.getDate());
         todo.setTodoEmoji(todoPostDto.getTodoEmoji());
+
 
         return todo;
     }
 
 
-    Todo todoPatchDtoToTodo(TodoDto.Patch todoPatchDto);
+//    Todo todoPatchDtoToTodo(TodoDto.Patch todoPatchDto);
+    default Todo todoPatchDtoToTodo(TodoDto.Patch todoPatchDto){
+
+
+        Todo todo = new Todo();
+
+        Tag tag = new Tag();
+
+        tag.setTagId(todoPatchDto.getTagId());
+        todo.setTag(tag);
+
+        todo.setTodoId(todoPatchDto.getTodoId());
+        todo.setContent(todoPatchDto.getContent());
+        todo.setDate(todoPatchDto.getDate());
+        todo.setTodoEmoji(todoPatchDto.getTodoEmoji());
+
+
+        return todo;
+    }
+
 
     Todo todoCompletePatchDtoToTodo(TodoDto.CompletePatch todoCompletePatchDto);
 
@@ -37,7 +64,29 @@ public interface TodoMapper {
 //        return todo;
 
 
-    TodoDto.Response todoToTodoResponseDto(Todo todo);
+
+    default TodoDto.Response todoToTodoResponseDto(Todo todo){
+
+        TodoDto.Response response = TodoDto.Response.builder()
+                .todoId(todo.getTodoId())
+                .date(todo.getDate())
+                .content(todo.getContent())
+                .todoEmoji(todo.getTodoEmoji())
+                .complete(todo.getComplete())
+                .build();
+
+
+        Tag tag = todo.getTag();
+
+        TodoDto.TagResponse tagResponse = TodoDto.TagResponse.builder()
+                .tagId(tag.getTagId())
+                .tagName(tag.getTagName())
+                .build();
+
+        response.setTagResponse(tagResponse);
+
+        return response;
+    }
 
     List<TodoDto.Response> todosToTodoResponseDtos(List<Todo> todos);
 

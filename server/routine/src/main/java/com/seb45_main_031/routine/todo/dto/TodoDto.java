@@ -1,9 +1,11 @@
 package com.seb45_main_031.routine.todo.dto;
 
+import com.seb45_main_031.routine.tag.entity.Tag;
 import com.seb45_main_031.routine.todo.entity.Todo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -20,6 +22,8 @@ public class TodoDto {
         @NotNull
         private long memberId;
 
+        private long tagId;
+
         private LocalDate date;
         private String content;
         private String todoEmoji;
@@ -29,6 +33,7 @@ public class TodoDto {
 
     @Getter
     @Setter
+    @Builder
     public static class Patch{
 
         @Positive
@@ -39,8 +44,11 @@ public class TodoDto {
         private String content;
         private String todoEmoji;
 
+        private long tagId;
+
         //test
 //        private boolean complete;
+
 
 
     }
@@ -67,12 +75,7 @@ public class TodoDto {
         private String todoEmoji;
         private Todo.Complete complete;
 
-
-
-        // todoCount
-        // completCount
-        // todoTag
-
+        private TagResponse tagResponse;
 
     }
 
@@ -84,6 +87,16 @@ public class TodoDto {
 
         private int todoCount;
         private int completeCount;
+    }
+
+
+    @Getter
+    @Setter
+    @Builder
+    public static class TagResponse{
+        private long tagId;
+        private String tagName;
+
     }
 
 }
