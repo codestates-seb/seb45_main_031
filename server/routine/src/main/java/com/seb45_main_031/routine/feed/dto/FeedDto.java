@@ -1,5 +1,6 @@
 package com.seb45_main_031.routine.feed.dto;
 
+import com.seb45_main_031.routine.feedTag.dto.FeedTagDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class FeedDto {
         @NotBlank(message = "내용을 작성해주세요.")
         private String content;
 
+        private List<FeedTagDto> feedTagDtos;
     }
 
     @Getter
@@ -31,6 +33,8 @@ public class FeedDto {
 
         @NotBlank(message = "내용을 작성해주세요.")
         private String content;
+
+        private List<FeedTagDto> feedTagDtos;
     }
 
     @Getter
@@ -44,9 +48,8 @@ public class FeedDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private List<CommentResponse> comments;
-
+        private List<TagResponse> tagsResponses;
     }
-
 
     @Getter
     @Setter
@@ -59,5 +62,13 @@ public class FeedDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class TagResponse {
+        private long tagId;
+        private String tagName;
     }
 }
