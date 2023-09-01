@@ -1,5 +1,30 @@
 import { styled } from "styled-components";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
+// import { useNavigate } from "react-router-dom";
+
+export default function MyPage() {
+  return (
+    <MaxContainer>
+      <Container>
+        <MyInfo>
+          <Title>내 정보</Title>
+          <ProfileContent>
+            <ProfileSvg />
+            <div>
+              <SubTitle>🐣 삐약이</SubTitle>
+              <p>lalala@gmail.com</p>
+              <EditButton>프로필 편집</EditButton>
+            </div>
+          </ProfileContent>
+        </MyInfo>
+        <MyPost>
+          <Title>내 게시물 보기</Title>
+          <LogoutButton>로그아웃</LogoutButton>
+        </MyPost>
+      </Container>
+    </MaxContainer>
+  );
+}
 
 // common
 const MaxContainer = styled.div`
@@ -33,6 +58,20 @@ const SubTitle = styled.div`
   color: #232629;
 `;
 
+const Button = styled.button`
+  background-color: #fff;
+  color: #949597;
+  border: 1px solid #ececec;
+  border-radius: 15px;
+  font-size: 0.85rem;
+
+  &:hover {
+    background-color: #ececec;
+    cursor: pointer;
+    color: #232629;
+  }
+`;
+
 // 내 정보
 const MyInfo = styled.div`
   background-color: #fff;
@@ -45,22 +84,11 @@ const MyInfo = styled.div`
   flex-wrap: wrap;
 `;
 
-const EditButton = styled.button`
+const EditButton = styled(Button)`
   width: 190px;
   height: 35px;
   padding: 10px;
-  background-color: #fff;
-  color: #949597;
-  border: 1px solid #ececec;
-  border-radius: 15px;
-  font-size: 0.85rem;
   margin-top: 1rem;
-
-  &:hover {
-    background-color: #ececec;
-    cursor: pointer;
-    color: #232629;
-  }
 `;
 
 const ProfileContent = styled.div`
@@ -88,44 +116,9 @@ const MyPost = styled.div`
 `;
 
 //로그아웃 버튼
-const LogoutButton = styled.button`
+const LogoutButton = styled(Button)`
   width: 100%;
   height: 35px;
   padding: 10px;
-  background-color: #fff;
-  color: #949597;
-  border: 1px solid #ececec;
-  border-radius: 15px;
-  font-size: 0.85rem;
   margin-top: 1rem;
-
-  &:hover {
-    background-color: #ececec;
-    cursor: pointer;
-    color: #232629;
-  }
 `;
-
-export const MyPage = () => {
-  return (
-    <MaxContainer>
-      <Container>
-        <MyInfo>
-          <Title>내 정보</Title>
-          <ProfileContent>
-            <ProfileSvg />
-            <div>
-              <SubTitle>🐣 삐약이</SubTitle>
-              <p>lalala@gmail.com</p>
-              <EditButton>프로필 편집</EditButton>
-            </div>
-          </ProfileContent>
-        </MyInfo>
-        <MyPost>
-          <Title>내 게시물 보기</Title>
-          <LogoutButton>로그아웃</LogoutButton>
-        </MyPost>
-      </Container>
-    </MaxContainer>
-  );
-};
