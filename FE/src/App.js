@@ -2,6 +2,8 @@ import GlobalStyles from "./styles/GlobalStyles";
 import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
 
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import CommunityPage from "./pages/CommunityPage";
@@ -11,11 +13,13 @@ function App() {
     <>
       <GlobalStyles />
       <Body>
+        <Header />
         <Routes>
           <Route path="/todo" element={<TodoPage />} />
           <Route path="/todo/edit" element={<TodoEditPage />} />
           <Route path="/community" element={<CommunityPage />} />
         </Routes>
+        <Footer />
       </Body>
     </>
   );
