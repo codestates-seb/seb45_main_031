@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import TodoModifyPage from "./pages/TodoModifyPage";
+import LoginPage from "./pages/LoginPage";
 import CommunityPage from "./pages/CommunityPage";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/todo/modify/:todoId" element={<TodoModifyPage />} />
           <Route path="/todo/:today" element={<TodoPage />} />
           <Route path="/todo" element={<TodoPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/community" element={<CommunityPage />} />
         </Routes>
         <Footer />

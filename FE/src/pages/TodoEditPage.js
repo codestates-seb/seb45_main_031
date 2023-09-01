@@ -495,7 +495,7 @@ const Button = styled.button`
   margin: 10px;
   border-radius: 15px;
 
-  &: hover {
+  &:hover {
     background-color: ${(props) => props.hoverColor};
   }
 `;

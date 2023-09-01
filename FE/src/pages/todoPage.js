@@ -386,7 +386,7 @@ const TodoModalButton = styled.button`
 
   background-color: #ececec;
 
-  &: hover {
+  &:hover {
     background-color: #d0d0d0;
   }
 `;
@@ -471,7 +471,7 @@ const DateP = styled.p`
 const DateButton = styled.button`
   color: #949597;
 
-  &: hover {
+  &:hover {
     color: #676767;
   }
 `;
