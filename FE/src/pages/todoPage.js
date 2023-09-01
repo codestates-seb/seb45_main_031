@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
+import axios from "axios";
 
 //캘린더 라이브러리
 import { Calendar } from "react-calendar";
@@ -8,8 +9,10 @@ import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
 
 //삭제 할 더미 데이터들
-import { todoList } from "../data/dummy";
 import trophyLevel1 from "../assets/images/trophyLevel1.png";
+const membersId = 1;
+
+const url = "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
 
 //사용 텍스트 변수들 (유지보수를 편하게 하기 위하여 상단에서 변수로 선언하여 관리 )
 const dateButtonText = ["달력보기", "달력닫기"];
@@ -17,21 +20,24 @@ const todoModalButtonText = ["할 일 완료", "완료 취소", "수정하기", 
 const chartText = "오늘의 성취";
 const defaultFilterList = ["전체"];
 const defaultFilter = "전체";
-// const defaultDate = new Date();
-const defaultDate = "2023-08-25";
+let defaultDate = moment(new Date()).format("YYYY-MM-DD");
 const defaultPercent = 0;
 const ExitText = "X";
 
 export default function TodoPage() {
   const navigate = useNavigate();
+  const { today } = useParams();
+
+  if (today) defaultDate = today;
 
   const [date, setDate] = useState(defaultDate);
-  //삭제 될 더미데이터
-  const dummyTodo = todoList.todos.filter((t) => t.date === date);
-  const [allData, setAllData] = useState(dummyTodo);
-  //
+  const [allData, setAllData] = useState({
+    completeCount: 0,
+    todoCount: 0,
+    todoResponses: [],
+  });
   const [todo, setTodo] = useState({});
-  const [todos, setTodos] = useState(allData);
+  const [todos, setTodos] = useState([]);
   const [filterList, setFilterList] = useState(defaultFilterList);
   const [filter, setFilter] = useState(defaultFilter);
   const [modalBackDisplay, setModalBackDisplay] = useState(false);
@@ -41,34 +47,32 @@ export default function TodoPage() {
 
   // 달성량 계산 및 적용 함수
   function PercentData(part, whole) {
+    if (whole === 0) return setPercent(0);
     const newPercent = Math.round((part / whole) * 100);
     setPercent(newPercent);
   }
 
-  //새로운 정보를 불러올 때
-  // 1. 데이터 정리
-  // 2. 달성 퍼센트 계산
-  // 3. 필터 분류
   useEffect(() => {
     try {
-      //api연결 시 데이터 수정
-      setTodos(allData);
-      PercentData(todoList.completeCount, todoList.todoCount);
-
-      todos.map((t) => {
-        const value = filterList.filter((f) => f === t.tag);
-        if (value.length === 0) setFilterList([...filterList, t.tag]);
-      });
+      TodoListApi(date);
     } catch (error) {
       console.error(error);
     }
   }, [filterList]);
 
   //할 일 목록 데이터 api
-  function TodoListApi() {
+  function TodoListApi(date) {
     try {
-      // 데이터를 불러 올 api 필요
-      console.log("데이터를 불러옵니다.");
+      axios.get(`${url}/todos/${membersId}?date=${date}`).then((res) => {
+        const data = res.data.data;
+        setAllData(data);
+        setTodos(data.todoResponses);
+        PercentData(data.completeCount, data.todoCount);
+        data.todoResponses.map((t) => {
+          let value = filterList.filter((f) => f === t.tag);
+          if (value.length === 0) setFilterList([...filterList, t.tag]);
+        });
+      });
     } catch (error) {
       console.error(error);
     }
@@ -79,9 +83,9 @@ export default function TodoPage() {
     try {
       setFilter(value);
       if (value === defaultFilter) {
-        setTodos(allData);
+        setTodos(allData.todoResponses);
       } else {
-        const newTodo = allData.filter((d) => d.tag === value);
+        const newTodo = allData.todoResponses.filter((d) => d.tag === value);
         setTodos(newTodo);
       }
     } catch (error) {
@@ -100,19 +104,7 @@ export default function TodoPage() {
     try {
       const newDate = moment(value).format("YYYY-MM-DD");
       setDate(newDate);
-
-      //백엔드와 연결되면 로직을 바꿔야하는 부분
-      const newAllData = todoList.todos.filter((t) => t.date === newDate);
-      setFilterList(defaultFilterList);
-      setFilter(defaultFilter);
-      newAllData.map((t) => {
-        const value = filterList.filter((f) => f === t.tag);
-        if (value.length === 0) setFilterList([...filterList, t.tag]);
-      });
-      setAllData(newAllData);
-      setTodos([...newAllData]);
-      //달성량에 들어가는 변수 수정 필요
-      PercentData(todoList.completeCount, todoList.todoCount);
+      navigate(`/todo/${newDate}`);
 
       setCalenderDisplay(!calenderDisplay);
       setModalBackDisplay(!modalBackDisplay);
@@ -144,12 +136,14 @@ export default function TodoPage() {
   }
 
   //할 일 완료 / 취소 버튼
-  function ChangeComplete() {
+  function ChangeComplete(todoId, complete) {
     try {
-      //할 일의 complete이 변하는 로직 구현 필요
-      console.log("complete change");
-      //데이터가 변하면 api 재호출
-      TodoListApi();
+      let newComplete = "DONE";
+      if (complete === "DONE") newComplete = "NONE";
+      // 수정 시 전체 호출이 필요할 지 프론트에서의 부분 수정을 해야 할 지 고민중
+      axios
+        .patch(`${url}/todos/complete/${todoId}`, { complete: newComplete })
+        .then(() => TodoListApi(date));
 
       ExitTodoModal();
     } catch (error) {
@@ -158,12 +152,9 @@ export default function TodoPage() {
   }
 
   //할 일 삭제 버튼
-  function DeleteTodo(value) {
+  function DeleteTodo(todoId) {
     try {
-      //삭제 api 구현 필요
-      console.log(value.todoId);
-      //데이터가 변하면 api 재호출
-      TodoListApi();
+      axios.delete(`${url}/todos/${todoId}`).then(() => TodoListApi(date));
 
       ExitTodoModal();
     } catch (error) {
@@ -355,9 +346,9 @@ function TodoComponent({ todo }) {
       <TodoSection>
         <ElDiv>
           <TagDiv>{todo.tag}</TagDiv>
-          <TitleDiv>{todo.title}</TitleDiv>
+          <TitleDiv>{todo.content}</TitleDiv>
         </ElDiv>
-        <EmojiDiv>{todo.complete ? todo.emoji : ""}</EmojiDiv>
+        <EmojiDiv>{todo.complete === "DONE" ? todo.todoEmoji : ""}</EmojiDiv>
       </TodoSection>
     </>
   );
@@ -368,15 +359,17 @@ function TodoModalButtons({ todo, ChangeComplete, navigate, DeleteTodo }) {
     <>
       <TodoModalButton
         onClick={() => {
-          ChangeComplete();
+          ChangeComplete(todo.todoId, todo.complete);
         }}
       >
-        {todo.complete ? todoModalButtonText[1] : todoModalButtonText[0]}
+        {todo.complete === "DONE"
+          ? todoModalButtonText[1]
+          : todoModalButtonText[0]}
       </TodoModalButton>
-      <TodoModalButton onClick={() => navigate("/todo/modify")}>
+      <TodoModalButton onClick={() => navigate(`/todo/modify/${todo.todoId}`)}>
         {todoModalButtonText[2]}
       </TodoModalButton>
-      <TodoModalButton onClick={() => DeleteTodo(todo)}>
+      <TodoModalButton onClick={() => DeleteTodo(todo.todoId)}>
         {todoModalButtonText[3]}
       </TodoModalButton>
     </>
@@ -661,8 +654,8 @@ function TodoLiComponent({ value, ChangeTodo }) {
     <>
       <TodoLi onClick={() => ChangeTodo(value)}>
         <TagDiv>{value.tag}</TagDiv>
-        <TitleDiv>{value.title}</TitleDiv>
-        <EmojiDiv>{value.complete ? value.emoji : ""}</EmojiDiv>
+        <TitleDiv>{value.content}</TitleDiv>
+        <EmojiDiv>{value.complete === "DONE" ? value.todoEmoji : ""}</EmojiDiv>
       </TodoLi>
     </>
   );
