@@ -40,18 +40,20 @@ public class FeedService {
         Optional.ofNullable(feed.getContent())
                 .ifPresent(content -> findFeed.setContent(content));
 
-        findFeed.getFeedTags().stream()
-                .map(feedTag -> feedTag.getFeedTagId())
-                .forEach(id -> feedTagRepository.deleteById(id));
+        if (feed.getFeedTags() != null) {
+            findFeed.getFeedTags().stream()
+                    .map(feedTag -> feedTag.getFeedTagId())
+                    .forEach(id -> feedTagRepository.deleteById(id));
 
-        findFeed.setFeedTags(feed.getFeedTags());
+            findFeed.setFeedTags(feed.getFeedTags());
+        }
 
         return feedRepository.save(findFeed);
     }
 
     // 피드 조회
     public Feed findFeed(long feedId) {
-        Optional<Feed> optional= feedRepository.findById(feedId);
+        Optional<Feed> optional = feedRepository.findById(feedId);
 
         Feed findFeed = optional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));
 
@@ -73,7 +75,7 @@ public class FeedService {
 
 
     // 검증
-    public Feed findVerifiedFeed(long feedId){
+    public Feed findVerifiedFeed(long feedId) {
 
         Optional<Feed> optional = feedRepository.findById(feedId);
 
