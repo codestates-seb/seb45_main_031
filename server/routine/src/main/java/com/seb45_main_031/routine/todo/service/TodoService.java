@@ -76,6 +76,16 @@ public class TodoService {
     }
 
 
+    public Todo findTodo(long todoId) {
+
+        Optional<Todo> optionalTodo = todoRepository.findById(todoId);
+
+        Todo findTodo = optionalTodo.orElseThrow(() -> new BusinessLogicException(ExceptionCode.TODO_NOT_FOUND));
+
+        return findTodo;
+
+    }
+
     public List<Todo> findTodos(LocalDate date, long memberId){
 
         List<Todo> findTodos = todoRepository.findByDate(date);
