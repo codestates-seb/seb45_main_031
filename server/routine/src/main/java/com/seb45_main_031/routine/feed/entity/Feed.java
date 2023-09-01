@@ -33,6 +33,7 @@ public class Feed extends Auditable {
     @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "feed", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     private List<FeedTag> feedTags = new ArrayList<>();
+
 }

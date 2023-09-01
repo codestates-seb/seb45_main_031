@@ -5,6 +5,7 @@ import com.seb45_main_031.routine.exception.ExceptionCode;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.repository.FeedRepository;
 import com.seb45_main_031.routine.feedTag.entity.FeedTag;
+import com.seb45_main_031.routine.feedTag.repository.FeedTagRepository;
 import com.seb45_main_031.routine.tag.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,18 +13,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class FeedService {
 
     private final FeedRepository feedRepository;
+    private final FeedTagRepository feedTagRepository;
 
-    public FeedService(FeedRepository feedRepository) {
+    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository) {
         this.feedRepository = feedRepository;
+        this.feedTagRepository = feedTagRepository;
     }
 
     // 피드 작성
@@ -39,15 +40,11 @@ public class FeedService {
         Optional.ofNullable(feed.getContent())
                 .ifPresent(content -> findFeed.setContent(content));
 
-//        Optional.ofNullable(feed.getFeedTags())
-//                .ifPresent(feedTags -> );
-        List<FeedTag> feedTags = feed.getFeedTags();
-        if (feedTags != null) {
-            for(FeedTag feedTag : findFeed.getFeedTags()){
-                feedTag.setTag(tag);
-            }
-        }
-        findFeed.setFeedTags(feedTags);
+        findFeed.getFeedTags().stream()
+                .map(feedTag -> feedTag.getFeedTagId())
+                .forEach(id -> feedTagRepository.deleteById(id));
+
+        findFeed.setFeedTags(feed.getFeedTags());
 
         return feedRepository.save(findFeed);
     }

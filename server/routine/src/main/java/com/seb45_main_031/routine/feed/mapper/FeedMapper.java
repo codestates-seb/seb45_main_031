@@ -79,6 +79,7 @@ public interface FeedMapper {
                 .modifiedAt(feed.getModifiedAt())
                 .build();
 
+
         List<Comment> comments = feed.getComments();
 
         List<FeedDto.CommentResponse> commentResponses = comments.stream()
@@ -94,6 +95,7 @@ public interface FeedMapper {
                 ).collect(Collectors.toList());
 
         feedResponseDto.setComments(commentResponses);
+
 
         List<FeedTag> feedTags = feed.getFeedTags();
 

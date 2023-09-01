@@ -51,7 +51,6 @@ public class FeedDto {
         private List<TagResponse> tagsResponses;
     }
 
-
     @Getter
     @Setter
     @Builder
