@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //이모지 라이브러리
 import EmojiPicker from "emoji-picker-react";
@@ -11,6 +12,8 @@ import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
 
 //변수 선언
+const memberId = 1;
+const url = "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
 const title = "할 일 만들기";
 const tipTitle = "작성 Tip!";
 const tips = [
@@ -22,7 +25,7 @@ const nameLabel = "할 일 이름";
 const nameHolder = "예시 : 스쿼트 30회";
 const tagLabel = "태그";
 const tagHolder = "예시 : 헬스, 스쿼트, 수영 등...";
-const emojiLabel = "이모지";
+const todoEmojiLabel = "이모지";
 const calendarLabel = "일자";
 const postText = "등록하기";
 const cancelText = "취소";
@@ -34,8 +37,8 @@ export default function TodoEditPage() {
   const [modalDisplay, setModalDisplay] = useState(false);
   const [calenderDisplay, setCalenderDisplay] = useState(false);
   const [modalBackDisplay, setModalBackDisplay] = useState(false);
-  const [emoji, setEmoji] = useState("");
-  const [todoName, setTodoName] = useState("");
+  const [todoEmoji, setTodoEmoji] = useState("");
+  const [content, setContent] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(today);
 
@@ -60,13 +63,13 @@ export default function TodoEditPage() {
   };
 
   //이모지 변경
-  const ChangeEmoji = (value) => {
-    setEmoji(value.emoji);
+  const ChangeTodoEmoji = (value) => {
+    setTodoEmoji(value.emoji);
   };
 
   //할 일 이름 변경
   const ChangeName = (value) => {
-    setTodoName(value);
+    setContent(value);
   };
 
   //태그 변경
@@ -101,14 +104,18 @@ export default function TodoEditPage() {
     try {
       const newDate = moment(date).format("YYYY-MM-DD");
       const newData = {
-        todoName,
+        memberId,
+        content,
         todoTag,
-        emoji,
+        todoEmoji,
         date: newDate,
       };
-      console.log(newData);
+      axios.post(`${url}/todos`, newData).then((res) => console.log(res));
+
+      console.log(newDate);
+
       //데이터 post 완료 후 이동
-      navigate("/todo");
+      navigate(`/todo/${newDate}`);
     } catch (error) {
       console.error(error);
     }
@@ -118,11 +125,11 @@ export default function TodoEditPage() {
     <>
       <TodoEditBody>
         {modalDisplay && (
-          <EmojiComponent
-            emoji={emoji}
+          <TodoEmojiComponent
+            todoEmoji={todoEmoji}
             ModalOpen={ModalOpen}
             ModalClose={ModalClose}
-            ChangeEmoji={ChangeEmoji}
+            ChangeTodoEmoji={ChangeTodoEmoji}
           />
         )}
         {calenderDisplay && (
@@ -137,7 +144,7 @@ export default function TodoEditPage() {
               ModalOpen={ModalOpen}
               ChangeName={ChangeName}
               ChangeTag={ChangeTag}
-              emoji={emoji}
+              todoEmoji={todoEmoji}
               date={date}
               CalendarOpen={CalendarOpen}
             />
@@ -197,21 +204,26 @@ const PostSection = styled.section`
   justify-content: start;
 `;
 
-function EmojiComponent({ emoji, ModalOpen, ModalClose, ChangeEmoji }) {
+function TodoEmojiComponent({
+  todoEmoji,
+  ModalOpen,
+  ModalClose,
+  ChangeTodoEmoji,
+}) {
   return (
     <>
-      <EmojiModal>
-        <EmojiSection>
-          <EmojiDiv onClick={() => ModalOpen()}>{emoji} </EmojiDiv>
+      <TodoEmojiModal>
+        <TodoEmojiSection>
+          <TodoEmojiDiv onClick={() => ModalOpen()}>{todoEmoji} </TodoEmojiDiv>
           <ExitButton onClick={() => ModalClose()}>X</ExitButton>
-        </EmojiSection>
-        <EmojiPicker onEmojiClick={(e) => ChangeEmoji(e)} />
-      </EmojiModal>
+        </TodoEmojiSection>
+        <EmojiPicker onEmojiClick={(e) => ChangeTodoEmoji(e)} />
+      </TodoEmojiModal>
     </>
   );
 }
 
-const EmojiModal = styled.div`
+const TodoEmojiModal = styled.div`
   width: 390px;
   height: 500px;
 
@@ -230,7 +242,7 @@ const EmojiModal = styled.div`
   align-items: end;
 `;
 
-const EmojiSection = styled.section`
+const TodoEmojiSection = styled.section`
   width: 340px;
 
   display: flex;
@@ -246,7 +258,7 @@ const ExitButton = styled.button`
   border: 1px solid #ffb039;
   border-radius: 15px;
 
-  &: hover {
+  &:hover {
     background-color: #ffb039;
   }
 `;
@@ -344,7 +356,7 @@ const Tip = styled.p`
 
 function PostComponent({
   ModalOpen,
-  emoji,
+  todoEmoji,
   ChangeName,
   ChangeTag,
   date,
@@ -370,8 +382,8 @@ function PostComponent({
           />
         </Aside>
         <Aside>
-          <Label>{emojiLabel}</Label>
-          <EmojiDiv onClick={() => ModalOpen()}>{emoji}</EmojiDiv>
+          <Label>{todoEmojiLabel}</Label>
+          <TodoEmojiDiv onClick={() => ModalOpen()}>{todoEmoji}</TodoEmojiDiv>
         </Aside>
         <Aside>
           <Label>{calendarLabel}</Label>
@@ -411,7 +423,7 @@ const Aside = styled.aside`
   justify-content: start;
 `;
 
-const EmojiDiv = styled.div`
+const TodoEmojiDiv = styled.div`
   width: 50px;
   height: 50px;
 

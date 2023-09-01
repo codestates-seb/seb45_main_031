@@ -16,9 +16,10 @@ function App() {
       <Body>
         <Header />
         <Routes>
-          <Route path="/todo" element={<TodoPage />} />
           <Route path="/todo/edit" element={<TodoEditPage />} />
           <Route path="/todo/modify/:todoId" element={<TodoModifyPage />} />
+          <Route path="/todo/:today" element={<TodoPage />} />
+          <Route path="/todo" element={<TodoPage />} />
           <Route path="/community" element={<CommunityPage />} />
         </Routes>
         <Footer />
