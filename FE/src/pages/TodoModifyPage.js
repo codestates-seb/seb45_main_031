@@ -12,7 +12,6 @@ import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
 
 //변수 선언
-const memberId = 1;
 const url = "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
 const title = "할 일 만들기";
 const tipTitle = "작성 Tip!";
@@ -46,13 +45,11 @@ export default function TodoModifyPage() {
   //todo 불러오기
   useEffect(() => {
     try {
-      axios.get(`${url}/todos/${memberId}?date=${date}`).then((res) => {
+      axios.get(`${url}/todos/single/${todoId}`).then((res) => {
         let data = res.data.data;
-        let newTodo = data.todoResponses.filter((todo) => {
-          if (todo.todoId == todoId) return todo;
-        });
-        setContent(newTodo[0].content);
-        setTodoEmoji(newTodo[0].todoEmoji);
+        setTodoTag(data.tagResponse.tagName);
+        setContent(data.content);
+        setTodoEmoji(data.todoEmoji);
       });
     } catch (error) {
       console.error(error);
@@ -164,6 +161,7 @@ export default function TodoModifyPage() {
               date={date}
               CalendarOpen={CalendarOpen}
               content={content}
+              todoTag={todoTag}
             />
             <ButtonsComponent PostTodo={PostTodo} navigate={navigate} />
           </PostSection>
@@ -275,7 +273,7 @@ const ExitButton = styled.button`
   border: 1px solid #ffb039;
   border-radius: 15px;
 
-  &: hover {
+  &:hover {
     background-color: #ffb039;
   }
 `;
@@ -379,6 +377,7 @@ function PostComponent({
   date,
   CalendarOpen,
   content,
+  todoTag,
 }) {
   return (
     <>
@@ -397,6 +396,7 @@ function PostComponent({
           <Input
             id="TagInput"
             placeholder={tagHolder}
+            value={todoTag}
             onChange={(e) => ChangeTag(e.target.value)}
           />
         </Aside>
@@ -514,7 +514,7 @@ const Button = styled.button`
   margin: 10px;
   border-radius: 15px;
 
-  &: hover {
+  &:hover {
     background-color: ${(props) => props.hoverColor};
   }
 `;
