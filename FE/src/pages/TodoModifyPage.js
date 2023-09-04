@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 //이모지 라이브러리
@@ -27,11 +27,12 @@ const tagLabel = "태그";
 const tagHolder = "예시 : 헬스, 스쿼트, 수영 등...";
 const todoEmojiLabel = "이모지";
 const calendarLabel = "일자";
-const postText = "등록하기";
+const postText = "수정하기";
 const cancelText = "취소";
-const today = new Date();
+const today = moment(new Date()).format("YYYY-MM-DD");
 
-export default function TodoEditPage() {
+export default function TodoModifyPage() {
+  const { todoId } = useParams();
   const navigate = useNavigate();
 
   const [modalDisplay, setModalDisplay] = useState(false);
@@ -41,6 +42,22 @@ export default function TodoEditPage() {
   const [content, setContent] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(today);
+
+  //todo 불러오기
+  useEffect(() => {
+    try {
+      axios.get(`${url}/todos/${memberId}?date=${date}`).then((res) => {
+        let data = res.data.data;
+        let newTodo = data.todoResponses.filter((todo) => {
+          if (todo.todoId == todoId) return todo;
+        });
+        setContent(newTodo[0].content);
+        setTodoEmoji(newTodo[0].todoEmoji);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   //이모지 모달창 Open
   const ModalOpen = () => {
@@ -99,20 +116,19 @@ export default function TodoEditPage() {
     }
   }
 
-  //등록 api
+  //수정 api
   const PostTodo = () => {
     try {
       const newDate = moment(date).format("YYYY-MM-DD");
       const newData = {
-        memberId,
         content,
-        todoTag,
         todoEmoji,
+        todoTag,
         date: newDate,
       };
-      axios.post(`${url}/todos`, newData).then((res) => console.log(res));
-
-      console.log(newDate);
+      axios
+        .patch(`${url}/todos/${todoId}`, newData)
+        .then((res) => console.log(res));
 
       //데이터 post 완료 후 이동
       navigate(`/todo/${newDate}`);
@@ -147,6 +163,7 @@ export default function TodoEditPage() {
               todoEmoji={todoEmoji}
               date={date}
               CalendarOpen={CalendarOpen}
+              content={content}
             />
             <ButtonsComponent PostTodo={PostTodo} navigate={navigate} />
           </PostSection>
@@ -258,7 +275,7 @@ const ExitButton = styled.button`
   border: 1px solid #ffb039;
   border-radius: 15px;
 
-  &:hover {
+  &: hover {
     background-color: #ffb039;
   }
 `;
@@ -361,6 +378,7 @@ function PostComponent({
   ChangeTag,
   date,
   CalendarOpen,
+  content,
 }) {
   return (
     <>
@@ -370,6 +388,7 @@ function PostComponent({
           <Input
             id="NameInput"
             placeholder={nameHolder}
+            value={content}
             onChange={(e) => ChangeName(e.target.value)}
           />
         </Aside>
@@ -495,7 +514,7 @@ const Button = styled.button`
   margin: 10px;
   border-radius: 15px;
 
-  &:hover {
+  &: hover {
     background-color: ${(props) => props.hoverColor};
   }
 `;
