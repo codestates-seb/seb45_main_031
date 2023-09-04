@@ -69,8 +69,9 @@ export default function TodoPage() {
         setTodos(data.todoResponses);
         PercentData(data.completeCount, data.todoCount);
         data.todoResponses.map((t) => {
-          let value = filterList.filter((f) => f === t.tag);
-          if (value.length === 0) setFilterList([...filterList, t.tag]);
+          let value = filterList.filter((f) => f === t.tagResponse.tagName);
+          if (value.length === 0)
+            setFilterList([...filterList, t.tagResponse.tagName]);
         });
       });
     } catch (error) {
@@ -85,7 +86,9 @@ export default function TodoPage() {
       if (value === defaultFilter) {
         setTodos(allData.todoResponses);
       } else {
-        const newTodo = allData.todoResponses.filter((d) => d.tag === value);
+        const newTodo = allData.todoResponses.filter(
+          (d) => d.tagResponse.tagName === value,
+        );
         setTodos(newTodo);
       }
     } catch (error) {
@@ -104,7 +107,7 @@ export default function TodoPage() {
     try {
       const newDate = moment(value).format("YYYY-MM-DD");
       setDate(newDate);
-      navigate(`/todo/${newDate}`);
+      window.location.replace(`/todo/${newDate}`);
 
       setCalenderDisplay(!calenderDisplay);
       setModalBackDisplay(!modalBackDisplay);
@@ -145,7 +148,7 @@ export default function TodoPage() {
         .patch(`${url}/todos/complete/${todoId}`, { complete: newComplete })
         .then(() => TodoListApi(date));
 
-      ExitTodoModal();
+      ExitTodoModal(date);
     } catch (error) {
       console.error(error);
     }
@@ -345,7 +348,7 @@ function TodoComponent({ todo }) {
     <>
       <TodoSection>
         <ElDiv>
-          <TagDiv>{todo.tag}</TagDiv>
+          <TagDiv>{todo.tagResponse.tagName}</TagDiv>
           <TitleDiv>{todo.content}</TitleDiv>
         </ElDiv>
         <EmojiDiv>{todo.complete === "DONE" ? todo.todoEmoji : ""}</EmojiDiv>
@@ -451,7 +454,7 @@ const DateSection = styled.section`
   width: 100%;
   height: 40px;
 
-  padding: 95px 20px 20px 20px;
+  padding: 120px 20px 20px 20px;
 
   background-color: #ffffff;
 
@@ -459,8 +462,6 @@ const DateSection = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
-  z-index: 11;
 `;
 
 const DateP = styled.p`
@@ -542,11 +543,21 @@ const BarChart = styled.div`
 `;
 const ProgressBar = styled.div`
   width: ${(props) => props.percent + "%"};
+  animation: progressBar 0.5s ease-out;
   height: 30px;
 
   background-color: #ffe866;
 
   border-radius: 15px;
+
+  @keyframes progressBar {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: ${(props) => props.percent + "%"};
+    }
+  }
 `;
 
 const PercentDiv = styled.div`
@@ -653,7 +664,7 @@ function TodoLiComponent({ value, ChangeTodo }) {
   return (
     <>
       <TodoLi onClick={() => ChangeTodo(value)}>
-        <TagDiv>{value.tag}</TagDiv>
+        <TagDiv>{value.tagResponse.tagName}</TagDiv>
         <TitleDiv>{value.content}</TitleDiv>
         <EmojiDiv>{value.complete === "DONE" ? value.todoEmoji : ""}</EmojiDiv>
       </TodoLi>
