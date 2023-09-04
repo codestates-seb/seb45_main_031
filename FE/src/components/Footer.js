@@ -32,10 +32,12 @@ const Footer = () => {
                 커뮤니티
               </LogoItem>
             </Link>
-            <LogoItem to="/">
-              <img src={mypage} alt="마이페이지 버튼" />
-              마이페이지
-            </LogoItem>
+            <Link to="/mypage">
+              <LogoItem>
+                <img src={mypage} alt="마이페이지 버튼" />
+                마이페이지
+              </LogoItem>
+            </Link>
           </Logo>
         </Footercon>
       </FooterStyle>
