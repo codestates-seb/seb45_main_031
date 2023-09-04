@@ -154,7 +154,7 @@ const EditButton = styled(GreyButton)`
 const ProfileContent = styled.div`
   display: grid;
   grid-template-columns: 4fr 6fr;
-  grid-template-rows: repeat(2, 1fr)
+  grid-template-rows: repeat(2, 1fr);
   margin: 2rem 3rem;
 
   ProfileSVG {
