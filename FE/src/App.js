@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 import CommunityPage from "./pages/CommunityPage";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Body>
         <Header />
         <Routes>
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/todo" element={<TodoPage />} />
           <Route path="/todo/edit" element={<TodoEditPage />} />
           <Route path="/login" element={<LoginPage />} />
