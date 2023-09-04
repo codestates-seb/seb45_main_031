@@ -8,6 +8,7 @@ import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import TodoModifyPage from "./pages/TodoModifyPage";
 import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 import CommunityPage from "./pages/CommunityPage";
 import MyPage from "./pages/MyPage";
 
@@ -18,6 +19,8 @@ function App() {
       <Body>
         <Header />
         <Routes>
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/todo" element={<TodoPage />} />
           <Route path="/todo/edit" element={<TodoEditPage />} />
           <Route path="/todo/modify/:todoId" element={<TodoModifyPage />} />
           <Route path="/todo/:today" element={<TodoPage />} />
