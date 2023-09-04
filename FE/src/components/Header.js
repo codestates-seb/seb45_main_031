@@ -9,7 +9,7 @@ const Header = () => {
       <HeaderStyle>
         <HeaderCon>
           <h1>
-            <LogoLink to="/">
+            <LogoLink to="/login">
               <img src={mainIcon} alt="mainIcon" />
             </LogoLink>
           </h1>
@@ -30,16 +30,20 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  z-index: 999;
 `;
 
 const HeaderStyle = styled.header`
   position: fixed;
   top: 0;
+  height: 95px;
+  width: 430px;
+
   background-color: #fff;
   border: 1px solid #d0d0d0;
   border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 4px -4px #d0d0d0;
-  width: 430px;
 
   display: flex;
   align-items: center;

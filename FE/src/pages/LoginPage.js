@@ -4,7 +4,7 @@ import googleIcon from "../assets/images/google.png";
 const SignUp = () => {
   return (
     <Container>
-      <SignUpStyled>
+      <LoginStyled>
         <LoginText>Login</LoginText>
         <GoogleButton>
           <GoogleIcon src={googleIcon} alt="구글 아이콘" />
@@ -15,7 +15,7 @@ const SignUp = () => {
           <IdText>ID</IdText>
           <EmailContainer>
             <InputId
-              type="text"
+              type="email"
               name="id"
               placeholder="이메일 형식의 아이디를 입력해주세요."
             />
@@ -40,7 +40,7 @@ const SignUp = () => {
           <LoginConfirm>로그인</LoginConfirm>
           <SignUpButton>회원가입</SignUpButton>
         </ConfirmContainer>
-      </SignUpStyled>
+      </LoginStyled>
     </Container>
   );
 };
@@ -51,18 +51,21 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 `;
 
-const SignUpStyled = styled.div`
+const LoginStyled = styled.div`
+  display: block;
   text-align: center;
+  justify-content: center;
   background-color: #fff;
+
   width: 430px;
+  height: 100vh;
+  padding-top: 200px;
 `;
 const LoginText = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 120px;
   font-size: 50px;
 `;
 const GoogleButton = styled.button`
@@ -104,8 +107,15 @@ const EmailContainer = styled.div`
 const InputId = styled.input`
   height: 50px;
   width: 300px;
+  padding-left: 15px;
+
   border: 1px solid #949597;
   border-radius: 15px;
+
+  &::placeholder {
+    text-align: center;
+    padding-right: 15px;
+  }
 `;
 const IdErrorMessage = styled.div`
   font-size: 0.7rem;
@@ -131,8 +141,15 @@ const PasswordContainer = styled.div`
 const InputPassword = styled.input`
   height: 50px;
   width: 300px;
+  padding-left: 15px;
+
   border: 1px solid #949597;
   border-radius: 15px;
+
+  &::placeholder {
+    text-align: center;
+    padding-right: 15px;
+  }
 `;
 const PasswordErrorMassage = styled.div`
   font-size: 0.7rem;
@@ -146,7 +163,6 @@ const ConfirmContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 90px;
-  margin-bottom: 200px;
 `;
 const LoginConfirm = styled.button`
   height: 50px;
@@ -157,6 +173,9 @@ const LoginConfirm = styled.button`
   width: 115px;
   height: 35px;
   margin-right: 30px;
+  &:hover {
+    background-color: #676767;
+  }
 `;
 const SignUpButton = styled.button`
   height: 50px;
@@ -166,4 +185,7 @@ const SignUpButton = styled.button`
   background-color: #ffe866;
   width: 115px;
   height: 35px;
+  &:hover {
+    background-color: #676767;
+  }
 `;
