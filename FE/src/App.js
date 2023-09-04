@@ -10,6 +10,7 @@ import TodoModifyPage from "./pages/TodoModifyPage";
 import LoginPage from "./pages/LoginPage";
 import CommunityPage from "./pages/CommunityPage";
 import MyPage from "./pages/MyPage";
+import MyPageEdit from "./pages/MyPageEdit";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/edit" element={<MyPageEdit />} />
         </Routes>
         <Footer />
       </Body>
