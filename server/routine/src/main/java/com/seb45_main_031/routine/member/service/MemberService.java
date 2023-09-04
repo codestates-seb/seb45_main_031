@@ -50,7 +50,7 @@ public class MemberService {
         }
     }
 
-    private void checkMemberId(long memberId, String accessToken){
+    public void checkMemberId(long memberId, String accessToken){
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         long findMemberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
