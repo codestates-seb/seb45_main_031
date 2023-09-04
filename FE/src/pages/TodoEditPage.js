@@ -11,6 +11,9 @@ import { Calendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
 
+//태그 리스트 불러오기
+import { tags } from "../data/tags";
+
 //변수 선언
 const memberId = 1;
 const url = "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
@@ -24,7 +27,7 @@ const tips = [
 const nameLabel = "할 일 이름";
 const nameHolder = "예시 : 스쿼트 30회";
 const tagLabel = "태그";
-const tagHolder = "예시 : 헬스, 스쿼트, 수영 등...";
+// const tagHolder = "예시 : 헬스, 스쿼트, 수영 등...";
 const todoEmojiLabel = "이모지";
 const calendarLabel = "일자";
 const postText = "등록하기";
@@ -37,8 +40,10 @@ export default function TodoEditPage() {
   const [modalDisplay, setModalDisplay] = useState(false);
   const [calenderDisplay, setCalenderDisplay] = useState(false);
   const [modalBackDisplay, setModalBackDisplay] = useState(false);
+  const [tagModalDisplay, setTagModalDisplay] = useState(false);
   const [todoEmoji, setTodoEmoji] = useState("");
   const [content, setContent] = useState("");
+  const [tagId, setTagId] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(today);
 
@@ -72,9 +77,39 @@ export default function TodoEditPage() {
     setContent(value);
   };
 
+  //태그 모달 Open
+  const TagModalOpen = () => {
+    try {
+      setTagModalDisplay(true);
+      setModalBackDisplay(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //태그 모달 Close
+  const TagModalClose = () => {
+    try {
+      setTagModalDisplay(false);
+      setModalBackDisplay(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //태그 변경
+  // const ChangeTag = (value) => {
+  //   setTodoTag(value);
+  // };
   const ChangeTag = (value) => {
-    setTodoTag(value);
+    try {
+      setTagId(tags[value]);
+      setTodoTag(value);
+
+      TagModalClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   //달력 모달 Open
@@ -106,13 +141,11 @@ export default function TodoEditPage() {
       const newData = {
         memberId,
         content,
-        todoTag,
+        tagId,
         todoEmoji,
         date: newDate,
       };
       axios.post(`${url}/todos`, newData).then((res) => console.log(res));
-
-      console.log(newDate);
 
       //데이터 post 완료 후 이동
       navigate(`/todo/${newDate}`);
@@ -135,15 +168,23 @@ export default function TodoEditPage() {
         {calenderDisplay && (
           <CalendarModal onChange={(e) => ChangeDate(e)} value={date} />
         )}
+        {tagModalDisplay && (
+          <TagModal
+            tags={tags}
+            TagModalClose={TagModalClose}
+            ChangeTag={ChangeTag}
+          />
+        )}
         {modalBackDisplay && <ModalBackground />}
         <TodoEditSection>
           <TitleComponent />
           <TipsComponent />
           <PostSection>
             <PostComponent
+              TagModalOpen={TagModalOpen}
               ModalOpen={ModalOpen}
               ChangeName={ChangeName}
-              ChangeTag={ChangeTag}
+              todoTag={todoTag}
               todoEmoji={todoEmoji}
               date={date}
               CalendarOpen={CalendarOpen}
@@ -355,10 +396,11 @@ const Tip = styled.p`
 `;
 
 function PostComponent({
+  TagModalOpen,
   ModalOpen,
   todoEmoji,
   ChangeName,
-  ChangeTag,
+  todoTag,
   date,
   CalendarOpen,
 }) {
@@ -375,11 +417,12 @@ function PostComponent({
         </Aside>
         <Aside className="TagAside">
           <Label for="TagInput">{tagLabel}</Label>
-          <Input
+          {/* <Input
             id="TagInput"
             placeholder={tagHolder}
             onChange={(e) => ChangeTag(e.target.value)}
-          />
+          /> */}
+          <TagDiv onClick={() => TagModalOpen()}>{todoTag}</TagDiv>
         </Aside>
         <Aside>
           <Label>{todoEmojiLabel}</Label>
@@ -410,6 +453,22 @@ const Input = styled.input`
 
   border: 1px solid #949597;
   border-radius: 15px;
+`;
+
+const TagDiv = styled.div`
+  width: 340px;
+  height: 50px;
+
+  font-size: 1rem;
+
+  padding-left: 20px;
+
+  border: 1px solid #949597;
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: start;
 `;
 
 const Aside = styled.aside`
@@ -497,5 +556,91 @@ const Button = styled.button`
 
   &:hover {
     background-color: ${(props) => props.hoverColor};
+  }
+`;
+
+function TagModal({ tags, TagModalClose, ChangeTag }) {
+  return (
+    <>
+      <TagModalBody>
+        <TagExitButton onClick={() => TagModalClose()}>X</TagExitButton>
+        <TagUl>
+          {Object.keys(tags).map((tag) => (
+            <>
+              <TagLi>
+                <TagButton onClick={() => ChangeTag(tag)}>{tag}</TagButton>
+              </TagLi>
+            </>
+          ))}
+        </TagUl>
+      </TagModalBody>
+    </>
+  );
+}
+
+const TagModalBody = styled.div`
+  width: 390px;
+  height: 400px;
+
+  padding: 15px;
+
+  border-radius: 15px;
+
+  background-color: #ffffff;
+
+  position: absolute;
+  top: 300px;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: start;
+`;
+const TagUl = styled.ul`
+  width: 100%;
+  height: 75%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+
+  overflow: auto;
+`;
+
+const TagLi = styled.li`
+  width: 250px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TagButton = styled.button`
+  width: 250px;
+
+  margin-bottom: 10px;
+  padding: 10px 0px;
+  border: 1px solid #949597;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: #ffe866;
+    border: 1px solid #ffe866;
+  }
+`;
+
+const TagExitButton = styled.button`
+  width: 30px;
+  height: 30px;
+
+  margin-bottom: 30px;
+  border: 1px solid #ffb039;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: #ffb039;
   }
 `;
