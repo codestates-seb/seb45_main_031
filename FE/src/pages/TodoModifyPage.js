@@ -275,7 +275,7 @@ const ExitButton = styled.button`
   border: 1px solid #ffb039;
   border-radius: 15px;
 
-  &: hover {
+  &:hover {
     background-color: #ffb039;
   }
 `;
@@ -514,7 +514,7 @@ const Button = styled.button`
   margin: 10px;
   border-radius: 15px;
 
-  &: hover {
+  &:hover {
     background-color: ${(props) => props.hoverColor};
   }
 `;
