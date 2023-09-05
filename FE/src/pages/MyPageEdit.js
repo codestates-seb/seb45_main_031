@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 import { ReactComponent as InfoIcon } from "../assets/icons/info.svg";
+
 import level0 from "../assets/images/level0.png";
 import level1 from "../assets/images/level1.png";
 import level2 from "../assets/images/level2.png";
@@ -23,7 +24,7 @@ export default function MyPageEdit() {
         </Section>
         <Section>
           <span>
-            <Label>업적 조회</Label>
+            <Label>등급 조회</Label>
             <InfoIcon />
           </span>
           <Badges>
@@ -150,7 +151,7 @@ const EditButton = styled.button`
   }
 `;
 
-// 업적 조회 영역
+// 회원 등급 영역
 const Badges = styled.div`
   height: 370px;
   padding: 10px;

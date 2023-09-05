@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
+import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 export default function MyPage() {
@@ -14,7 +15,9 @@ export default function MyPage() {
             <div>
               <SubTitle>🐣 삐약이</SubTitle>
               <p>lalala@gmail.com</p>
-              <EditButton>프로필 편집</EditButton>
+              <Link to="/mypage/edit">
+                <EditButton>프로필 편집</EditButton>
+              </Link>
             </div>
           </ProfileContent>
         </MyInfo>
@@ -154,12 +157,8 @@ const EditButton = styled(GreyButton)`
 const ProfileContent = styled.div`
   display: grid;
   grid-template-columns: 4fr 6fr;
-  grid-template-rows: repeat(2, 1fr);
-  margin: 2rem 3rem;
-
-  ProfileSVG {
-    grid-row: span 2;
-  }
+  grid-template-rows: repeat(1, 1fr);
+  margin: 1rem;
 
   p {
     color: #949597;
@@ -175,15 +174,15 @@ const MyPost = styled.div`
   padding: 20px;
 `;
 
+const WrapperLogoutButton = styled(GreyButton)`
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+  margin-top: 1rem;
+`;
+
 //로그아웃 버튼
 function LogoutButton() {
-  const LogoutButton = styled(GreyButton)`
-    width: 100%;
-    height: 35px;
-    padding: 10px;
-    margin-top: 1rem;
-  `;
-
   const [isModalOpen, setIsMOdalOpen] = useState(false);
   const handleLogout = () => {
     //로그아웃 로직 추가하기
@@ -198,7 +197,9 @@ function LogoutButton() {
 
   return (
     <div>
-      <LogoutButton onClick={handleModalOpen}>로그아웃</LogoutButton>
+      <WrapperLogoutButton onClick={handleModalOpen}>
+        로그아웃
+      </WrapperLogoutButton>
       {isModalOpen && (
         <ModalOverlay>
           <ModalContent>
