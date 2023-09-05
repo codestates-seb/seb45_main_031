@@ -1,12 +1,11 @@
 package com.seb45_main_031.routine.feed.service;
 
+import com.seb45_main_031.routine.auth.jwt.JwtTokenizer;
 import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.repository.FeedRepository;
-import com.seb45_main_031.routine.feedTag.entity.FeedTag;
 import com.seb45_main_031.routine.feedTag.repository.FeedTagRepository;
-import com.seb45_main_031.routine.tag.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,10 +20,12 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
     private final FeedTagRepository feedTagRepository;
+    private final JwtTokenizer jwtTokenizer;
 
-    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository) {
+    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository, JwtTokenizer jwtTokenizer) {
         this.feedRepository = feedRepository;
         this.feedTagRepository = feedTagRepository;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
     // 피드 작성
@@ -33,9 +34,11 @@ public class FeedService {
     }
 
     // 피드 수정
-    public Feed updateFeed(Feed feed) {
+    public Feed updateFeed(Feed feed, String accessToken) {
 
         Feed findFeed = findVerifiedFeed(feed.getFeedId());
+
+        verifiedMemberId(findFeed.getMember().getMemberId(), accessToken);
 
         Optional.ofNullable(feed.getContent())
                 .ifPresent(content -> findFeed.setContent(content));
@@ -67,14 +70,16 @@ public class FeedService {
     }
 
     // 피드 삭제
-    public void deleteFeed(long feedId) {
+    public void deleteFeed(long feedId, String accessToken) {
         Feed findFeed = findVerifiedFeed(feedId);
+
+        verifiedMemberId(findFeed.getMember().getMemberId(), accessToken);
 
         feedRepository.delete(findFeed);
     }
 
 
-    // 검증
+    // 피드 검증
     public Feed findVerifiedFeed(long feedId) {
 
         Optional<Feed> optional = feedRepository.findById(feedId);
@@ -82,5 +87,18 @@ public class FeedService {
         Feed findFeed = optional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));
 
         return findFeed;
+    }
+
+    // 회원 검증
+    public void verifiedMemberId(long memberId, String accessToken) {
+
+        String secretKey = jwtTokenizer.getSecretKey();
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);
+
+        long findMemberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
+
+        if (memberId != findMemberId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_MATCHED);
+        }
     }
 }

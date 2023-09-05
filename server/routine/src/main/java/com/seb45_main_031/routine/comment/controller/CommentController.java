@@ -6,6 +6,7 @@ import com.seb45_main_031.routine.comment.mapper.CommentMapper;
 import com.seb45_main_031.routine.comment.service.CommentService;
 import com.seb45_main_031.routine.dto.SingleResponseDto;
 import com.seb45_main_031.routine.utils.UriCreator;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -45,11 +46,12 @@ public class CommentController {
     // 댓글 수정
     @PatchMapping("/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("comment-id") @Positive long commentId,
-                                       @Valid @RequestBody CommentDto.Patch commentPatchDto) {
+                                       @Valid @RequestBody CommentDto.Patch commentPatchDto,
+                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         commentPatchDto.setCommentId(commentId);
         Comment comment = mapper.commentPatchDtoToComment(commentPatchDto);
 
-        Comment updateComment = commentService.updateComment(comment);
+        Comment updateComment = commentService.updateComment(comment, accessToken);
 
         CommentDto.Response response = mapper.commentToCommentResponseDto(updateComment);
 
@@ -58,8 +60,9 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{comment-id}")
-    public ResponseEntity deleteComment(@PathVariable("comment-id") @Positive long commentId) {
-        commentService.deleteComment(commentId);
+    public ResponseEntity deleteComment(@PathVariable("comment-id") @Positive long commentId,
+                                        @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        commentService.deleteComment(commentId, accessToken);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

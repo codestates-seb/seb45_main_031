@@ -8,6 +8,7 @@ import com.seb45_main_031.routine.feed.mapper.FeedMapper;
 import com.seb45_main_031.routine.feed.service.FeedService;
 import com.seb45_main_031.routine.utils.UriCreator;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -46,10 +47,11 @@ public class FeedController {
     // 피드 수정
     @PatchMapping("/{feed-id}")
     public ResponseEntity patchFeed(@PathVariable("feed-id") @Positive long feedId,
-                                    @Valid @RequestBody FeedDto.Patch feedPatchDto) {
+                                    @Valid @RequestBody FeedDto.Patch feedPatchDto,
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToekn) {
         feedPatchDto.setFeedId(feedId);
 
-        Feed feed = feedService.updateFeed(mapper.feedPatchDtoToFeed(feedPatchDto));
+        Feed feed = feedService.updateFeed(mapper.feedPatchDtoToFeed(feedPatchDto), accessToekn);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed)), HttpStatus.OK);
     }
@@ -75,8 +77,9 @@ public class FeedController {
 
     // 피드 삭제
     @DeleteMapping("/{feed-id}")
-    public ResponseEntity deleteFeed(@PathVariable("feed-id") @Positive long feedId) {
-        feedService.deleteFeed(feedId);
+    public ResponseEntity deleteFeed(@PathVariable("feed-id") @Positive long feedId,
+                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        feedService.deleteFeed(feedId, accessToken);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
