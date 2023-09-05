@@ -1,7 +1,9 @@
 import { styled } from "styled-components";
+import { useState } from "react";
+
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 import { ReactComponent as InfoIcon } from "../assets/icons/info.svg";
-
+import { ReactComponent as CloseIcon } from "../assets/icons/close.svg";
 import level0 from "../assets/images/level0.png";
 import level1 from "../assets/images/level1.png";
 import level2 from "../assets/images/level2.png";
@@ -15,7 +17,7 @@ export default function MyPageEdit() {
           <Label>프로필 사진</Label>
           <Profile>
             <ProfileSvg className="photo" alt="avatar" />
-            <EditButton>편집</EditButton>
+            <EditProfile />
           </Profile>
         </Section>
         <Section>
@@ -120,6 +122,66 @@ const InputBox = styled.input`
   }
 `;
 
+const ModalOverlay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.5);
+  z-index: 10;
+  flex-direction: column;
+`;
+
+const ModalContent = styled.div`
+  position: relative;
+  width: 340px;
+  border: 1px solid #fff7cc;
+  border-radius: 15px;
+  background-color: #ffffff;
+  opacity: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  font-size: 0.9rem;
+
+  > div {
+    margin: auto;
+    padding: 1rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  width: 34px;
+  height: 34px;
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  &:hover {
+    fill: #ffd900;
+  }
+`;
+
+const ModalButton = styled.button`
+  width: 290px;
+  height: 35px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-right: 1.5rem;
+  background-color: #ffe866;
+  margin: 0.5rem 0 0.5rem 0;
+  &:hover {
+    background-color: #ffd900;
+  }
+`;
+
 //프로필 사진 편집 영역
 const Profile = styled.div`
   position: relative;
@@ -129,7 +191,7 @@ const Profile = styled.div`
   justify-content: center;
 
   .photo {
-    width: 90px;
+    width: 150px;
   }
 `;
 
@@ -150,6 +212,39 @@ const EditButton = styled.button`
     color: #232629;
   }
 `;
+
+const EditProfile = () => {
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsMOdalOpen(true);
+  };
+  const closeModal = () => {
+    setIsMOdalOpen(false);
+  };
+
+  return (
+    <div>
+      <EditButton onClick={openModal}>편집</EditButton>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>
+              <CloseButton onClick={closeModal} alt="모달창 닫기">
+                <CloseIcon />
+              </CloseButton>
+            </div>
+            <div>프로필 사진 설정</div>
+            <div className="editProfile">
+              <ModalButton className="update">사진 업로드</ModalButton>
+              <ModalButton className="delete">사진 삭제</ModalButton>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
+};
 
 // 회원 등급 영역
 const Badges = styled.div`

@@ -87,7 +87,6 @@ const ModalOverlay = styled.div`
   height: 100vh;
   background: rgb(0, 0, 0, 0.5);
   z-index: 10;
-
   flex-direction: column;
 `;
 
