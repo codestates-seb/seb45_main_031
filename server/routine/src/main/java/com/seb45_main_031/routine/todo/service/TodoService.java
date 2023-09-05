@@ -4,6 +4,7 @@ import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
 import com.seb45_main_031.routine.todo.entity.Todo;
 import com.seb45_main_031.routine.todo.repository.TodoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class TodoService {
 
     private final TodoRepository todoRepository;
@@ -70,7 +72,6 @@ public class TodoService {
 
             findTodo.setComplete(todo.getComplete());
         }
-
 
         return todoRepository.save(findTodo);
     }
