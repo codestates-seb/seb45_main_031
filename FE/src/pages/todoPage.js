@@ -606,7 +606,7 @@ const FilterSection = styled.section`
 
   background-color: #ffffff;
 
-  overflow: scroll;
+  overflow: over;
   white-space: nowrap;
 `;
 
