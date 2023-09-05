@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,4 +31,11 @@ public class Comment extends Auditable {
     @ManyToOne
     @JoinColumn(name = "FEED_ID")
     private Feed feed;
+
+    @ManyToOne
+    @JoinColumn(name = "PARENT_COMMENT_ID")
+    private Comment parentComment;
+
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.REMOVE)
+    private List<Comment> children = new ArrayList<>();
 }
