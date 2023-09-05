@@ -65,13 +65,13 @@ const TodoPage = () => {
         setMeta(data);
         setTodos(data.todoResponses);
         calculatePercent(data.completeCount, data.todoCount);
+        let newFilterList = filterList;
         data.todoResponses.map((todo) => {
-          let value = filterList.filter(
-            (filter) => filter === todo.tagResponse.tagName,
-          );
-          if (value.length === 0)
-            setFilterList([...filterList, todo.tagResponse.tagName]);
+          const tagName = todo.tagResponse.tagName;
+          const value = newFilterList.filter((filter) => filter === tagName);
+          if (value.length === 0) newFilterList = [...newFilterList, tagName];
         });
+        setFilterList(newFilterList);
       });
     } catch (error) {
       console.error(error);
@@ -606,7 +606,7 @@ const FilterSection = styled.section`
 
   background-color: #ffffff;
 
-  overflow: over;
+  overflow-x: scroll;
   white-space: nowrap;
 `;
 
