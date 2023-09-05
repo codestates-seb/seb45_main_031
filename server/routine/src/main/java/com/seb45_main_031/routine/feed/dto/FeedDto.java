@@ -62,6 +62,7 @@ public class FeedDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private List<ReplyResponse> replyResponses;
     }
 
     @Getter
@@ -70,5 +71,18 @@ public class FeedDto {
     public static class TagResponse {
         private long tagId;
         private String tagName;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class ReplyResponse {
+        private long commentId;
+        private long parentId;
+        private long memberId;
+        private String nickname;
+        private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 }

@@ -83,6 +83,7 @@ public interface FeedMapper {
         List<Comment> comments = feed.getComments();
 
         List<FeedDto.CommentResponse> commentResponses = comments.stream()
+                .filter(comment -> comment.getParentComment() == null)
                 .map(comment -> FeedDto.CommentResponse.builder()
                         .commentId(comment.getCommentId())
                         .memberId(comment.getMember().getMemberId())
@@ -91,6 +92,19 @@ public interface FeedMapper {
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
+                        .replyResponses(
+                                comment.getChildren().stream()
+                                        .map(childComment -> FeedDto.ReplyResponse.builder()
+                                                .commentId(childComment.getCommentId())
+                                                .parentId(childComment.getParentComment().getCommentId())
+                                                .memberId(childComment.getMember().getMemberId())
+                                                .content(childComment.getContent())
+                                                .nickname(childComment.getMember().getNickname())
+                                                .createdAt(childComment.getCreatedAt())
+                                                .modifiedAt(childComment.getModifiedAt())
+                                                .build())
+                                        .collect(Collectors.toList())
+                        )
                         .build()
                 ).collect(Collectors.toList());
 
@@ -110,5 +124,6 @@ public interface FeedMapper {
 
         return feedResponseDto;
     }
+
     List<FeedDto.Response> feedsToFeedResponseDtos(List<Feed> feeds);
 }
