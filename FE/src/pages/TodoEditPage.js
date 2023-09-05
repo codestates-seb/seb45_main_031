@@ -2,142 +2,131 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-//이모지 라이브러리
 import EmojiPicker from "emoji-picker-react";
-
-//캘린더 라이브러리
 import { Calendar } from "react-calendar";
+
 import "react-calendar/dist/Calendar.css"; // css import
-import moment from "moment";
 
-//태그 리스트 불러오기
+import getDateFormat from "../utils/getDateFormat";
 import { tags } from "../data/tags";
+import {
+  URL,
+  CALENDAR_LABEL,
+  CANCEL_TEXT,
+  NAME_HOLDER,
+  NAME_LABEL,
+  POST_TEXT,
+  TAG_LABEL,
+  TIPS,
+  TIP_TITLE,
+  TITLE,
+  TODO_EMOJI_LABEL,
+} from "../data/constants";
 
-//변수 선언
+//삭제 될 데이터
 const memberId = 1;
-const url = "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
-const title = "할 일 만들기";
-const tipTitle = "작성 Tip!";
-const tips = [
-  "1. 할 일 이름은 명확하게 등록 해볼까요?",
-  "2. 태그로 운동 항목을 표시해주세요!",
-  "3. 이모지는 할 일 완료 시 표시되는 항목입니다.",
-];
-const nameLabel = "할 일 이름";
-const nameHolder = "예시 : 스쿼트 30회";
-const tagLabel = "태그";
-// const tagHolder = "예시 : 헬스, 스쿼트, 수영 등...";
-const todoEmojiLabel = "이모지";
-const calendarLabel = "일자";
-const postText = "등록하기";
-const cancelText = "취소";
-const today = new Date();
 
-export default function TodoEditPage() {
+const TodoEditPage = () => {
   const navigate = useNavigate();
 
-  const [modalDisplay, setModalDisplay] = useState(false);
-  const [calenderDisplay, setCalenderDisplay] = useState(false);
-  const [modalBackDisplay, setModalBackDisplay] = useState(false);
-  const [tagModalDisplay, setTagModalDisplay] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenCalender, setIsOpenCalender] = useState(false);
+  const [isOpenModalBack, setIsOpenModalBack] = useState(false);
+  const [isOpenTagModal, setIsOpenTagModal] = useState(false);
   const [todoEmoji, setTodoEmoji] = useState("");
   const [content, setContent] = useState("");
   const [tagId, setTagId] = useState("");
   const [todoTag, setTodoTag] = useState("");
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(getDateFormat());
 
   //이모지 모달창 Open
-  const ModalOpen = () => {
+  const modalOpen = () => {
     try {
-      setModalDisplay(true);
-      setModalBackDisplay(true);
+      setIsOpenModal(true);
+      setIsOpenModalBack(true);
     } catch (error) {
       console.error(error);
     }
   };
 
   //이모지 모달창 Close
-  const ModalClose = () => {
+  const modalClose = () => {
     try {
-      setModalDisplay(false);
-      setModalBackDisplay(false);
+      setIsOpenModal(false);
+      setIsOpenModalBack(false);
     } catch (error) {
       console.error(error);
     }
   };
 
   //이모지 변경
-  const ChangeTodoEmoji = (value) => {
+  const changeTodoEmoji = (value) => {
     setTodoEmoji(value.emoji);
   };
 
   //할 일 이름 변경
-  const ChangeName = (value) => {
+  const changeName = (value) => {
     setContent(value);
   };
 
   //태그 모달 Open
-  const TagModalOpen = () => {
+  const tagModalOpen = () => {
     try {
-      setTagModalDisplay(true);
-      setModalBackDisplay(true);
+      setIsOpenTagModal(true);
+      setIsOpenModalBack(true);
     } catch (error) {
       console.error(error);
     }
   };
 
   //태그 모달 Close
-  const TagModalClose = () => {
+  const tagModalClose = () => {
     try {
-      setTagModalDisplay(false);
-      setModalBackDisplay(false);
+      setIsOpenTagModal(false);
+      setIsOpenModalBack(false);
     } catch (error) {
       console.error(error);
     }
   };
 
   //태그 변경
-  // const ChangeTag = (value) => {
-  //   setTodoTag(value);
-  // };
-  const ChangeTag = (value) => {
+  const changeTag = (value) => {
     try {
       setTagId(tags[value]);
       setTodoTag(value);
 
-      TagModalClose();
+      tagModalClose();
     } catch (error) {
       console.error(error);
     }
   };
 
   //달력 모달 Open
-  const CalendarOpen = () => {
+  const calendarOpen = () => {
     try {
-      setCalenderDisplay(true);
-      setModalBackDisplay(true);
+      setIsOpenCalender(true);
+      setIsOpenModalBack(true);
     } catch (error) {
       console.error(error);
     }
   };
 
   //날짜 수정
-  function ChangeDate(value) {
+  const changeDate = (value) => {
     try {
       setDate(value);
 
-      setCalenderDisplay(false);
-      setModalBackDisplay(false);
+      setIsOpenCalender(false);
+      setIsOpenModalBack(false);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //등록 api
-  const PostTodo = () => {
+  const postTodo = () => {
     try {
-      const newDate = moment(date).format("YYYY-MM-DD");
+      const newDate = getDateFormat(date);
       const newData = {
         memberId,
         content,
@@ -145,9 +134,7 @@ export default function TodoEditPage() {
         todoEmoji,
         date: newDate,
       };
-      axios.post(`${url}/todos`, newData).then((res) => console.log(res));
-
-      //데이터 post 완료 후 이동
+      axios.post(`${URL}/todos`, newData).then((res) => console.log(res));
       navigate(`/todo/${newDate}`);
     } catch (error) {
       console.error(error);
@@ -157,45 +144,47 @@ export default function TodoEditPage() {
   return (
     <>
       <TodoEditBody>
-        {modalDisplay && (
-          <TodoEmojiComponent
+        {isOpenModal && (
+          <TodoEmoji
             todoEmoji={todoEmoji}
-            ModalOpen={ModalOpen}
-            ModalClose={ModalClose}
-            ChangeTodoEmoji={ChangeTodoEmoji}
+            ModalOpen={modalOpen}
+            ModalClose={modalClose}
+            ChangeTodoEmoji={changeTodoEmoji}
           />
         )}
-        {calenderDisplay && (
-          <CalendarModal onChange={(e) => ChangeDate(e)} value={date} />
+        {isOpenCalender && (
+          <CalendarModal onChange={(e) => changeDate(e)} value={date} />
         )}
-        {tagModalDisplay && (
+        {isOpenTagModal && (
           <TagModal
             tags={tags}
-            TagModalClose={TagModalClose}
-            ChangeTag={ChangeTag}
+            TagModalClose={tagModalClose}
+            ChangeTag={changeTag}
           />
         )}
-        {modalBackDisplay && <ModalBackground />}
+        {isOpenModalBack && <ModalBackground />}
         <TodoEditSection>
-          <TitleComponent />
-          <TipsComponent />
+          <Title />
+          <Tips />
           <PostSection>
-            <PostComponent
-              TagModalOpen={TagModalOpen}
-              ModalOpen={ModalOpen}
-              ChangeName={ChangeName}
+            <Post
+              TagModalOpen={tagModalOpen}
+              ModalOpen={modalOpen}
+              ChangeName={changeName}
               todoTag={todoTag}
               todoEmoji={todoEmoji}
               date={date}
-              CalendarOpen={CalendarOpen}
+              CalendarOpen={calendarOpen}
             />
-            <ButtonsComponent PostTodo={PostTodo} navigate={navigate} />
+            <Buttons PostTodo={postTodo} navigate={navigate} />
           </PostSection>
         </TodoEditSection>
       </TodoEditBody>
     </>
   );
-}
+};
+
+export default TodoEditPage;
 
 const TodoEditBody = styled.body`
   height: 100vh;
@@ -245,12 +234,7 @@ const PostSection = styled.section`
   justify-content: start;
 `;
 
-function TodoEmojiComponent({
-  todoEmoji,
-  ModalOpen,
-  ModalClose,
-  ChangeTodoEmoji,
-}) {
+const TodoEmoji = ({ todoEmoji, ModalOpen, ModalClose, ChangeTodoEmoji }) => {
   return (
     <>
       <TodoEmojiModal>
@@ -262,7 +246,7 @@ function TodoEmojiComponent({
       </TodoEmojiModal>
     </>
   );
-}
+};
 
 const TodoEmojiModal = styled.div`
   width: 390px;
@@ -315,15 +299,15 @@ const TodoEditSection = styled.section`
   align-items: center;
 `;
 
-function TitleComponent() {
+const Title = () => {
   return (
     <>
       <TitleSection>
-        <Title>{title}</Title>
+        <TitleText>{TITLE}</TitleText>
       </TitleSection>
     </>
   );
-}
+};
 
 const TitleSection = styled.section`
   width: 390px;
@@ -336,27 +320,27 @@ const TitleSection = styled.section`
   justify-content: start;
 `;
 
-const Title = styled.h1`
+const TitleText = styled.h1`
   font-size: 1.4rem;
   font-weight: bold;
 `;
 
-function TipsComponent() {
+const Tips = () => {
   return (
     <>
       <TipsSection>
-        <TipTitle>{tipTitle}</TipTitle>
-        <TipsUl>
-          {tips.map((t, idx) => (
+        <TipTitle>{TIP_TITLE}</TipTitle>
+        <TipsGroup>
+          {TIPS.map((t, idx) => (
             <>
-              <TipComponent key={idx} value={t} />
+              <Tip key={idx} value={t} />
             </>
           ))}
-        </TipsUl>
+        </TipsGroup>
       </TipsSection>
     </>
   );
-}
+};
 
 const TipsSection = styled.section`
   width: 390px;
@@ -375,27 +359,27 @@ const TipTitle = styled.h3`
   margin-bottom: 10px;
 `;
 
-const TipsUl = styled.ul`
+const TipsGroup = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 `;
 
-function TipComponent({ value }) {
+const Tip = ({ value }) => {
   return (
     <>
       <li>
-        <Tip>{value}</Tip>
+        <TipText>{value}</TipText>
       </li>
     </>
   );
-}
+};
 
-const Tip = styled.p`
+const TipText = styled.p`
   margin: 5px;
 `;
 
-function PostComponent({
+const Post = ({
   TagModalOpen,
   ModalOpen,
   todoEmoji,
@@ -403,41 +387,36 @@ function PostComponent({
   todoTag,
   date,
   CalendarOpen,
-}) {
+}) => {
   return (
     <>
       <div className="AsideSection">
         <Aside className="NameAside">
-          <Label for="NameInput">{nameLabel}</Label>
+          <Label for="NameInput">{NAME_LABEL}</Label>
           <Input
             id="NameInput"
-            placeholder={nameHolder}
+            placeholder={NAME_HOLDER}
             onChange={(e) => ChangeName(e.target.value)}
           />
         </Aside>
         <Aside className="TagAside">
-          <Label for="TagInput">{tagLabel}</Label>
-          {/* <Input
-            id="TagInput"
-            placeholder={tagHolder}
-            onChange={(e) => ChangeTag(e.target.value)}
-          /> */}
+          <Label for="TagInput">{TAG_LABEL}</Label>
           <TagDiv onClick={() => TagModalOpen()}>{todoTag}</TagDiv>
         </Aside>
         <Aside>
-          <Label>{todoEmojiLabel}</Label>
+          <Label>{TODO_EMOJI_LABEL}</Label>
           <TodoEmojiDiv onClick={() => ModalOpen()}>{todoEmoji}</TodoEmojiDiv>
         </Aside>
         <Aside>
-          <Label>{calendarLabel}</Label>
+          <Label>{CALENDAR_LABEL}</Label>
           <DateDiv onClick={() => CalendarOpen()}>
-            {moment(date).format("YYYY년 MM월 DD일")}
+            {getDateFormat(date)}
           </DateDiv>
         </Aside>
       </div>
     </>
   );
-}
+};
 
 const Label = styled.label`
   font-weight: bold;
@@ -511,7 +490,7 @@ const DateDiv = styled.div`
   align-items: center;
 `;
 
-function ButtonsComponent({ PostTodo, navigate }) {
+const Buttons = ({ PostTodo, navigate }) => {
   return (
     <>
       <ButtonSection>
@@ -520,19 +499,19 @@ function ButtonsComponent({ PostTodo, navigate }) {
           hoverColor="#D0D0D0"
           onClick={() => navigate("/todo")}
         >
-          {cancelText}
+          {CANCEL_TEXT}
         </Button>
         <Button
           bgColor="#ffe866"
           hoverColor="#ffd900"
           onClick={() => PostTodo()}
         >
-          {postText}
+          {POST_TEXT}
         </Button>
       </ButtonSection>
     </>
   );
-}
+};
 
 const ButtonSection = styled.section`
   height: 200px;
@@ -559,24 +538,24 @@ const Button = styled.button`
   }
 `;
 
-function TagModal({ tags, TagModalClose, ChangeTag }) {
+const TagModal = ({ tags, TagModalClose, ChangeTag }) => {
   return (
     <>
       <TagModalBody>
         <TagExitButton onClick={() => TagModalClose()}>X</TagExitButton>
-        <TagUl>
+        <TagGroup>
           {Object.keys(tags).map((tag) => (
             <>
-              <TagLi>
+              <Tag>
                 <TagButton onClick={() => ChangeTag(tag)}>{tag}</TagButton>
-              </TagLi>
+              </Tag>
             </>
           ))}
-        </TagUl>
+        </TagGroup>
       </TagModalBody>
     </>
   );
-}
+};
 
 const TagModalBody = styled.div`
   width: 390px;
@@ -598,7 +577,8 @@ const TagModalBody = styled.div`
   align-items: end;
   justify-content: start;
 `;
-const TagUl = styled.ul`
+
+const TagGroup = styled.ul`
   width: 100%;
   height: 75%;
 
@@ -610,7 +590,7 @@ const TagUl = styled.ul`
   overflow: auto;
 `;
 
-const TagLi = styled.li`
+const Tag = styled.li`
   width: 250px;
 
   display: flex;
