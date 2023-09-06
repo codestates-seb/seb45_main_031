@@ -43,7 +43,7 @@ const CommunityEditPage = () => {
 
   useEffect(() => {
     try {
-      getTodoList();
+      getTodoList(date);
     } catch (error) {
       console.error(error);
     }
@@ -59,18 +59,20 @@ const CommunityEditPage = () => {
     setIsOpenCalender(false);
   };
 
-  const changeDate = (value) => {
-    try {
-      const newDate = getDateFormat(value);
-      setDate(newDate);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const changeDate = (value) => {
+  //   try {
+  //     const newDate = getDateFormat(value);
+  //     setDate(newDate);
+  //     getTodoList(newDate);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  const getTodoList = () => {
+  const getTodoList = (value) => {
     try {
-      axios.get(`${URL}/todos/${memberId}?date=${date}`).then((res) => {
+      setDate(value);
+      axios.get(`${URL}/todos/${memberId}?date=${value}`).then((res) => {
         const data = res.data.data.todoResponses;
         setMeta(data);
         setTodoList(data);
@@ -153,9 +155,9 @@ const CommunityEditPage = () => {
         {isOpenModalBack && <ModalBackground />}
         {isOpenCalender && (
           <CalendarModal
-            changeDate={changeDate}
-            closeCalender={closeCalender}
             getTodoList={getTodoList}
+            // changeDate={changeDate}
+            closeCalender={closeCalender}
             date={date}
             todoList={todoList}
           />
@@ -227,9 +229,9 @@ const EditContainer = styled.div`
 `;
 
 const CalendarModal = ({
-  changeDate,
-  closeCalender,
   getTodoList,
+  // changeDate,
+  closeCalender,
   todoList,
   date,
 }) => {
@@ -241,8 +243,8 @@ const CalendarModal = ({
       </HeadSection>
       <CalenderSection
         onChange={(e) => {
-          changeDate(e);
-          getTodoList();
+          // changeDate(e);
+          getTodoList(getDateFormat(e));
         }}
       />
       <TodoSection>
