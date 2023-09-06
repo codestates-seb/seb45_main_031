@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import axios from "axios";
 import { Calendar } from "react-calendar";
-import moment from "moment";
 
 import {
   URL,
@@ -104,7 +103,7 @@ const TodoPage = () => {
   //날짜를 바꿔 해당 일자의 할 일 목록을 불러옵니다.
   const changeDate = (value) => {
     try {
-      const newDate = moment(value).format("YYYY-MM-DD");
+      const newDate = getDateFormat(value);
       setDate(newDate);
       window.location.replace(`/todo/${newDate}`);
 
@@ -433,7 +432,7 @@ const Date = ({ date, OpenCalender, calenderDisplay }) => {
   return (
     <>
       <DateSection>
-        <DateP>{moment(date).format("YYYY년 MM월 DD일")}</DateP>
+        <DateP>{getDateFormat(date)}</DateP>
         <DateButton
           onClick={() => {
             OpenCalender();
