@@ -1,10 +1,11 @@
 import { styled } from "styled-components";
+
 import googleIcon from "../assets/images/google.png";
 
 const SignUpPage = () => {
   return (
-    <SignUpContainer>
-      <SignupStyled>
+    <Container>
+      <SignUpContainer>
         <SignUpText>Sign Up</SignUpText>
         <GoogleButton>
           <GoogleIcon src={googleIcon} alt="구글 아이콘" />
@@ -62,20 +63,20 @@ const SignUpPage = () => {
           <Confirm>확인</Confirm>
           <CancelBtn>취소</CancelBtn>
         </ConfirmContainer>
-      </SignupStyled>
-    </SignUpContainer>
+      </SignUpContainer>
+    </Container>
   );
 };
 
 export default SignUpPage;
 
-const SignUpContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const SignupStyled = styled.div`
+const SignUpContainer = styled.div`
   display: block;
   text-align: center;
   justify-content: center;
