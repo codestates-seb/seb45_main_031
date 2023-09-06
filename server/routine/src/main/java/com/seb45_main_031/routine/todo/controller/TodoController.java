@@ -9,6 +9,7 @@ import com.seb45_main_031.routine.todo.mapper.TodoMapper;
 import com.seb45_main_031.routine.todo.service.TodoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -78,9 +79,10 @@ public class TodoController {
 
     // Todo 단일 조회
     @GetMapping("/single/{todo-id}")
-    public ResponseEntity getTodo(@PathVariable("todo-id") @Positive long todoId){
+    public ResponseEntity getTodo(@PathVariable("todo-id") @Positive long todoId,
+                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        Todo todos = todoService.findTodo(todoId);
+        Todo todos = todoService.findTodo(todoId, accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todos)), HttpStatus.OK);
 
@@ -90,9 +92,10 @@ public class TodoController {
     // Todo 리스트 조회
     @GetMapping("/{member-id}")
     public ResponseEntity getTodos(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-                                  @PathVariable("member-id") long memberId){
+                                   @PathVariable("member-id") long memberId,
+                                   @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        List<Todo> todos = todoService.findTodos(date, memberId);
+        List<Todo> todos = todoService.findTodos(date, memberId, accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoAllResponseDtos(todos)), HttpStatus.OK);
 
