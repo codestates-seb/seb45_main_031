@@ -31,11 +31,13 @@ const TodoModifyPage = () => {
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenModalBack, setIsOpenModalBack] = useState(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState(false);
+  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
   const [todoEmoji, setTodoEmoji] = useState("");
   const [content, setContent] = useState("");
   const [tagId, setTagId] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(getDateFormat());
+  const [errorMessage, setErrorMessage] = useState("");
 
   //todo 불러오기
   useEffect(() => {
@@ -43,6 +45,7 @@ const TodoModifyPage = () => {
       axios.get(`${URL}/todos/single/${todoId}`).then((res) => {
         let data = res.data.data;
         setTodoTag(data.tagResponse.tagName);
+        setTagId(tags[data.tagResponse.tagName]);
         setContent(data.content);
         setTodoEmoji(data.todoEmoji);
       });
@@ -52,7 +55,7 @@ const TodoModifyPage = () => {
   }, []);
 
   //이모지 모달창 Open
-  const modalOpen = () => {
+  const emojiModalOpen = () => {
     try {
       setIsOpenModal(true);
       setIsOpenModalBack(true);
@@ -62,7 +65,7 @@ const TodoModifyPage = () => {
   };
 
   //이모지 모달창 Close
-  const modalClose = () => {
+  const emojiModalClose = () => {
     try {
       setIsOpenModal(false);
       setIsOpenModalBack(false);
@@ -135,9 +138,29 @@ const TodoModifyPage = () => {
     }
   }
 
+  const openErrorModal = (message) => {
+    try {
+      setErrorMessage(message);
+      setIsOpenErrorModal(true);
+      setIsOpenModalBack(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const closeErrorModal = () => {
+    setErrorMessage("");
+    setIsOpenErrorModal(false);
+    setIsOpenModalBack(false);
+  };
+
   //수정 api
   const patchTodo = () => {
     try {
+      if (content === "")
+        return openErrorModal("할 일 이름은 필수 항목 입니다.");
+      if (tagId === "") return openErrorModal("태그는 필수 항목 입니다.");
+
       const newDate = getDateFormat(date);
       const newData = {
         content,
@@ -157,11 +180,19 @@ const TodoModifyPage = () => {
   return (
     <>
       <TodoEditBody>
+        {isOpenErrorModal && (
+          <ErrorModal>
+            <ErrorText>{errorMessage}</ErrorText>
+            <CloseErrorModalButton onClick={() => closeErrorModal()}>
+              X
+            </CloseErrorModalButton>
+          </ErrorModal>
+        )}
         {isOpenModal && (
           <TodoEmoji
             todoEmoji={todoEmoji}
-            ModalOpen={modalOpen}
-            ModalClose={modalClose}
+            ModalOpen={emojiModalOpen}
+            ModalClose={emojiModalClose}
             ChangeTodoEmoji={changeTodoEmoji}
           />
         )}
@@ -181,7 +212,7 @@ const TodoModifyPage = () => {
           <Tips />
           <PostSection>
             <Post
-              ModalOpen={modalOpen}
+              ModalOpen={emojiModalOpen}
               ChangeName={changeName}
               tagModalOpen={tagModalOpen}
               todoEmoji={todoEmoji}
@@ -206,6 +237,41 @@ const TodoEditBody = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ErrorModal = styled.div`
+  width: 390px;
+  height: 150px;
+
+  border-radius: 15px;
+
+  background-color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  top: 350px;
+
+  z-index: 100;
+`;
+
+const ErrorText = styled.p`
+  margin: 30px;
+`;
+
+const CloseErrorModalButton = styled.button`
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid #d0d0d0;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: #d0d0d0;
+  }
 `;
 
 const CalendarModal = styled(Calendar)`
@@ -414,6 +480,9 @@ const Post = ({
             value={content}
             onChange={(e) => ChangeName(e.target.value)}
           />
+          <ValidationText>
+            {content === "" && "이름은 필수값 입니다."}
+          </ValidationText>
         </Aside>
         <Aside className="TagAside">
           <Label for="TagInput">{TAG_LABEL}</Label>
@@ -433,6 +502,15 @@ const Post = ({
     </>
   );
 };
+
+const ValidationText = styled.p`
+  height: 3px;
+
+  margin-left: 10px;
+
+  font-size: 0.7rem;
+  color: #ff3838;
+`;
 
 const Label = styled.label`
   font-weight: bold;

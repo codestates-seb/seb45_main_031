@@ -21,6 +21,7 @@ import {
   TIP_TITLE,
   TITLE,
   TODO_EMOJI_LABEL,
+  DEFAULT_TODO_EMOJI,
 } from "../data/constants";
 
 //삭제 될 데이터
@@ -33,14 +34,15 @@ const TodoEditPage = () => {
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenModalBack, setIsOpenModalBack] = useState(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState(false);
-  const [todoEmoji, setTodoEmoji] = useState("");
+  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
+  const [todoEmoji, setTodoEmoji] = useState(DEFAULT_TODO_EMOJI);
   const [content, setContent] = useState("");
   const [tagId, setTagId] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(getDateFormat());
+  const [errorMessage, setErrorMessage] = useState("");
 
-  //이모지 모달창 Open
-  const modalOpen = () => {
+  const emojiModalOpen = () => {
     try {
       setIsOpenModal(true);
       setIsOpenModalBack(true);
@@ -49,8 +51,7 @@ const TodoEditPage = () => {
     }
   };
 
-  //이모지 모달창 Close
-  const modalClose = () => {
+  const emojiModalClose = () => {
     try {
       setIsOpenModal(false);
       setIsOpenModalBack(false);
@@ -59,17 +60,14 @@ const TodoEditPage = () => {
     }
   };
 
-  //이모지 변경
   const changeTodoEmoji = (value) => {
     setTodoEmoji(value.emoji);
   };
 
-  //할 일 이름 변경
   const changeName = (value) => {
     setContent(value);
   };
 
-  //태그 모달 Open
   const tagModalOpen = () => {
     try {
       setIsOpenTagModal(true);
@@ -79,7 +77,6 @@ const TodoEditPage = () => {
     }
   };
 
-  //태그 모달 Close
   const tagModalClose = () => {
     try {
       setIsOpenTagModal(false);
@@ -89,7 +86,6 @@ const TodoEditPage = () => {
     }
   };
 
-  //태그 변경
   const changeTag = (value) => {
     try {
       setTagId(tags[value]);
@@ -101,7 +97,6 @@ const TodoEditPage = () => {
     }
   };
 
-  //달력 모달 Open
   const calendarOpen = () => {
     try {
       setIsOpenCalender(true);
@@ -111,7 +106,6 @@ const TodoEditPage = () => {
     }
   };
 
-  //날짜 수정
   const changeDate = (value) => {
     try {
       setDate(value);
@@ -123,9 +117,30 @@ const TodoEditPage = () => {
     }
   };
 
-  //등록 api
+  const openErrorModal = (message) => {
+    try {
+      setErrorMessage(message);
+      setIsOpenErrorModal(true);
+      setIsOpenModalBack(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const closeErrorModal = () => {
+    setErrorMessage("");
+    setIsOpenErrorModal(false);
+    setIsOpenModalBack(false);
+  };
+
   const postTodo = () => {
     try {
+      if (content === "")
+        return openErrorModal("할 일 이름은 필수 항목 입니다.");
+      if (tagId === "") return openErrorModal("태그는 필수 항목 입니다.");
+      if (getDateFormat() > getDateFormat(date))
+        return openErrorModal("오늘보다 빠른 날짜는 선택할 수 없습니다.");
+
       const newDate = getDateFormat(date);
       const newData = {
         memberId,
@@ -144,11 +159,19 @@ const TodoEditPage = () => {
   return (
     <>
       <TodoEditBody>
+        {isOpenErrorModal && (
+          <ErrorModal>
+            <ErrorText>{errorMessage}</ErrorText>
+            <CloseErrorModalButton onClick={() => closeErrorModal()}>
+              X
+            </CloseErrorModalButton>
+          </ErrorModal>
+        )}
         {isOpenModal && (
           <TodoEmoji
             todoEmoji={todoEmoji}
-            ModalOpen={modalOpen}
-            ModalClose={modalClose}
+            ModalOpen={emojiModalOpen}
+            ModalClose={emojiModalClose}
             ChangeTodoEmoji={changeTodoEmoji}
           />
         )}
@@ -169,10 +192,11 @@ const TodoEditPage = () => {
           <PostSection>
             <Post
               TagModalOpen={tagModalOpen}
-              ModalOpen={modalOpen}
+              ModalOpen={emojiModalOpen}
               ChangeName={changeName}
               todoTag={todoTag}
               todoEmoji={todoEmoji}
+              content={content}
               date={date}
               CalendarOpen={calendarOpen}
             />
@@ -192,6 +216,41 @@ const TodoEditBody = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ErrorModal = styled.div`
+  width: 390px;
+  height: 150px;
+
+  border-radius: 15px;
+
+  background-color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  top: 350px;
+
+  z-index: 100;
+`;
+
+const ErrorText = styled.p`
+  margin: 30px;
+`;
+
+const CloseErrorModalButton = styled.button`
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid #d0d0d0;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: #d0d0d0;
+  }
 `;
 
 const CalendarModal = styled(Calendar)`
@@ -331,9 +390,9 @@ const Tips = () => {
       <TipsSection>
         <TipTitle>{TIP_TITLE}</TipTitle>
         <TipsGroup>
-          {TIPS.map((t, idx) => (
+          {TIPS.map((tip, idx) => (
             <>
-              <Tip key={idx} value={t} />
+              <Tip key={idx} value={tip} />
             </>
           ))}
         </TipsGroup>
@@ -387,6 +446,7 @@ const Post = ({
   todoTag,
   date,
   CalendarOpen,
+  content,
 }) => {
   return (
     <>
@@ -398,10 +458,16 @@ const Post = ({
             placeholder={NAME_HOLDER}
             onChange={(e) => ChangeName(e.target.value)}
           />
+          <ValidationText>
+            {content === "" && "이름은 필수값 입니다."}
+          </ValidationText>
         </Aside>
         <Aside className="TagAside">
           <Label for="TagInput">{TAG_LABEL}</Label>
           <TagDiv onClick={() => TagModalOpen()}>{todoTag}</TagDiv>
+          <ValidationText>
+            {todoTag === "" && "태그는 필수값 입니다."}
+          </ValidationText>
         </Aside>
         <Aside>
           <Label>{TODO_EMOJI_LABEL}</Label>
@@ -412,11 +478,24 @@ const Post = ({
           <DateDiv onClick={() => CalendarOpen()}>
             {getDateFormat(date)}
           </DateDiv>
+          <ValidationText>
+            {getDateFormat() > getDateFormat(date) &&
+              "오늘 날짜보다 빠른 날짜는 선택할 수 없습니다."}
+          </ValidationText>
         </Aside>
       </div>
     </>
   );
 };
+
+const ValidationText = styled.p`
+  height: 3px;
+
+  margin-left: 10px;
+
+  font-size: 0.7rem;
+  color: #ff3838;
+`;
 
 const Label = styled.label`
   font-weight: bold;

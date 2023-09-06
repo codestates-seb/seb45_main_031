@@ -12,6 +12,7 @@ import SignUpPage from "./pages/SignUpPage";
 import CommunityPage from "./pages/CommunityPage";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
+import CommunityEditPage from "./pages/CommunityEditPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/todo" element={<TodoPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/community/edit" element={<CommunityEditPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/edit" element={<MyPageEdit />} />
         </Routes>

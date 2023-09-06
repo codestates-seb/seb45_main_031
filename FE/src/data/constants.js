@@ -29,3 +29,13 @@ export const POST_TEXT = "등록하기";
 export const CANCEL_TEXT = "취소";
 export const MODIFY_TITLE = "할 일 수정하기";
 export const MODIFY_TEXT = "수정하기";
+export const COMMUNITY_EDIT_TITLE = "게시글 등록";
+export const COMMUNITY_EDIT_TIPS = [
+  "1. 등록하고싶은 할 일 목록의 날짜를 선택해주세요.",
+  "2. 태그로 운동 항목을 부분 등록 할 수 있어요!",
+  "3. 게시글 내용으로 할 일 목록에 대한 설명을 추가해주세요.",
+];
+export const COMMUNITY_EDIT_CALENDAR_LABEL = "내 기록 불러오기";
+export const COMMUNITY_EDIT_TAG_LABEL = "태그";
+export const COMMUNITY_EDIT_CONTENT_LABEL = "게시글 내용";
+export const DEFAULT_TODO_EMOJI = "🏃";

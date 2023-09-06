@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 //더미데이터
 import imgUrl from "../assets/images/memberImg.jpeg";
@@ -10,22 +11,28 @@ const localUser = {
 };
 localStorage.setItem("memberId", localUser.memberId);
 
-export default function CommunityPage() {
+const CommunityPage = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
 
   //화면 첫 랜딩 시 posts를 불러오는 로직
   useEffect(() => {
     setPosts(dummyPosts);
-  }, [posts]);
+  }, []);
+
+  const navigateEdit = () => {
+    navigate("/community/edit");
+  };
 
   return (
     <>
       <CommunityBody>
         <CommunityContainer>
+          <PlusButton onClick={() => navigateEdit()}>+</PlusButton>
           <CardUl>
             {posts.map((post) => (
               <>
-                <CardComponent post={post} />
+                <Card post={post} />
               </>
             ))}
           </CardUl>
@@ -33,7 +40,9 @@ export default function CommunityPage() {
       </CommunityBody>
     </>
   );
-}
+};
+
+export default CommunityPage;
 
 const CommunityBody = styled.body`
   height: 100vh;
@@ -60,9 +69,30 @@ const CommunityContainer = styled.div`
   overflow: scroll;
 `;
 
+const PlusButton = styled.button`
+  width: 80px;
+  height: 80px;
+
+  font-size: 3rem;
+  color: #ffb039;
+
+  background-color: #ffe866;
+
+  border-radius: 50%;
+
+  position: absolute;
+  bottom: 60px;
+
+  z-index: 9990;
+
+  &:hover {
+    background-color: #ffd900;
+  }
+`;
+
 const CardUl = styled.ul``;
 
-function CardComponent({ post }) {
+const Card = ({ post }) => {
   const {
     memberId,
     nickname,
@@ -76,24 +106,25 @@ function CardComponent({ post }) {
   return (
     <>
       <CardContainer>
-        <PostUserComponent
+        <PostUser
           memberId={memberId}
           nickname={nickname}
           createdAt={createdAt}
         />
         <TodoSection>
-          <TodoUl>
+          <TodoCard>
             {todoList.map((todo, idx) => (
-              <TodoComponent key={idx} todo={todo} />
+              <Todo key={idx} todo={todo} />
             ))}
-          </TodoUl>
+          </TodoCard>
         </TodoSection>
-        <PostContentsComponent content={content} like={like} likes={likes} />
-        <CommentsComponent comments={comments} />
+        <PostContents content={content} like={like} likes={likes} />
+        <Comments comments={comments} />
       </CardContainer>
     </>
   );
-}
+};
+
 const CardContainer = styled.li`
   width: 390px;
 
@@ -108,6 +139,7 @@ const CardContainer = styled.li`
   align-items: start;
   justify-contents: center;
 `;
+
 const TodoSection = styled.section`
   width: 360px;
   height: 200px;
@@ -117,9 +149,10 @@ const TodoSection = styled.section`
 
   overflow: scroll;
 `;
-const TodoUl = styled.ul``;
 
-function PostUserComponent({ memberId, nickname, createdAt }) {
+const TodoCard = styled.ul``;
+
+const PostUser = ({ memberId, nickname, createdAt }) => {
   return (
     <>
       <UserSection>
@@ -139,13 +172,15 @@ function PostUserComponent({ memberId, nickname, createdAt }) {
       </UserSection>
     </>
   );
-}
+};
+
 const UserSection = styled.section`
   display: flex;
   flex-direction: row;
   align-items: start;
   justify-content: space-between;
 `;
+
 const UserImgDiv = styled.div`
   width: 50px;
   height: 50px;
@@ -156,6 +191,7 @@ const UserImgDiv = styled.div`
 
   overflow: hidden;
 `;
+
 const PostElement = styled.div`
   width: 250px;
   height: 50px;
@@ -173,15 +209,18 @@ const UserName = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
 `;
+
 const PostCreatedAt = styled.div`
   font-size: 0.8rem;
 `;
+
 const PostButtons = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: center;
 `;
+
 const PostButton = styled.button`
   width: 50px;
   height: 25px;
@@ -195,7 +234,7 @@ const PostButton = styled.button`
   }
 `;
 
-function TodoComponent({ todo }) {
+const Todo = ({ todo }) => {
   const { title, tag, emoji, complete } = todo;
   return (
     <>
@@ -206,7 +245,8 @@ function TodoComponent({ todo }) {
       </TodoContainer>
     </>
   );
-}
+};
+
 const TodoContainer = styled.div`
   margin: 10px 5px;
   padding: 10px 15px;
@@ -218,6 +258,7 @@ const TodoContainer = styled.div`
   align-items: start;
   justify-content: space-between;
 `;
+
 const Tag = styled.div`
   width: 60px;
 
@@ -232,6 +273,7 @@ const Tag = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Title = styled.div`
   width: 70%;
   height: 25px;
@@ -242,6 +284,7 @@ const Title = styled.div`
   align-items: center;
   justify-content: start;
 `;
+
 const EmojiDiv = styled.div`
   width: 25px;
   height: 25px;
@@ -254,7 +297,7 @@ const EmojiDiv = styled.div`
   justify-content: center;
 `;
 
-function PostContentsComponent({ content, like, likes }) {
+const PostContents = ({ content, like, likes }) => {
   return (
     <>
       <ContentsContainer>
@@ -267,7 +310,8 @@ function PostContentsComponent({ content, like, likes }) {
       </ContentsContainer>
     </>
   );
-}
+};
+
 const ContentsContainer = styled.div`
   width: 100%;
 
@@ -278,6 +322,7 @@ const ContentsContainer = styled.div`
   align-items: start;
   justify-content: space-between;
 `;
+
 const LikeSection = styled.section`
   width: 100%;
 
@@ -288,6 +333,7 @@ const LikeSection = styled.section`
   align-items: start;
   justify-content: space-between;
 `;
+
 const LikeButton = styled.button`
   width: 25px;
   height: 30px;
@@ -298,6 +344,7 @@ const LikeButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
+
 const LikeCount = styled.span`
   width: 75%;
   height: 30px;
@@ -306,6 +353,7 @@ const LikeCount = styled.span`
   align-items: center;
   justify-content: start;
 `;
+
 const ScrapButton = styled.button`
   width: 60px;
   height: 30px;
@@ -323,11 +371,12 @@ const ScrapButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
+
 const TextDiv = styled.div`
   margin: 5px;
 `;
 
-function CommentsComponent({ comments }) {
+const Comments = ({ comments }) => {
   const [more, setMore] = useState(true);
 
   const ChangeMore = () => {
@@ -341,10 +390,10 @@ function CommentsComponent({ comments }) {
   return (
     <>
       <CommentContainer>
-        <CommentCreateComponent />
+        <CommentCreate />
         <CommentsUl more={more}>
           {comments.map((comment, idx) => (
-            <CommentComponent key={idx} comment={comment} />
+            <Comment key={idx} comment={comment} />
           ))}
         </CommentsUl>
         <MoreCommentButton onClick={() => ChangeMore()}>
@@ -353,7 +402,8 @@ function CommentsComponent({ comments }) {
       </CommentContainer>
     </>
   );
-}
+};
+
 const CommentContainer = styled.div`
   width: 100%;
 
@@ -364,6 +414,7 @@ const CommentContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
 const CommentsUl = styled.ul`
   width: 100%;
   max-height: ${(props) => (props.more ? "80px" : "")};
@@ -375,6 +426,7 @@ const CommentsUl = styled.ul`
   align-items: start;
   justify-content: space-between;
 `;
+
 const MoreCommentButton = styled.button`
   width: 95%;
 
@@ -391,7 +443,7 @@ const MoreCommentButton = styled.button`
   }
 `;
 
-function CommentCreateComponent() {
+const CommentCreate = () => {
   return (
     <>
       <CreateSection>
@@ -404,7 +456,8 @@ function CommentCreateComponent() {
       </CreateSection>
     </>
   );
-}
+};
+
 const CreateSection = styled.section`
   width: 90%;
 
@@ -415,10 +468,12 @@ const CreateSection = styled.section`
   align-items: center;
   justify-content: space-between;
 `;
+
 const Label = styled.label`
   width: 20px;
   height: 20px;
 `;
+
 const Input = styled.input`
   width: 220px;
   height: 30px;
@@ -426,6 +481,7 @@ const Input = styled.input`
   margin: 0px 15px;
   border-bottom: 1px solid #d0d0d0;
 `;
+
 const CreateButton = styled.button`
   font-size: 0.75rem;
 
@@ -442,7 +498,7 @@ const CreateButton = styled.button`
   justify-content: center;
 `;
 
-function CommentComponent({ comment }) {
+const Comment = ({ comment }) => {
   const { memberId, nickname, content, createdAt } = comment;
   return (
     <>
@@ -456,7 +512,8 @@ function CommentComponent({ comment }) {
       </CommentLi>
     </>
   );
-}
+};
+
 const CommentLi = styled.li`
   margin: 5px;
 
@@ -465,6 +522,7 @@ const CommentLi = styled.li`
   align-items: center;
   justify-content: center;
 `;
+
 const CommentUserName = styled.div`
   width: 50px;
 
@@ -473,16 +531,19 @@ const CommentUserName = styled.div`
 
   margin-right: 7px;
 `;
+
 const Content = styled.div`
   width: 190px;
   font-size: 0.9rem;
 `;
+
 const CreatedAt = styled.div`
   width: 60px;
 
   font-size: 0.7rem;
   color: #949597;
 `;
+
 const ModalButton = styled.button`
   font-size: 0.7rem;
   color: #949597;
