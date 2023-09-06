@@ -44,10 +44,8 @@ export default function MyPageEdit() {
             </div>
           </Badges>
         </Section>
-        <Section>
-          <span>
-            <CancelButton>회원 탈퇴</CancelButton>
-          </span>
+        <Section className="cancelMembership">
+          <CancelMembership />
         </Section>
       </Container>
     </MaxContainer>
@@ -81,9 +79,6 @@ const Section = styled.div`
 
   .cancelMembership {
     color: #949597;
-  }
-
-  span {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -94,19 +89,6 @@ const Label = styled.label`
   font-size: 0.9rem;
   padding: 10px;
   margin-bottom: 0.3rem;
-`;
-
-const CancelButton = styled.button`
-  font-size: 0.9rem;
-  padding: 10px;
-  margin-bottom: 0.3rem;
-  cursor: pointer;
-  color: #949597;
-
-  &:hover {
-    color: #000000;
-    text-decoration: underline;
-  }
 `;
 
 const InputBox = styled.input`
@@ -179,6 +161,28 @@ const ModalButton = styled.button`
   margin: 0.5rem 0 0.5rem 0;
   &:hover {
     background-color: #ffd900;
+  }
+`;
+
+const YesNoButton = styled.button`
+  width: 100px;
+  height: 35px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-right: 1.5rem;
+
+  &.yes {
+    background-color: #ececec;
+    &:hover {
+      background-color: #d0d0d0;
+    }
+  }
+
+  &.no {
+    background-color: #ffe866;
+    &:hover {
+      background-color: #ffd900;
+    }
   }
 `;
 
@@ -264,5 +268,54 @@ const Badges = styled.div`
     width: 100px;
     height: 100px;
     margin: auto;
+  }
+`;
+
+//회원 탈퇴 영역 - 회원 탈퇴 버튼
+const CancelMembership = () => {
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
+  const handleCancel = () => {
+    //회원탈퇴 로직 추가하기
+    setIsMOdalOpen(false);
+  };
+  const handleModalOpen = () => {
+    setIsMOdalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsMOdalOpen(false);
+  };
+
+  return (
+    <div>
+      <CancelButton onClick={handleModalOpen}>회원탈퇴</CancelButton>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>회원탈퇴 하시겠습니까?</div>
+            <div className="yesNo">
+              <YesNoButton className="yes" onClick={handleCancel}>
+                예
+              </YesNoButton>
+              <YesNoButton className="no" onClick={handleModalClose}>
+                아니오
+              </YesNoButton>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
+};
+
+const CancelButton = styled.button`
+  font-size: 0.9rem;
+  padding: 10px;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  color: #949597;
+
+  &:hover {
+    color: #000000;
+    text-decoration: underline;
   }
 `;
