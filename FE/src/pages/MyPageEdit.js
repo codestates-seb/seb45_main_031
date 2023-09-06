@@ -1,6 +1,9 @@
 import { styled } from "styled-components";
+import { useState } from "react";
+
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 import { ReactComponent as InfoIcon } from "../assets/icons/info.svg";
+import { ReactComponent as CloseIcon } from "../assets/icons/close.svg";
 import level0 from "../assets/images/level0.png";
 import level1 from "../assets/images/level1.png";
 import level2 from "../assets/images/level2.png";
@@ -14,7 +17,7 @@ export default function MyPageEdit() {
           <Label>프로필 사진</Label>
           <Profile>
             <ProfileSvg className="photo" alt="avatar" />
-            <EditButton>편집</EditButton>
+            <EditProfile />
           </Profile>
         </Section>
         <Section>
@@ -23,7 +26,7 @@ export default function MyPageEdit() {
         </Section>
         <Section>
           <span>
-            <Label>업적 조회</Label>
+            <Label>등급 조회</Label>
             <InfoIcon />
           </span>
           <Badges>
@@ -41,10 +44,8 @@ export default function MyPageEdit() {
             </div>
           </Badges>
         </Section>
-        <Section>
-          <span>
-            <CancelButton>회원 탈퇴</CancelButton>
-          </span>
+        <Section className="cancelMembership">
+          <CancelMembership />
         </Section>
       </Container>
     </MaxContainer>
@@ -78,9 +79,6 @@ const Section = styled.div`
 
   .cancelMembership {
     color: #949597;
-  }
-
-  span {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -91,19 +89,6 @@ const Label = styled.label`
   font-size: 0.9rem;
   padding: 10px;
   margin-bottom: 0.3rem;
-`;
-
-const CancelButton = styled.button`
-  font-size: 0.9rem;
-  padding: 10px;
-  margin-bottom: 0.3rem;
-  cursor: pointer;
-  color: #949597;
-
-  &:hover {
-    color: #000000;
-    text-decoration: underline;
-  }
 `;
 
 const InputBox = styled.input`
@@ -119,6 +104,88 @@ const InputBox = styled.input`
   }
 `;
 
+const ModalOverlay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.5);
+  z-index: 10;
+  flex-direction: column;
+`;
+
+const ModalContent = styled.div`
+  position: relative;
+  width: 340px;
+  border: 1px solid #fff7cc;
+  border-radius: 15px;
+  background-color: #ffffff;
+  opacity: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  font-size: 0.9rem;
+
+  > div {
+    margin: auto;
+    padding: 1rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  width: 34px;
+  height: 34px;
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  &:hover {
+    fill: #ffd900;
+  }
+`;
+
+const ModalButton = styled.button`
+  width: 290px;
+  height: 35px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-right: 1.5rem;
+  background-color: #ffe866;
+  margin: 0.5rem 0 0.5rem 0;
+  &:hover {
+    background-color: #ffd900;
+  }
+`;
+
+const YesNoButton = styled.button`
+  width: 100px;
+  height: 35px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  margin-right: 1.5rem;
+
+  &.yes {
+    background-color: #ececec;
+    &:hover {
+      background-color: #d0d0d0;
+    }
+  }
+
+  &.no {
+    background-color: #ffe866;
+    &:hover {
+      background-color: #ffd900;
+    }
+  }
+`;
+
 //프로필 사진 편집 영역
 const Profile = styled.div`
   position: relative;
@@ -128,7 +195,7 @@ const Profile = styled.div`
   justify-content: center;
 
   .photo {
-    width: 90px;
+    width: 150px;
   }
 `;
 
@@ -150,7 +217,40 @@ const EditButton = styled.button`
   }
 `;
 
-// 업적 조회 영역
+const EditProfile = () => {
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsMOdalOpen(true);
+  };
+  const closeModal = () => {
+    setIsMOdalOpen(false);
+  };
+
+  return (
+    <div>
+      <EditButton onClick={openModal}>편집</EditButton>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>
+              <CloseButton onClick={closeModal} alt="모달창 닫기">
+                <CloseIcon />
+              </CloseButton>
+            </div>
+            <div>프로필 사진 설정</div>
+            <div className="editProfile">
+              <ModalButton className="update">사진 업로드</ModalButton>
+              <ModalButton className="delete">사진 삭제</ModalButton>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
+};
+
+// 회원 등급 영역
 const Badges = styled.div`
   height: 370px;
   padding: 10px;
@@ -168,5 +268,54 @@ const Badges = styled.div`
     width: 100px;
     height: 100px;
     margin: auto;
+  }
+`;
+
+//회원 탈퇴 영역 - 회원 탈퇴 버튼
+const CancelMembership = () => {
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
+  const handleCancel = () => {
+    //회원탈퇴 로직 추가하기
+    setIsMOdalOpen(false);
+  };
+  const handleModalOpen = () => {
+    setIsMOdalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsMOdalOpen(false);
+  };
+
+  return (
+    <div>
+      <CancelButton onClick={handleModalOpen}>회원탈퇴</CancelButton>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>회원탈퇴 하시겠습니까?</div>
+            <div className="yesNo">
+              <YesNoButton className="yes" onClick={handleCancel}>
+                예
+              </YesNoButton>
+              <YesNoButton className="no" onClick={handleModalClose}>
+                아니오
+              </YesNoButton>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
+};
+
+const CancelButton = styled.button`
+  font-size: 0.9rem;
+  padding: 10px;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  color: #949597;
+
+  &:hover {
+    color: #000000;
+    text-decoration: underline;
   }
 `;
