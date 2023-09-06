@@ -168,10 +168,10 @@ const TodoModifyPage = () => {
         tagId,
         date: newDate,
       };
-      axios
-        .patch(`${URL}/todos/${todoId}`, newData)
-        .then((res) => console.log(res));
-      navigate(`/todo/${newDate}`);
+      axios.patch(`${URL}/todos/${todoId}`, newData).then((res) => {
+        console.log(res);
+        navigate(`/todo/${newDate}`);
+      });
     } catch (error) {
       console.error(error);
     }

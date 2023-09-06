@@ -149,8 +149,10 @@ const TodoEditPage = () => {
         todoEmoji,
         date: newDate,
       };
-      axios.post(`${URL}/todos`, newData).then((res) => console.log(res));
-      navigate(`/todo/${newDate}`);
+      axios.post(`${URL}/todos`, newData).then((res) => {
+        console.log(res);
+        navigate(`/todo/${newDate}`);
+      });
     } catch (error) {
       console.error(error);
     }
