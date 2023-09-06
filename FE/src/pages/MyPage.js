@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
+
+import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 
 export default function MyPage() {
   return (
@@ -173,13 +174,6 @@ const MyPost = styled.div`
   padding: 20px;
 `;
 
-const WrapperLogoutButton = styled(GreyButton)`
-  width: 100%;
-  height: 35px;
-  padding: 10px;
-  margin-top: 1rem;
-`;
-
 //로그아웃 버튼
 function LogoutButton() {
   const [isModalOpen, setIsMOdalOpen] = useState(false);
@@ -217,3 +211,10 @@ function LogoutButton() {
     </div>
   );
 }
+
+const WrapperLogoutButton = styled(GreyButton)`
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+  margin-top: 1rem;
+`;
