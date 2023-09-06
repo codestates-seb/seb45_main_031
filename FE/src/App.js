@@ -1,9 +1,10 @@
 import GlobalStyles from "./styles/GlobalStyles";
-import { Routes, Route } from "react-router-dom";
-import { styled } from "styled-components";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import RootLayout from "./pages/RootLayout";
+import ProfileLayout from "./pages/ProfileLayout";
+
+import Home from "./pages/HomeTest";
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import TodoModifyPage from "./pages/TodoModifyPage";
@@ -14,42 +15,41 @@ import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import CommunityEditPage from "./pages/CommunityEditPage";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    // errorElement: 에러페이지 만들면 추가
+    children: [
+      { index: true, element: <Home /> },
+      { path: "/signup", element: <SignUpPage /> },
+      { path: "/login", element: <LoginPage /> },
+
+      { path: "/todo", element: <TodoPage /> },
+      { path: "/todo/edit", element: <TodoEditPage /> },
+      { path: "/todo/modify/:todoId", element: <TodoModifyPage /> },
+      { path: "/todo/:today", element: <TodoPage /> },
+
+      { path: "/community", element: <CommunityPage /> },
+      { path: "/community/edit", element: <CommunityEditPage /> },
+
+      { path: "/mypage", element: <MyPage /> },
+    ],
+  },
+  {
+    path: "/mypage/edit",
+    element: <ProfileLayout />,
+    children: [{ index: true, element: <MyPageEdit /> }],
+  },
+]);
+
 function App() {
   return (
     <>
       <GlobalStyles />
-      <Body>
-        <Header />
-        <Routes>
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/todo" element={<TodoPage />} />
-          <Route path="/todo/edit" element={<TodoEditPage />} />
-          <Route path="/todo/modify/:todoId" element={<TodoModifyPage />} />
-          <Route path="/todo/:today" element={<TodoPage />} />
-          <Route path="/todo" element={<TodoPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/community/edit" element={<CommunityEditPage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/mypage/edit" element={<MyPageEdit />} />
-        </Routes>
-        <Footer />
-      </Body>
+      <RouterProvider router={router} />
     </>
   );
 }
 
 export default App;
-
-const Body = styled.body`
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #ffd900;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  position: fixed;
-`;
