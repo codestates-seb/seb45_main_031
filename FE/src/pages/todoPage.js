@@ -2,199 +2,198 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import axios from "axios";
-
-//캘린더 라이브러리
 import { Calendar } from "react-calendar";
+
+import {
+  URL,
+  CHART_TEXT,
+  DATE_BUTTON_TEXT,
+  DEFAULT_FILTER,
+  DEFAULT_FILTER_LIST,
+  DEFAULT_PERCENT,
+  EXIT_TEXT,
+  TODO_MODAL_BUTTON_TEXT,
+} from "../data/constants";
+import getDateFormat from "../utils/getDateFormat";
+
 import "react-calendar/dist/Calendar.css"; // css import
-import moment from "moment";
 
 //삭제 할 더미 데이터들
 import trophyLevel1 from "../assets/images/trophyLevel1.png";
 const membersId = 1;
 
-const url = "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
-
-//사용 텍스트 변수들 (유지보수를 편하게 하기 위하여 상단에서 변수로 선언하여 관리 )
-const dateButtonText = ["달력보기", "달력닫기"];
-const todoModalButtonText = ["할 일 완료", "완료 취소", "수정하기", "삭제하기"];
-const chartText = "오늘의 성취";
-const defaultFilterList = ["전체"];
-const defaultFilter = "전체";
-let defaultDate = moment(new Date()).format("YYYY-MM-DD");
-const defaultPercent = 0;
-const ExitText = "X";
-
-export default function TodoPage() {
+const TodoPage = () => {
   const navigate = useNavigate();
   const { today } = useParams();
 
-  if (today) defaultDate = today;
-
-  const [date, setDate] = useState(defaultDate);
-  const [allData, setAllData] = useState({
+  const [date, setDate] = useState(getDateFormat(today));
+  const [meta, setMeta] = useState({
     completeCount: 0,
     todoCount: 0,
     todoResponses: [],
   });
   const [todo, setTodo] = useState({});
   const [todos, setTodos] = useState([]);
-  const [filterList, setFilterList] = useState(defaultFilterList);
-  const [filter, setFilter] = useState(defaultFilter);
-  const [modalBackDisplay, setModalBackDisplay] = useState(false);
-  const [calenderDisplay, setCalenderDisplay] = useState(false);
-  const [todoModalDisplay, setTodoModalDisplay] = useState(false);
-  const [percent, setPercent] = useState(defaultPercent);
-
-  // 달성량 계산 및 적용 함수
-  function PercentData(part, whole) {
-    if (whole === 0) return setPercent(0);
-    const newPercent = Math.round((part / whole) * 100);
-    setPercent(newPercent);
-  }
+  const [filterList, setFilterList] = useState(DEFAULT_FILTER_LIST);
+  const [filter, setFilter] = useState(DEFAULT_FILTER);
+  const [isOpenModalBack, setIsOpenModalBack] = useState(false);
+  const [isOpenCalender, setIsOpenCalender] = useState(false);
+  const [isOpenTodoModal, setIsOpenTodoModal] = useState(false);
+  const [percent, setPercent] = useState(DEFAULT_PERCENT);
 
   useEffect(() => {
     try {
-      TodoListApi(date);
+      getTodoList(date);
     } catch (error) {
       console.error(error);
     }
-  }, [filterList]);
+  }, []);
+
+  // 달성량 계산 및 적용 함수
+  const calculatePercent = (numerator, denominator) => {
+    if (denominator === 0) return setPercent(0);
+    const newPercent = Math.round((numerator / denominator) * 100);
+    setPercent(newPercent);
+  };
 
   //할 일 목록 데이터 api
-  function TodoListApi(date) {
+  const getTodoList = (date) => {
     try {
-      axios.get(`${url}/todos/${membersId}?date=${date}`).then((res) => {
+      axios.get(`${URL}/todos/${membersId}?date=${date}`).then((res) => {
         const data = res.data.data;
-        setAllData(data);
+        setMeta(data);
         setTodos(data.todoResponses);
-        PercentData(data.completeCount, data.todoCount);
-        data.todoResponses.map((t) => {
-          let value = filterList.filter((f) => f === t.tagResponse.tagName);
-          if (value.length === 0)
-            setFilterList([...filterList, t.tagResponse.tagName]);
+        calculatePercent(data.completeCount, data.todoCount);
+        let newFilterList = filterList;
+        data.todoResponses.map((todo) => {
+          const tagName = todo.tagResponse.tagName;
+          const value = newFilterList.filter((filter) => filter === tagName);
+          if (value.length === 0) newFilterList = [...newFilterList, tagName];
         });
+        setFilterList(newFilterList);
       });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //필터 버튼을 눌러 할 일 목록을 필터링 합니다.
-  function Filtering(value) {
+  const filtering = (value) => {
     try {
       setFilter(value);
-      if (value === defaultFilter) {
-        setTodos(allData.todoResponses);
+      if (value === DEFAULT_FILTER) {
+        setTodos(meta.todoResponses);
       } else {
-        const newTodo = allData.todoResponses.filter(
-          (d) => d.tagResponse.tagName === value,
+        const newTodo = meta.todoResponses.filter(
+          (data) => data.tagResponse.tagName === value,
         );
         setTodos(newTodo);
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //캘린더 모달을 엽니다.
-  function OpenCalender() {
-    setModalBackDisplay(true);
-    setCalenderDisplay(true);
-  }
+  const openCalender = () => {
+    setIsOpenModalBack(true);
+    setIsOpenCalender(true);
+  };
 
   //날짜를 바꿔 해당 일자의 할 일 목록을 불러옵니다.
-  function ChangeDate(value) {
+  const changeDate = (value) => {
     try {
-      const newDate = moment(value).format("YYYY-MM-DD");
+      const newDate = getDateFormat(value);
       setDate(newDate);
       window.location.replace(`/todo/${newDate}`);
 
-      setCalenderDisplay(!calenderDisplay);
-      setModalBackDisplay(!modalBackDisplay);
+      setIsOpenCalender(!isOpenCalender);
+      setIsOpenModalBack(!isOpenModalBack);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //할 일을 눌러 모달창을 엽니다.
-  function ChangeTodo(value) {
+  const changeTodo = (value) => {
     try {
       setTodo(value);
-      setModalBackDisplay(!modalBackDisplay);
-      setTodoModalDisplay(!todoModalDisplay);
+      setIsOpenModalBack(!isOpenModalBack);
+      setIsOpenTodoModal(!isOpenTodoModal);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // x버튼을 눌러 모달창을 닫습니다.
-  function ExitTodoModal() {
+  const exitTodoModal = () => {
     try {
       setTodo({});
-      setModalBackDisplay(!modalBackDisplay);
-      setTodoModalDisplay(!todoModalDisplay);
+      setIsOpenModalBack(!isOpenModalBack);
+      setIsOpenTodoModal(!isOpenTodoModal);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //할 일 완료 / 취소 버튼
-  function ChangeComplete(todoId, complete) {
+  const changeComplete = (todoId, complete) => {
     try {
-      let newComplete = "DONE";
-      if (complete === "DONE") newComplete = "NONE";
-      // 수정 시 전체 호출이 필요할 지 프론트에서의 부분 수정을 해야 할 지 고민중
       axios
-        .patch(`${url}/todos/complete/${todoId}`, { complete: newComplete })
-        .then(() => TodoListApi(date));
+        .patch(`${URL}/todos/complete/${todoId}`, {
+          complete: complete === "DONE" ? "NONE" : "DONE",
+        })
+        .then(() => getTodoList(date));
 
-      ExitTodoModal(date);
+      exitTodoModal(date);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //할 일 삭제 버튼
-  function DeleteTodo(todoId) {
+  const deleteTodo = (todoId) => {
     try {
-      axios.delete(`${url}/todos/${todoId}`).then(() => TodoListApi(date));
+      axios.delete(`${URL}/todos/${todoId}`).then(() => getTodoList(date));
 
-      ExitTodoModal();
+      exitTodoModal();
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <>
       <TodoBody>
-        {modalBackDisplay && <ModalBackground />}
-        {calenderDisplay && (
-          <CalendarModal onChange={(e) => ChangeDate(e)} value={date} />
+        {isOpenModalBack && <ModalBackground />}
+        {isOpenCalender && (
+          <CalendarModal onChange={(e) => changeDate(e)} value={date} />
         )}
-        {todoModalDisplay && (
-          <TodoModalComponent
+        {isOpenTodoModal && (
+          <TodoModal
             todo={todo}
-            ExitTodoModal={ExitTodoModal}
-            ChangeComplete={ChangeComplete}
+            ExitTodoModal={exitTodoModal}
+            ChangeComplete={changeComplete}
             navigate={navigate}
-            DeleteTodo={DeleteTodo}
+            DeleteTodo={deleteTodo}
           />
         )}
-        <ElementComponent
+        <UserInterface
           date={date}
-          OpenCalender={OpenCalender}
-          calenderDisplay={calenderDisplay}
+          OpenCalender={openCalender}
+          calenderDisplay={isOpenCalender}
           percent={percent}
           filterList={filterList}
-          Filtering={Filtering}
+          Filtering={filtering}
           filter={filter}
         />
-        <ListComponent todos={todos} ChangeTodo={ChangeTodo} />
+        <TodoList todos={todos} ChangeTodo={changeTodo} />
       </TodoBody>
     </>
   );
-}
+};
+
+export default TodoPage;
 
 const TodoBody = styled.body`
   height: 100vh;
@@ -229,30 +228,30 @@ const CalendarModal = styled(Calendar)`
 `;
 
 //TodoModalComponent ===================================
-function TodoModalComponent({
+const TodoModal = ({
   todo,
   ExitTodoModal,
   ChangeComplete,
   navigate,
   DeleteTodo,
-}) {
+}) => {
   return (
     <>
-      <TodoModal>
+      <TodoModalBody>
         <ExitComponent ExitTodoModal={ExitTodoModal} />
-        <TodoComponent todo={todo} />
+        <Todo todo={todo} />
         <TodoModalButtons
           todo={todo}
           ChangeComplete={ChangeComplete}
           navigate={navigate}
           DeleteTodo={DeleteTodo}
         />
-      </TodoModal>
+      </TodoModalBody>
     </>
   );
-}
+};
 
-const TodoModal = styled.div`
+const TodoModalBody = styled.div`
   width: 340px;
 
   border: 1px solid #fff7cc;
@@ -296,6 +295,20 @@ const ElDiv = styled.div`
   align-items: center;
 `;
 
+const Exit = ({ ExitTodoModal }) => {
+  return (
+    <ExitBody>
+      <ExitButton
+        onClick={() => {
+          ExitTodoModal();
+        }}
+      >
+        {EXIT_TEXT}
+      </ExitButton>
+    </ExitBody>
+  );
+};
+
 const ExitComponent = styled(Exit)`
   width: 300px;
   height: 20px;
@@ -306,20 +319,6 @@ const ExitComponent = styled(Exit)`
   align-items: end;
   justify-content: end;
 `;
-
-function Exit({ ExitTodoModal }) {
-  return (
-    <ExitBody>
-      <ExitButton
-        onClick={() => {
-          ExitTodoModal();
-        }}
-      >
-        {ExitText}
-      </ExitButton>
-    </ExitBody>
-  );
-}
 
 const ExitBody = styled.div`
   width: 100%;
@@ -343,7 +342,7 @@ const ExitButton = styled.button`
   }
 `;
 
-function TodoComponent({ todo }) {
+const Todo = ({ todo }) => {
   return (
     <>
       <TodoSection>
@@ -355,9 +354,9 @@ function TodoComponent({ todo }) {
       </TodoSection>
     </>
   );
-}
+};
 
-function TodoModalButtons({ todo, ChangeComplete, navigate, DeleteTodo }) {
+const TodoModalButtons = ({ todo, ChangeComplete, navigate, DeleteTodo }) => {
   return (
     <>
       <TodoModalButton
@@ -366,18 +365,18 @@ function TodoModalButtons({ todo, ChangeComplete, navigate, DeleteTodo }) {
         }}
       >
         {todo.complete === "DONE"
-          ? todoModalButtonText[1]
-          : todoModalButtonText[0]}
+          ? TODO_MODAL_BUTTON_TEXT[1]
+          : TODO_MODAL_BUTTON_TEXT[0]}
       </TodoModalButton>
       <TodoModalButton onClick={() => navigate(`/todo/modify/${todo.todoId}`)}>
-        {todoModalButtonText[2]}
+        {TODO_MODAL_BUTTON_TEXT[2]}
       </TodoModalButton>
       <TodoModalButton onClick={() => DeleteTodo(todo.todoId)}>
-        {todoModalButtonText[3]}
+        {TODO_MODAL_BUTTON_TEXT[3]}
       </TodoModalButton>
     </>
   );
-}
+};
 
 const TodoModalButton = styled.button`
   width: 250px;
@@ -395,7 +394,7 @@ const TodoModalButton = styled.button`
 `;
 
 //ElementComponent ===================================
-function ElementComponent({
+const UserInterface = ({
   date,
   OpenCalender,
   calenderDisplay,
@@ -403,27 +402,23 @@ function ElementComponent({
   filterList,
   Filtering,
   filter,
-}) {
+}) => {
   return (
     <>
-      <ElementContainer>
-        <DateComponent
+      <InterfaceContainer>
+        <Date
           date={date}
           OpenCalender={OpenCalender}
           calenderDisplay={calenderDisplay}
         />
-        <UserComponent percent={percent} />
-        <FilterComponent
-          filterList={filterList}
-          Filtering={Filtering}
-          filter={filter}
-        />
-      </ElementContainer>
+        <User percent={percent} />
+        <Filter filterList={filterList} Filtering={Filtering} filter={filter} />
+      </InterfaceContainer>
     </>
   );
-}
+};
 
-const ElementContainer = styled.div`
+const InterfaceContainer = styled.div`
   width: 430px;
 
   background-color: #ececec;
@@ -433,22 +428,22 @@ const ElementContainer = styled.div`
   align-items: center;
 `;
 
-function DateComponent({ date, OpenCalender, calenderDisplay }) {
+const Date = ({ date, OpenCalender, calenderDisplay }) => {
   return (
     <>
       <DateSection>
-        <DateP>{moment(date).format("YYYY년 MM월 DD일")}</DateP>
+        <DateP>{getDateFormat(date)}</DateP>
         <DateButton
           onClick={() => {
             OpenCalender();
           }}
         >
-          {calenderDisplay ? dateButtonText[1] : dateButtonText[0]}
+          {calenderDisplay ? DATE_BUTTON_TEXT[1] : DATE_BUTTON_TEXT[0]}
         </DateButton>
       </DateSection>
     </>
   );
-}
+};
 
 const DateSection = styled.section`
   width: 100%;
@@ -477,16 +472,17 @@ const DateButton = styled.button`
   }
 `;
 
-function UserComponent({ percent }) {
+const User = ({ percent }) => {
   return (
     <>
       <UserSection>
         <TrophyImg src={trophyLevel1} />
-        <ChartComponent percent={percent} />
+        <Chart percent={percent} />
       </UserSection>
     </>
   );
-}
+};
+
 const UserSection = styled.section`
   width: 100%;
   height: 150px;
@@ -507,7 +503,7 @@ const TrophyImg = styled.img`
   margin: 10px;
 `;
 
-function ChartComponent({ percent }) {
+const Chart = ({ percent }) => {
   return (
     <>
       <ChartSection>
@@ -515,13 +511,13 @@ function ChartComponent({ percent }) {
           <ProgressBar percent={percent} />
         </BarChart>
         <PercentDiv>
-          <ChartText>{chartText}</ChartText>
+          <ChartText>{CHART_TEXT}</ChartText>
           <Percent>{`${percent} %`}</Percent>
         </PercentDiv>
       </ChartSection>
     </>
   );
-}
+};
 
 const ChartSection = styled.section`
   height: 60%;
@@ -541,14 +537,17 @@ const BarChart = styled.div`
 
   overflow: hidden;
 `;
+
 const ProgressBar = styled.div`
   width: ${(props) => props.percent + "%"};
-  animation: progressBar 0.5s ease-out;
   height: 30px;
 
   background-color: #ffe866;
 
   border-radius: 15px;
+
+  animation: progressBar 0.5s ease-out;
+  transition: all 0.5s ease-out;
 
   @keyframes progressBar {
     0% {
@@ -581,7 +580,7 @@ const Percent = styled.div`
   margin: 5px;
 `;
 
-function FilterComponent({ filterList, Filtering, filter }) {
+const Filter = ({ filterList, Filtering, filter }) => {
   return (
     <>
       <FilterSection>
@@ -598,7 +597,7 @@ function FilterComponent({ filterList, Filtering, filter }) {
       </FilterSection>
     </>
   );
-}
+};
 
 const FilterSection = styled.section`
   width: 100%;
@@ -606,7 +605,7 @@ const FilterSection = styled.section`
 
   background-color: #ffffff;
 
-  overflow: scroll;
+  overflow-x: scroll;
   white-space: nowrap;
 `;
 
@@ -623,19 +622,19 @@ const FilterButton = styled.button`
 `;
 
 //ListComponent ===================================
-function ListComponent({ todos, ChangeTodo }) {
+const TodoList = ({ todos, ChangeTodo }) => {
   return (
     <>
       <ListContainer>
-        <TodoList>
+        <Todos>
           {todos.map((value, idx) => (
-            <TodoLiComponent key={idx} value={value} ChangeTodo={ChangeTodo} />
+            <TodoCard key={idx} value={value} ChangeTodo={ChangeTodo} />
           ))}
-        </TodoList>
+        </Todos>
       </ListContainer>
     </>
   );
-}
+};
 
 const ListContainer = styled.div`
   width: 430px;
@@ -650,7 +649,7 @@ const ListContainer = styled.div`
   overflow: scroll;
 `;
 
-const TodoList = styled.ul`
+const Todos = styled.ul`
   width: 390px;
 
   margin-bottom: 90px;
@@ -660,19 +659,19 @@ const TodoList = styled.ul`
   align-items: center;
 `;
 
-function TodoLiComponent({ value, ChangeTodo }) {
+const TodoCard = ({ value, ChangeTodo }) => {
   return (
     <>
-      <TodoLi onClick={() => ChangeTodo(value)}>
+      <TodoCardSection onClick={() => ChangeTodo(value)}>
         <TagDiv>{value.tagResponse.tagName}</TagDiv>
         <TitleDiv>{value.content}</TitleDiv>
         <EmojiDiv>{value.complete === "DONE" ? value.todoEmoji : ""}</EmojiDiv>
-      </TodoLi>
+      </TodoCardSection>
     </>
   );
-}
+};
 
-const TodoLi = styled.li`
+const TodoCardSection = styled.li`
   width: 390px;
   height: 70px;
 
