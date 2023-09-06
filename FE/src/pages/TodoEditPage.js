@@ -24,6 +24,8 @@ import {
   DEFAULT_TODO_EMOJI,
 } from "../data/constants";
 import TagModal from "../components/TagModal";
+import ModalBackground from "../components/ModalBackground";
+import ErrorModal from "../components/ErrorModal";
 
 //삭제 될 데이터
 const memberId = 1;
@@ -163,12 +165,10 @@ const TodoEditPage = () => {
     <>
       <TodoEditBody>
         {isOpenErrorModal && (
-          <ErrorModal>
-            <ErrorText>{errorMessage}</ErrorText>
-            <CloseErrorModalButton onClick={() => closeErrorModal()}>
-              X
-            </CloseErrorModalButton>
-          </ErrorModal>
+          <ErrorModal
+            errorMessage={errorMessage}
+            closeErrorModal={closeErrorModal}
+          />
         )}
         {isOpenModal && (
           <TodoEmoji
@@ -221,41 +221,6 @@ const TodoEditBody = styled.body`
   align-items: center;
 `;
 
-const ErrorModal = styled.div`
-  width: 390px;
-  height: 150px;
-
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  position: absolute;
-  top: 350px;
-
-  z-index: 100;
-`;
-
-const ErrorText = styled.p`
-  margin: 30px;
-`;
-
-const CloseErrorModalButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  border: 1px solid #d0d0d0;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #d0d0d0;
-  }
-`;
-
 const CalendarModal = styled(Calendar)`
   width: 390px;
 
@@ -265,19 +230,6 @@ const CalendarModal = styled(Calendar)`
   top: 300px;
 
   z-index: 100;
-`;
-
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
 `;
 
 const PostSection = styled.section`

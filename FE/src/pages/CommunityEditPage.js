@@ -25,6 +25,7 @@ import {
 } from "../data/constants";
 import TodoCard from "../components/TodoCard";
 import TagModal from "../components/TagModal";
+import ModalBackground from "../components/ModalBackground";
 
 //삭제 될 데이터
 const memberId = 1;
@@ -188,19 +189,6 @@ const CommunityEditBody = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
 `;
 
 const EditContainer = styled.div`

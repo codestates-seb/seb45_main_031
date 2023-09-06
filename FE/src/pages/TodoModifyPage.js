@@ -23,6 +23,7 @@ import {
   TODO_EMOJI_LABEL,
 } from "../data/constants";
 import TagModal from "../components/TagModal";
+import ModalBackground from "../components/ModalBackground";
 
 const TodoModifyPage = () => {
   const { todoId } = useParams();
@@ -284,19 +285,6 @@ const CalendarModal = styled(Calendar)`
   top: 300px;
 
   z-index: 100;
-`;
-
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
 `;
 
 const PostSection = styled.section`

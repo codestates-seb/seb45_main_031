@@ -18,9 +18,11 @@ import getDateFormat from "../utils/getDateFormat";
 
 import "react-calendar/dist/Calendar.css"; // css import
 
-//삭제 할 더미 데이터들
 import trophyLevel1 from "../assets/images/trophyLevel1.png";
 import TodoCard from "../components/TodoCard";
+import ModalBackground from "../components/ModalBackground";
+
+//삭제 할 더미 데이터
 const membersId = 1;
 
 const TodoPage = () => {
@@ -202,19 +204,6 @@ const TodoBody = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
 `;
 
 const CalendarModal = styled(Calendar)`
