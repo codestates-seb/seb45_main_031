@@ -1,25 +1,37 @@
 import { styled } from "styled-components";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import { useState } from "react";
+
 import write from "../assets/images/write.png";
 import list from "../assets/images/list.png";
 import community from "../assets/images/community.png";
 import mypage from "../assets/images/mypage.png";
 
-import { Link } from "react-router-dom";
-import moment from "moment";
-
 const Footer = () => {
-  let today = moment(new Date()).format("YYYY-MM-DD");
+  const today = moment(new Date()).format("YYYY-MM-DD");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <Container>
-      <FooterStyle>
-        <Footercon>
+      <FooterFixed>
+        <FooterSpacer>
           <Logo>
-            <Link to="/todo/edit">
-              <LogoItem>
-                <img src={write} alt="작성하기 버튼" />
-                작성하기
-              </LogoItem>
-            </Link>
+            {/* <PageNavigation> */}
+            <LogoItem onClick={() => setIsModalOpen(true)}>
+              <img src={write} alt="작성하기 버튼" />
+              작성하기
+            </LogoItem>
+            {isModalOpen && (
+              <ModalWrapper onClick={() => setIsModalOpen(false)}>
+                <ModalContent isOpen={isModalOpen}>
+                  <PageButton to="/todo/edit">할 일 작성하기</PageButton>
+                  <PageButton to="/community">게시글 작성하기</PageButton>
+                </ModalContent>
+              </ModalWrapper>
+            )}
+            {/* </PageNavigation> */}
             <Link to={`/todo/${today}`}>
               <LogoItem>
                 <img src={list} alt="할일목록 버튼" />
@@ -39,8 +51,8 @@ const Footer = () => {
               </LogoItem>
             </Link>
           </Logo>
-        </Footercon>
-      </FooterStyle>
+        </FooterSpacer>
+      </FooterFixed>
     </Container>
   );
 };
@@ -55,7 +67,7 @@ const Container = styled.div`
   z-index: 999;
 `;
 
-const FooterStyle = styled.div`
+const FooterFixed = styled.div`
   position: fixed;
   bottom: 0;
   background-color: #fff;
@@ -66,7 +78,7 @@ const FooterStyle = styled.div`
   height: 80px;
 `;
 
-const Footercon = styled.div`
+const FooterSpacer = styled.div`
   margin: 15px;
 `;
 
@@ -83,5 +95,52 @@ const LogoItem = styled.button`
   > img {
     height: 32px;
     object-fit: contain;
+  }
+`;
+
+// Modal Style
+
+const ModalWrapper = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  /*flex-direction: column; */
+`;
+
+const ModalContent = styled.div`
+  position: absolute;
+  width: 250px;
+  height: 150px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  margin-top: 600px;
+  margin-right: 130px;
+  opacity: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+`;
+
+const PageButton = styled(Link)`
+  width: 180px;
+  height: 35px;
+  padding: 7px;
+  margin: 8px;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  text-align: center;
+  background-color: #ffe866;
+  &:hover {
+    background-color: #d0d0d0;
   }
 `;
