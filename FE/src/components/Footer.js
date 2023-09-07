@@ -1,16 +1,14 @@
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import { useState } from "react";
 
 import write from "../assets/images/write.png";
 import list from "../assets/images/list.png";
 import community from "../assets/images/community.png";
 import mypage from "../assets/images/mypage.png";
+import getDateFormat from "../utils/getDateFormat";
 
 const Footer = () => {
-  const today = moment(new Date()).format("YYYY-MM-DD");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -27,12 +25,12 @@ const Footer = () => {
               <ModalWrapper onClick={() => setIsModalOpen(false)}>
                 <ModalContent isOpen={isModalOpen}>
                   <PageButton to="/todo/edit">할 일 작성하기</PageButton>
-                  <PageButton to="/community">게시글 작성하기</PageButton>
+                  <PageButton to="/community/edit">게시글 작성하기</PageButton>
                 </ModalContent>
               </ModalWrapper>
             )}
             {/* </PageNavigation> */}
-            <Link to={`/todo/${today}`}>
+            <Link to={`/todo/${getDateFormat()}`}>
               <LogoItem>
                 <img src={list} alt="할일목록 버튼" />
                 할일목록

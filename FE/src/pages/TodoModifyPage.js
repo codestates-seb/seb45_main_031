@@ -24,6 +24,7 @@ import {
 } from "../data/constants";
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
+import countContentLength from "../utils/conutContentLength";
 
 const TodoModifyPage = () => {
   const { todoId } = useParams();
@@ -40,6 +41,7 @@ const TodoModifyPage = () => {
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(getDateFormat());
   const [errorMessage, setErrorMessage] = useState("");
+  const [inputCount, setInputCount] = useState(0);
 
   //todo 불러오기
   useEffect(() => {
@@ -49,6 +51,7 @@ const TodoModifyPage = () => {
         setTodoTag(data.tagResponse.tagName);
         setTagId(tags[data.tagResponse.tagName]);
         setContent(data.content);
+        setInputCount(countContentLength(data.content));
         setTodoEmoji(data.todoEmoji);
       });
     } catch (error) {
@@ -84,6 +87,7 @@ const TodoModifyPage = () => {
   //할 일 이름 변경
   const changeName = (value) => {
     setContent(value);
+    setInputCount(countContentLength(value));
   };
 
   //태그 모달 Open
@@ -161,6 +165,8 @@ const TodoModifyPage = () => {
     try {
       if (content === "")
         return openErrorModal("할 일 이름은 필수 항목 입니다.");
+      if (inputCount > 60)
+        return openErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
       if (tagId === "") return openErrorModal("태그는 필수 항목 입니다.");
 
       const newDate = getDateFormat(date);
@@ -222,6 +228,7 @@ const TodoModifyPage = () => {
               CalendarOpen={calendarOpen}
               content={content}
               todoTag={todoTag}
+              inputCount={inputCount}
             />
             <Buttons PostTodo={patchTodo} navigate={navigate} />
           </PostSection>
@@ -457,6 +464,7 @@ const Post = ({
   tagModalOpen,
   content,
   todoTag,
+  inputCount,
 }) => {
   return (
     <>
@@ -469,9 +477,15 @@ const Post = ({
             value={content}
             onChange={(e) => ChangeName(e.target.value)}
           />
-          <ValidationText>
-            {content === "" && "이름은 필수값 입니다."}
-          </ValidationText>
+          <ValidationSection>
+            <ValidationText>
+              {content === "" && "이름은 필수값 입니다."}
+              {inputCount > 60 && "이름의 최대 글자수를 초과하였습니다."}
+            </ValidationText>
+            <CountInputValue inputCount={inputCount}>
+              {inputCount}/60
+            </CountInputValue>
+          </ValidationSection>
         </Aside>
         <Aside className="TagAside">
           <Label for="TagInput">{TAG_LABEL}</Label>
@@ -492,13 +506,26 @@ const Post = ({
   );
 };
 
-const ValidationText = styled.p`
+const ValidationSection = styled.section`
+  width: 320px;
   height: 3px;
 
-  margin-left: 10px;
+  margin: 0px 10px;
 
+  display: flex;
+  flex-direction: row;
+  align-items: bottom;
+  justify-content: space-between;
+`;
+
+const ValidationText = styled.p`
   font-size: 0.7rem;
   color: #ff3838;
+`;
+
+const CountInputValue = styled.p`
+  font-size: 0.7rem;
+  color: ${(props) => (props.inputCount > 60 ? "#ff3838" : "#949597")};
 `;
 
 const Label = styled.label`
@@ -511,7 +538,7 @@ const Input = styled.input`
 
   font-size: 1rem;
 
-  padding-left: 20px;
+  padding: 0px 20px;
 
   border: 1px solid #949597;
   border-radius: 15px;

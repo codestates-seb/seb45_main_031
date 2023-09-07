@@ -26,6 +26,7 @@ import {
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
 import ErrorModal from "../components/ErrorModal";
+import countContentLength from "../utils/conutContentLength";
 
 //삭제 될 데이터
 const memberId = 1;
@@ -44,6 +45,7 @@ const TodoEditPage = () => {
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(getDateFormat());
   const [errorMessage, setErrorMessage] = useState("");
+  const [inputCount, setInputCount] = useState(0);
 
   const emojiModalOpen = () => {
     try {
@@ -69,6 +71,7 @@ const TodoEditPage = () => {
 
   const changeName = (value) => {
     setContent(value);
+    setInputCount(countContentLength(value));
   };
 
   const tagModalOpen = () => {
@@ -140,6 +143,8 @@ const TodoEditPage = () => {
     try {
       if (content === "")
         return openErrorModal("할 일 이름은 필수 항목 입니다.");
+      if (inputCount > 60)
+        return openErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
       if (tagId === "") return openErrorModal("태그는 필수 항목 입니다.");
       if (getDateFormat() > getDateFormat(date))
         return openErrorModal("오늘보다 빠른 날짜는 선택할 수 없습니다.");
@@ -202,6 +207,7 @@ const TodoEditPage = () => {
               content={content}
               date={date}
               CalendarOpen={calendarOpen}
+              inputCount={inputCount}
             />
             <Buttons PostTodo={postTodo} navigate={navigate} />
           </PostSection>
@@ -402,6 +408,7 @@ const Post = ({
   date,
   CalendarOpen,
   content,
+  inputCount,
 }) => {
   return (
     <>
@@ -413,16 +420,24 @@ const Post = ({
             placeholder={NAME_HOLDER}
             onChange={(e) => ChangeName(e.target.value)}
           />
-          <ValidationText>
-            {content === "" && "이름은 필수값 입니다."}
-          </ValidationText>
+          <ValidationSection>
+            <ValidationText>
+              {content === "" && "이름은 필수값 입니다."}
+              {inputCount > 60 && "이름의 최대 글자수를 초과하였습니다."}
+            </ValidationText>
+            <CountInputValue inputCount={inputCount}>
+              {inputCount}/60
+            </CountInputValue>
+          </ValidationSection>
         </Aside>
         <Aside className="TagAside">
           <Label for="TagInput">{TAG_LABEL}</Label>
           <TagDiv onClick={() => TagModalOpen()}>{todoTag}</TagDiv>
-          <ValidationText>
-            {todoTag === "" && "태그는 필수값 입니다."}
-          </ValidationText>
+          <ValidationSection>
+            <ValidationText>
+              {todoTag === "" && "태그는 필수값 입니다."}
+            </ValidationText>
+          </ValidationSection>
         </Aside>
         <Aside>
           <Label>{TODO_EMOJI_LABEL}</Label>
@@ -433,23 +448,38 @@ const Post = ({
           <DateDiv onClick={() => CalendarOpen()}>
             {getDateFormat(date)}
           </DateDiv>
-          <ValidationText>
-            {getDateFormat() > getDateFormat(date) &&
-              "오늘 날짜보다 빠른 날짜는 선택할 수 없습니다."}
-          </ValidationText>
+          <ValidationSection>
+            <ValidationText>
+              {getDateFormat() > getDateFormat(date) &&
+                "오늘 날짜보다 빠른 날짜는 선택할 수 없습니다."}
+            </ValidationText>
+          </ValidationSection>
         </Aside>
       </div>
     </>
   );
 };
 
-const ValidationText = styled.p`
+const ValidationSection = styled.section`
+  width: 320px;
   height: 3px;
 
-  margin-left: 10px;
+  margin: 0px 10px;
 
+  display: flex;
+  flex-direction: row;
+  align-items: bottom;
+  justify-content: space-between;
+`;
+
+const ValidationText = styled.p`
   font-size: 0.7rem;
   color: #ff3838;
+`;
+
+const CountInputValue = styled.p`
+  font-size: 0.7rem;
+  color: ${(props) => (props.inputCount > 60 ? "#ff3838" : "#949597")};
 `;
 
 const Label = styled.label`
@@ -462,7 +492,7 @@ const Input = styled.input`
 
   font-size: 1rem;
 
-  padding-left: 20px;
+  padding: 0px 20px;
 
   border: 1px solid #949597;
   border-radius: 15px;

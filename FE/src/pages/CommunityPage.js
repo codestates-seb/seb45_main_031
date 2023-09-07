@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 import FeedCard from "../components/FeedCard";
 
@@ -13,7 +12,6 @@ const localUser = {
 localStorage.setItem("memberId", localUser.memberId);
 
 const CommunityPage = () => {
-  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
 
   //화면 첫 랜딩 시 posts를 불러오는 로직
@@ -21,15 +19,10 @@ const CommunityPage = () => {
     setPosts(dummyPosts);
   }, []);
 
-  const navigateEdit = () => {
-    navigate("/community/edit");
-  };
-
   return (
     <>
       <CommunityBody>
         <CommunityContainer>
-          <PlusButton onClick={() => navigateEdit()}>+</PlusButton>
           <CardUl>
             {posts.map((post) => (
               <>
@@ -68,27 +61,6 @@ const CommunityContainer = styled.div`
   justify-contents: center;
 
   overflow: scroll;
-`;
-
-const PlusButton = styled.button`
-  width: 80px;
-  height: 80px;
-
-  font-size: 3rem;
-  color: #ffb039;
-
-  background-color: #ffe866;
-
-  border-radius: 50%;
-
-  position: absolute;
-  bottom: 60px;
-
-  z-index: 9990;
-
-  &:hover {
-    background-color: #ffd900;
-  }
 `;
 
 const CardUl = styled.ul``;
