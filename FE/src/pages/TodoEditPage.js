@@ -70,7 +70,6 @@ const TodoEditPage = () => {
   };
 
   const changeName = (value) => {
-    console.log(value);
     setContent(value);
     setInputCount(countContentLength(value));
   };
@@ -449,10 +448,12 @@ const Post = ({
           <DateDiv onClick={() => CalendarOpen()}>
             {getDateFormat(date)}
           </DateDiv>
-          <ValidationText>
-            {getDateFormat() > getDateFormat(date) &&
-              "오늘 날짜보다 빠른 날짜는 선택할 수 없습니다."}
-          </ValidationText>
+          <ValidationSection>
+            <ValidationText>
+              {getDateFormat() > getDateFormat(date) &&
+                "오늘 날짜보다 빠른 날짜는 선택할 수 없습니다."}
+            </ValidationText>
+          </ValidationSection>
         </Aside>
       </div>
     </>
@@ -491,7 +492,7 @@ const Input = styled.input`
 
   font-size: 1rem;
 
-  padding-left: 20px;
+  padding: 0px 20px;
 
   border: 1px solid #949597;
   border-radius: 15px;

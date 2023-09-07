@@ -538,7 +538,7 @@ const Input = styled.input`
 
   font-size: 1rem;
 
-  padding-left: 20px;
+  padding: 0px 20px;
 
   border: 1px solid #949597;
   border-radius: 15px;
