@@ -23,6 +23,9 @@ import {
   DEFAULT_FILTER_LIST,
   DEFAULT_FILTER,
 } from "../data/constants";
+import TodoCard from "../components/TodoCard";
+import TagModal from "../components/TagModal";
+import ModalBackground from "../components/ModalBackground";
 
 //삭제 될 데이터
 const memberId = 1;
@@ -43,7 +46,7 @@ const CommunityEditPage = () => {
 
   useEffect(() => {
     try {
-      getTodoList();
+      getTodoList(date);
     } catch (error) {
       console.error(error);
     }
@@ -59,18 +62,10 @@ const CommunityEditPage = () => {
     setIsOpenCalender(false);
   };
 
-  const changeDate = (value) => {
+  const getTodoList = (value) => {
     try {
-      const newDate = getDateFormat(value);
-      setDate(newDate);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getTodoList = () => {
-    try {
-      axios.get(`${URL}/todos/${memberId}?date=${date}`).then((res) => {
+      setDate(value);
+      axios.get(`${URL}/todos/${memberId}?date=${value}`).then((res) => {
         const data = res.data.data.todoResponses;
         setMeta(data);
         setTodoList(data);
@@ -153,9 +148,9 @@ const CommunityEditPage = () => {
         {isOpenModalBack && <ModalBackground />}
         {isOpenCalender && (
           <CalendarModal
-            changeDate={changeDate}
-            closeCalender={closeCalender}
             getTodoList={getTodoList}
+            // changeDate={changeDate}
+            closeCalender={closeCalender}
             date={date}
             todoList={todoList}
           />
@@ -196,19 +191,6 @@ const CommunityEditBody = styled.body`
   align-items: center;
 `;
 
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
-`;
-
 const EditContainer = styled.div`
   width: 430px;
   height: 100%;
@@ -227,9 +209,9 @@ const EditContainer = styled.div`
 `;
 
 const CalendarModal = ({
-  changeDate,
-  closeCalender,
   getTodoList,
+  // changeDate,
+  closeCalender,
   todoList,
   date,
 }) => {
@@ -241,14 +223,14 @@ const CalendarModal = ({
       </HeadSection>
       <CalenderSection
         onChange={(e) => {
-          changeDate(e);
-          getTodoList();
+          // changeDate(e);
+          getTodoList(getDateFormat(e));
         }}
       />
       <TodoSection>
         {todoList.length === 0
           ? "할 일 목록이 없습니다."
-          : todoList.map((todo) => <Todo todo={todo} key={todo.todoId} />)}
+          : todoList.map((todo) => <TodoCard value={todo} key={todo.todoId} />)}
       </TodoSection>
     </CalenderBody>
   );
@@ -317,10 +299,10 @@ const CalenderSection = styled(Calendar)`
 `;
 
 const TodoSection = styled.ul`
-  width: 390px;
+  width: 370px;
   height: 300px;
 
-  margin-top: 10px;
+  margin: 20px 10px;
 
   display: flex;
   flex-direction: column;
@@ -328,152 +310,6 @@ const TodoSection = styled.ul`
   justify-content: start;
 
   overflow: scroll;
-`;
-
-const Todo = ({ todo }) => {
-  return (
-    <TodoBody>
-      <TagDiv>{todo.tagResponse.tagName}</TagDiv>
-      <TitleDiv>{todo.content}</TitleDiv>
-      <EmojiDiv>{todo.complete === "DONE" ? todo.todoEmoji : ""}</EmojiDiv>
-    </TodoBody>
-  );
-};
-
-const TodoBody = styled.li`
-  width: 90%;
-  height: 70px;
-
-  margin-top: 20px;
-  border: 1px solid #d0d0d0;
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const TagDiv = styled.span`
-  width: 70px;
-  height: 40px;
-
-  background: #ececec;
-
-  margin: 15px;
-  border-radius: 15px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const TitleDiv = styled.p`
-  width: 200px;
-
-  font-size: 0.9erm;
-`;
-
-const EmojiDiv = styled.div`
-  width: 40px;
-  height: 40px;
-
-  margin: 15px;
-  border: 1px solid #949597;
-  border-radius: 15px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const TagModal = ({ tagList, TagModalClose, ChangeTag }) => {
-  return (
-    <>
-      <TagModalBody>
-        <TagExitButton onClick={() => TagModalClose()}>X</TagExitButton>
-        <TagGroup>
-          {tagList.map((tag) => (
-            <>
-              <Tag>
-                <TagButton onClick={() => ChangeTag(tag)}>{tag}</TagButton>
-              </Tag>
-            </>
-          ))}
-        </TagGroup>
-      </TagModalBody>
-    </>
-  );
-};
-
-const TagModalBody = styled.div`
-  width: 390px;
-  height: 400px;
-
-  padding: 15px;
-
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  position: absolute;
-  top: 300px;
-
-  z-index: 100;
-
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  justify-content: start;
-`;
-
-const TagGroup = styled.ul`
-  width: 100%;
-  height: 75%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-
-  overflow: auto;
-`;
-
-const Tag = styled.li`
-  width: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TagButton = styled.button`
-  width: 250px;
-
-  margin-bottom: 10px;
-  padding: 10px 0px;
-  border: 1px solid #949597;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffe866;
-    border: 1px solid #ffe866;
-  }
-`;
-
-const TagExitButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  margin-bottom: 30px;
-  border: 1px solid #ffb039;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffb039;
-  }
 `;
 
 const Title = () => {

@@ -18,8 +18,11 @@ import getDateFormat from "../utils/getDateFormat";
 
 import "react-calendar/dist/Calendar.css"; // css import
 
-//삭제 할 더미 데이터들
 import trophyLevel1 from "../assets/images/trophyLevel1.png";
+import TodoCard from "../components/TodoCard";
+import ModalBackground from "../components/ModalBackground";
+
+//삭제 할 더미 데이터
 const membersId = 1;
 
 const TodoPage = () => {
@@ -203,19 +206,6 @@ const TodoBody = styled.body`
   align-items: center;
 `;
 
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
-`;
-
 const CalendarModal = styled(Calendar)`
   width: 390px;
 
@@ -269,29 +259,6 @@ const TodoModalBody = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-`;
-
-const TodoSection = styled.section`
-  width: 300px;
-  height: 150px;
-
-  margin-bottom: 30px;
-  border: 1px solid #ffd900;
-  border-radius: 15px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: end;
-`;
-
-const ElDiv = styled.div`
-  width: 300px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -355,6 +322,62 @@ const Todo = ({ todo }) => {
     </>
   );
 };
+
+const TodoSection = styled.section`
+  width: 300px;
+  height: 150px;
+
+  margin-bottom: 30px;
+  border: 1px solid #ffd900;
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+`;
+
+const ElDiv = styled.div`
+  width: 300px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TagDiv = styled.span`
+  width: 70px;
+  height: 40px;
+
+  background: #ececec;
+
+  margin: 15px;
+  border-radius: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TitleDiv = styled.p`
+  width: 200px;
+
+  font-size: 0.9erm;
+`;
+
+const EmojiDiv = styled.div`
+  width: 40px;
+  height: 40px;
+
+  margin: 15px;
+  border: 1px solid #949597;
+  border-radius: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const TodoModalButtons = ({ todo, ChangeComplete, navigate, DeleteTodo }) => {
   return (
@@ -628,7 +651,12 @@ const TodoList = ({ todos, ChangeTodo }) => {
       <ListContainer>
         <Todos>
           {todos.map((value, idx) => (
-            <TodoCard key={idx} value={value} ChangeTodo={ChangeTodo} />
+            <TodoCard
+              key={idx}
+              value={value}
+              todoPage={true}
+              ChangeTodo={ChangeTodo}
+            />
           ))}
         </Todos>
       </ListContainer>
@@ -656,65 +684,5 @@ const Todos = styled.ul`
 
   display: flex;
   flex-direction: column;
-  align-items: center;
-`;
-
-const TodoCard = ({ value, ChangeTodo }) => {
-  return (
-    <>
-      <TodoCardSection onClick={() => ChangeTodo(value)}>
-        <TagDiv>{value.tagResponse.tagName}</TagDiv>
-        <TitleDiv>{value.content}</TitleDiv>
-        <EmojiDiv>{value.complete === "DONE" ? value.todoEmoji : ""}</EmojiDiv>
-      </TodoCardSection>
-    </>
-  );
-};
-
-const TodoCardSection = styled.li`
-  width: 390px;
-  height: 70px;
-
-  margin-top: 20px;
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const TagDiv = styled.span`
-  width: 70px;
-  height: 40px;
-
-  background: #ececec;
-
-  margin: 15px;
-  border-radius: 15px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const TitleDiv = styled.p`
-  width: 200px;
-
-  font-size: 0.9erm;
-`;
-
-const EmojiDiv = styled.div`
-  width: 40px;
-  height: 40px;
-
-  margin: 15px;
-  border: 1px solid #949597;
-  border-radius: 15px;
-
-  display: flex;
-  justify-content: center;
   align-items: center;
 `;

@@ -23,6 +23,9 @@ import {
   TODO_EMOJI_LABEL,
   DEFAULT_TODO_EMOJI,
 } from "../data/constants";
+import TagModal from "../components/TagModal";
+import ModalBackground from "../components/ModalBackground";
+import ErrorModal from "../components/ErrorModal";
 
 //삭제 될 데이터
 const memberId = 1;
@@ -149,8 +152,10 @@ const TodoEditPage = () => {
         todoEmoji,
         date: newDate,
       };
-      axios.post(`${URL}/todos`, newData).then((res) => console.log(res));
-      navigate(`/todo/${newDate}`);
+      axios.post(`${URL}/todos`, newData).then((res) => {
+        console.log(res);
+        navigate(`/todo/${newDate}`);
+      });
     } catch (error) {
       console.error(error);
     }
@@ -160,12 +165,10 @@ const TodoEditPage = () => {
     <>
       <TodoEditBody>
         {isOpenErrorModal && (
-          <ErrorModal>
-            <ErrorText>{errorMessage}</ErrorText>
-            <CloseErrorModalButton onClick={() => closeErrorModal()}>
-              X
-            </CloseErrorModalButton>
-          </ErrorModal>
+          <ErrorModal
+            errorMessage={errorMessage}
+            closeErrorModal={closeErrorModal}
+          />
         )}
         {isOpenModal && (
           <TodoEmoji
@@ -218,41 +221,6 @@ const TodoEditBody = styled.body`
   align-items: center;
 `;
 
-const ErrorModal = styled.div`
-  width: 390px;
-  height: 150px;
-
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  position: absolute;
-  top: 350px;
-
-  z-index: 100;
-`;
-
-const ErrorText = styled.p`
-  margin: 30px;
-`;
-
-const CloseErrorModalButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  border: 1px solid #d0d0d0;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #d0d0d0;
-  }
-`;
-
 const CalendarModal = styled(Calendar)`
   width: 390px;
 
@@ -262,19 +230,6 @@ const CalendarModal = styled(Calendar)`
   top: 300px;
 
   z-index: 100;
-`;
-
-const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background: rgb(0, 0, 0, 0.5);
-
-  z-index: 10;
 `;
 
 const PostSection = styled.section`
@@ -614,92 +569,5 @@ const Button = styled.button`
 
   &:hover {
     background-color: ${(props) => props.hoverColor};
-  }
-`;
-
-const TagModal = ({ tags, TagModalClose, ChangeTag }) => {
-  return (
-    <>
-      <TagModalBody>
-        <TagExitButton onClick={() => TagModalClose()}>X</TagExitButton>
-        <TagGroup>
-          {Object.keys(tags).map((tag) => (
-            <>
-              <Tag>
-                <TagButton onClick={() => ChangeTag(tag)}>{tag}</TagButton>
-              </Tag>
-            </>
-          ))}
-        </TagGroup>
-      </TagModalBody>
-    </>
-  );
-};
-
-const TagModalBody = styled.div`
-  width: 390px;
-  height: 400px;
-
-  padding: 15px;
-
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  position: absolute;
-  top: 300px;
-
-  z-index: 100;
-
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  justify-content: start;
-`;
-
-const TagGroup = styled.ul`
-  width: 100%;
-  height: 75%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-
-  overflow: auto;
-`;
-
-const Tag = styled.li`
-  width: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TagButton = styled.button`
-  width: 250px;
-
-  margin-bottom: 10px;
-  padding: 10px 0px;
-  border: 1px solid #949597;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffe866;
-    border: 1px solid #ffe866;
-  }
-`;
-
-const TagExitButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  margin-bottom: 30px;
-  border: 1px solid #ffb039;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffb039;
   }
 `;
