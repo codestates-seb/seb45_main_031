@@ -26,6 +26,7 @@ import {
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
 import ErrorModal from "../components/ErrorModal";
+import countContentLength from "../utils/conutContentLength";
 
 //삭제 될 데이터
 const memberId = 1;
@@ -71,9 +72,7 @@ const TodoEditPage = () => {
   const changeName = (value) => {
     console.log(value);
     setContent(value);
-    setInputCount(
-      value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, "$&$1$2").length,
-    );
+    setInputCount(countContentLength(value));
   };
 
   const tagModalOpen = () => {

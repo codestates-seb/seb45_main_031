@@ -24,6 +24,7 @@ import {
 } from "../data/constants";
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
+import countContentLength from "../utils/conutContentLength";
 
 const TodoModifyPage = () => {
   const { todoId } = useParams();
@@ -50,7 +51,7 @@ const TodoModifyPage = () => {
         setTodoTag(data.tagResponse.tagName);
         setTagId(tags[data.tagResponse.tagName]);
         setContent(data.content);
-        setInputCount(data.content.length);
+        setInputCount(countContentLength(data.content));
         setTodoEmoji(data.todoEmoji);
       });
     } catch (error) {
@@ -86,9 +87,7 @@ const TodoModifyPage = () => {
   //할 일 이름 변경
   const changeName = (value) => {
     setContent(value);
-    setInputCount(
-      value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, "$&$1$2").length,
-    );
+    setInputCount(countContentLength(value));
   };
 
   //태그 모달 Open
