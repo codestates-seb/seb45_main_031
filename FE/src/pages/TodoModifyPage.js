@@ -50,6 +50,7 @@ const TodoModifyPage = () => {
         setTodoTag(data.tagResponse.tagName);
         setTagId(tags[data.tagResponse.tagName]);
         setContent(data.content);
+        setInputCount(data.content.length);
         setTodoEmoji(data.todoEmoji);
       });
     } catch (error) {
@@ -165,6 +166,8 @@ const TodoModifyPage = () => {
     try {
       if (content === "")
         return openErrorModal("할 일 이름은 필수 항목 입니다.");
+      if (inputCount > 60)
+        return openErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
       if (tagId === "") return openErrorModal("태그는 필수 항목 입니다.");
 
       const newDate = getDateFormat(date);
