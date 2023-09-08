@@ -3,6 +3,7 @@ package com.seb45_main_031.routine.todo.service;
 import com.seb45_main_031.routine.auth.jwt.JwtTokenizer;
 import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
+import com.seb45_main_031.routine.member.service.MemberService;
 import com.seb45_main_031.routine.tag.entity.Tag;
 import com.seb45_main_031.routine.tag.service.TagService;
 import com.seb45_main_031.routine.todo.entity.Todo;
@@ -22,17 +23,17 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     private final TodoRepository todoRepository;
-
     private final TagService tagService;
+    private final MemberService memberService;
 
-    private final JwtTokenizer jwtTokenizer;
 
-    public TodoService(TodoRepository todoRepository, TagService tagService, JwtTokenizer jwtTokenizer) {
+    public TodoService(TodoRepository todoRepository, TagService tagService, MemberService memberService) {
         this.todoRepository = todoRepository;
         this.tagService = tagService;
-        this.jwtTokenizer = jwtTokenizer;
+        this.memberService = memberService;
     }
 
+    // todoId로 특정 Todo 객체 찾는 로직
     public Todo findVerifiedTodo(long todoId){
 
         Optional<Todo> optionalTodo = todoRepository.findById(todoId);
@@ -43,31 +44,18 @@ public class TodoService {
     }
 
 
-    public void checkMemberId(long memberId, String accessToken){
-
-        String secretKey = jwtTokenizer.getSecretKey();
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);
-
-        long findMemberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
-
-        if(memberId != findMemberId){
-
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_MATCHED);
-        }
-    }
-
-
-
-    public Todo createTodo(Todo todo){
+    public Todo createTodo(Todo todo, String accessToken){
 
         Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
         todo.setTag(findTag);
+
+        memberService.checkMemberId(todo.getMember().getMemberId(), accessToken);
 
         return todoRepository.save(todo);
     }
 
 
-    public Todo updateTodo(Todo todo){
+    public Todo updateTodo(Todo todo, String accessToken){
 
         Todo findTodo = findVerifiedTodo(todo.getTodoId());
 
@@ -86,16 +74,13 @@ public class TodoService {
         Optional.ofNullable(todo.getTag())
                 .ifPresent(tagId -> findTodo.setTag(tagId));
 
-
-
-        /* complete Test
-       findTodo.setComplete(todo.isComplete());*/
+        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
 
         return todoRepository.save(findTodo);
     }
 
-    public Todo updateTodoComplete(Todo todo){
+    public Todo updateTodoComplete(Todo todo, String accessToken){
 
         Todo findTodo = findVerifiedTodo(todo.getTodoId());
 
@@ -103,6 +88,8 @@ public class TodoService {
 
             findTodo.setComplete(todo.getComplete());
         }
+
+        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         return todoRepository.save(findTodo);
     }
@@ -114,7 +101,7 @@ public class TodoService {
 
         Todo findTodo = optionalTodo.orElseThrow(() -> new BusinessLogicException(ExceptionCode.TODO_NOT_FOUND));
 
-        checkMemberId(optionalTodo.get().getMember().getMemberId(), accessToken);
+        memberService.checkMemberId(optionalTodo.get().getMember().getMemberId(), accessToken);
 
         return findTodo;
 
@@ -122,27 +109,29 @@ public class TodoService {
 
     public List<Todo> findTodos(LocalDate date, long memberId, String accessToken){
 
-        List<Todo> findTodos = todoRepository.findByDate(date);
+//        List<Todo> findTodos = todoRepository.findByDate(date);
+//
+//        List<Todo> todos =
+//                findTodos.stream()
+//                        .filter(todo -> todo.getMember().getMemberId() == memberId)
+//                        .collect(Collectors.toList());
 
-        List<Todo> todos =
-                findTodos.stream()
-                        .filter(todo -> todo.getMember().getMemberId() == memberId)
-                        .collect(Collectors.toList());
+        List<Todo> todos = todoRepository.findByMemberMemberIdAndDate(memberId, date);
 
-        checkMemberId(todos.get(0).getMember().getMemberId(), accessToken);
+        memberService.checkMemberId(memberId, accessToken);
 
         return todos;
     }
 
 
 
-    public void deleteTodo(long todoId){
+    public void deleteTodo(long todoId, String accessToken){
         Todo findTodo = findVerifiedTodo(todoId);
+
+        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         todoRepository.delete(findTodo);
     }
-
-
 
 
 }

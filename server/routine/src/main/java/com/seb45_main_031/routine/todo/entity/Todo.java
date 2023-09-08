@@ -23,17 +23,11 @@ public class Todo {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 20, nullable = false)
     private String content;
-
-//    @Column(nullable = false)
-//    private boolean complete;
 
     @Enumerated(EnumType.STRING)
     private Complete complete = Complete.NONE;
-
-//    @Column(nullable = false)
-//    private int todoCount;
 
     @Column(nullable = false)
     private String todoEmoji;
@@ -56,6 +50,5 @@ public class Todo {
         NONE;
 
     }
-
 
 }
