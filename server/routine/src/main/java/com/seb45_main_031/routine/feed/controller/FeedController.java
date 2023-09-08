@@ -48,31 +48,37 @@ public class FeedController {
     @PatchMapping("/{feed-id}")
     public ResponseEntity patchFeed(@PathVariable("feed-id") @Positive long feedId,
                                     @Valid @RequestBody FeedDto.Patch feedPatchDto,
-                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToekn) {
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         feedPatchDto.setFeedId(feedId);
+        long findMemberId = feedService.findMemberId(accessToken);
 
-        Feed feed = feedService.updateFeed(mapper.feedPatchDtoToFeed(feedPatchDto), accessToekn);
+        Feed feed = feedService.updateFeed(mapper.feedPatchDtoToFeed(feedPatchDto), accessToken);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed, findMemberId)), HttpStatus.OK);
     }
 
     // 피드 조회
     @GetMapping("/{feed-id}")
-    public ResponseEntity getFeed(@PathVariable("feed-id") @Positive long feedId) {
+    public ResponseEntity getFeed(@PathVariable("feed-id") @Positive long feedId,
+                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
         Feed feed = feedService.findFeed(feedId);
+        long memberId = feedService.findMemberId(accessToken);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed, memberId)), HttpStatus.OK);
     }
 
     // 피드 리스트 조회
     @GetMapping
     public ResponseEntity getFeeds(@RequestParam(required = false, defaultValue = "1") int page,
-                                   @RequestParam(required = false, defaultValue = "10") int size) {
+                                   @RequestParam(required = false, defaultValue = "10") int size,
+                                   @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         Page<Feed> pageFeeds = feedService.findFeeds(page - 1, size);
         List<Feed> feeds = pageFeeds.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(mapper.feedsToFeedResponseDtos(feeds), pageFeeds), HttpStatus.OK);
+        long findMemberId = feedService.findMemberId(accessToken);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.feedsToFeedResponseDtos(feeds, findMemberId), pageFeeds), HttpStatus.OK);
     }
 
     // 피드 삭제

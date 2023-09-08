@@ -101,4 +101,12 @@ public class FeedService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_MATCHED);
         }
     }
+
+    // 액세스 토큰에서 회원ID 찾기
+    public long findMemberId(String accessToken) {
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        long memberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
+
+        return memberId;
+    }
 }

@@ -1,5 +1,6 @@
 package com.seb45_main_031.routine.feed.dto;
 
+import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.feedTag.dto.FeedTagDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,10 +46,12 @@ public class FeedDto {
         private long memberId;
         private String nickname;
         private String content;
+        private int likeCount;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private List<CommentResponse> comments;
         private List<TagResponse> tagsResponses;
+        private FeedLikeInfo feedLikeInfo;
     }
 
     @Getter
@@ -84,5 +87,14 @@ public class FeedDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class FeedLikeInfo {
+        private long memberId;
+        private String nickname;
+        private FeedLike.FeedLikes feedLikes;
     }
 }
