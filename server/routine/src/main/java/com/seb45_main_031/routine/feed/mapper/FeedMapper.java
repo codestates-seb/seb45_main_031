@@ -3,6 +3,7 @@ package com.seb45_main_031.routine.feed.mapper;
 import com.seb45_main_031.routine.comment.entity.Comment;
 import com.seb45_main_031.routine.feed.dto.FeedDto;
 import com.seb45_main_031.routine.feed.entity.Feed;
+import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.feedTag.entity.FeedTag;
 import com.seb45_main_031.routine.member.entity.Member;
 
@@ -68,17 +69,33 @@ public interface FeedMapper {
         return feed;
     }
 
-    default FeedDto.Response feedToFeedResponseDto(Feed feed) {
+    default FeedDto.Response feedToFeedResponseDto(Feed feed, long findMemberId) {
 
-        FeedDto.Response feedResponseDto = FeedDto.Response.builder()
+        FeedDto.Response response = FeedDto.Response.builder()
                 .feedId(feed.getFeedId())
                 .memberId(feed.getMember().getMemberId())
                 .nickname(feed.getMember().getNickname())
                 .content(feed.getContent())
+                .likeCount(feed.getLikeCount())
                 .createdAt(feed.getCreatedAt())
                 .modifiedAt(feed.getModifiedAt())
                 .build();
 
+        // feedLike 에서 memberId 일치 / 아니면 null
+        FeedLike feedLike = feed.getFeedLikes().stream()
+                .filter(feedLikes -> feedLikes.getMember().getMemberId() == findMemberId)
+                .findAny().orElse(null);
+
+        // feedLike가 null이 아닐 경우
+        if (feedLike != null) {
+            FeedDto.FeedLikeInfo feedLikeInfo = FeedDto.FeedLikeInfo.builder()
+                    .memberId(feedLike.getMember().getMemberId())
+                    .nickname(feedLike.getMember().getNickname())
+                    .feedLikes(feedLike.getFeedLikes())
+                    .build();
+
+            response.setFeedLikeInfo(feedLikeInfo);
+        }
 
         List<Comment> comments = feed.getComments();
 
@@ -108,8 +125,7 @@ public interface FeedMapper {
                         .build()
                 ).collect(Collectors.toList());
 
-        feedResponseDto.setComments(commentResponses);
-
+        response.setComments(commentResponses);
 
         List<FeedTag> feedTags = feed.getFeedTags();
 
@@ -120,10 +136,43 @@ public interface FeedMapper {
                         .build()
                 ).collect(Collectors.toList());
 
-        feedResponseDto.setTagsResponses(tagResponses);
+        response.setTagsResponses(tagResponses);
 
-        return feedResponseDto;
+        return response;
     }
 
-    List<FeedDto.Response> feedsToFeedResponseDtos(List<Feed> feeds);
+//    default FeedDto.FeedLikeResponse feedLikeResponse(Feed feed, long memberId) {
+//
+//        FeedDto.FeedLikeResponse response = FeedDto.FeedLikeResponse.builder()
+//                .feedId(feed.getFeedId())
+//                .content(feed.getContent())
+//                .likeCount(feed.getLikeCount())
+//                .build();
+//
+//        // feedLike 에서 memberId 일치 / 아니면 null
+//        FeedLike feedLike = feed.getFeedLikes().stream()
+//                .filter(feedLikes -> feedLikes.getMember().getMemberId() == memberId)
+//                .findAny().orElse(null);
+//
+//        // feedLike가 null이 아닐 경우
+//        if (feedLike != null) {
+//            FeedDto.FeedLikeInfo feedLikeInfo = FeedDto.FeedLikeInfo.builder()
+//                    .memberId(feedLike.getMember().getMemberId())
+//                    .nickname(feedLike.getMember().getNickname())
+//                    .feedLikes(feedLike.getFeedLikes())
+//                    .build();
+//            response.setFeedLikeInfo(feedLikeInfo);
+//        }
+//
+//        return response;
+//    }
+
+    default List<FeedDto.Response> feedsToFeedResponseDtos(List<Feed> feeds, long findMemberId) {
+
+        List<FeedDto.Response> responses = feeds.stream()
+                .map(feed -> feedToFeedResponseDto(feed, findMemberId))
+                .collect(Collectors.toList());
+
+        return responses;
+    }
 }

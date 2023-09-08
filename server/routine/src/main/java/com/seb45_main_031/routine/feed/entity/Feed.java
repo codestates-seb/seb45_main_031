@@ -2,9 +2,9 @@ package com.seb45_main_031.routine.feed.entity;
 
 import com.seb45_main_031.routine.audit.Auditable;
 import com.seb45_main_031.routine.comment.entity.Comment;
+import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.feedTag.entity.FeedTag;
 import com.seb45_main_031.routine.member.entity.Member;
-import com.seb45_main_031.routine.tag.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +26,8 @@ public class Feed extends Auditable {
     @Column(nullable = false)
     private String content;
 
+    private int likeCount;
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -36,4 +38,6 @@ public class Feed extends Auditable {
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     private List<FeedTag> feedTags = new ArrayList<>();
 
+    @OneToMany(mappedBy = "feed")
+    private List<FeedLike> feedLikes;
 }
