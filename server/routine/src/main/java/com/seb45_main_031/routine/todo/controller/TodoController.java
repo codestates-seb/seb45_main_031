@@ -1,6 +1,5 @@
 package com.seb45_main_031.routine.todo.controller;
 
-//import com.seb45_main_031.routine.dto.SingeResponseDto;
 import com.seb45_main_031.routine.dto.SingleResponseDto;
 
 import com.seb45_main_031.routine.todo.dto.TodoDto;
@@ -38,9 +37,10 @@ public class TodoController {
 
 
     @PostMapping
-    public ResponseEntity postTodo(@RequestBody @Valid TodoDto.Post todoPostDto){
+    public ResponseEntity postTodo(@RequestBody @Valid TodoDto.Post todoPostDto,
+                                   @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        Todo todo = todoService.createTodo(mapper.todoPostDtoToTodo(todoPostDto));
+        Todo todo = todoService.createTodo(mapper.todoPostDtoToTodo(todoPostDto), accessToken);
 
         return  new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.CREATED);
 
@@ -49,10 +49,11 @@ public class TodoController {
 
     @PatchMapping("/{todo-id}")
     public ResponseEntity patchTodo(@RequestBody @Valid TodoDto.Patch todoPatchDto,
-                                    @PathVariable("todo-id") long todoId){
+                                    @PathVariable("todo-id") long todoId,
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
         todoPatchDto.setTodoId(todoId);
-        Todo todo = todoService.updateTodo(mapper.todoPatchDtoToTodo(todoPatchDto));
+        Todo todo = todoService.updateTodo(mapper.todoPatchDtoToTodo(todoPatchDto), accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.OK);
 
@@ -63,10 +64,11 @@ public class TodoController {
     // Patch Complete
     @PatchMapping("/complete/{todo-id}")
     public ResponseEntity patchTodoComplete(@RequestBody @Valid TodoDto.CompletePatch todoCompletePatchDto,
-                                            @PathVariable("todo-id") long todoId){
+                                            @PathVariable("todo-id") long todoId,
+                                            @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
         todoCompletePatchDto.setTodoId(todoId);
-        Todo todo = todoService.updateTodoComplete(mapper.todoCompletePatchDtoToTodo(todoCompletePatchDto));
+        Todo todo = todoService.updateTodoComplete(mapper.todoCompletePatchDtoToTodo(todoCompletePatchDto), accessToken);
 
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.OK);
@@ -103,9 +105,10 @@ public class TodoController {
 
 
     @DeleteMapping("/{todo-id}")
-    public ResponseEntity deleteTodo(@PathVariable("todo-id") @Positive long todoId){
+    public ResponseEntity deleteTodo(@PathVariable("todo-id") @Positive long todoId,
+                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        todoService.deleteTodo(todoId);
+        todoService.deleteTodo(todoId, accessToken);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 

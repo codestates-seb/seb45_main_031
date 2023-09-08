@@ -18,11 +18,9 @@ public class TodoDto {
     @Setter
     public static class Post{
 
-        @NotNull
         private long memberId;
 
         @Positive(message = "양수 tagId 값을 넣어주세요")
-        @NotNull
         private long tagId;
 
         @NotNull
@@ -40,9 +38,6 @@ public class TodoDto {
     }
 
 
-
-
-
     @Getter
     @Setter
     @Builder
@@ -58,15 +53,10 @@ public class TodoDto {
         private String todoEmoji;
 
         @Positive(message = "양수 tagId 값을 넣어주세요")
-        @NotNull
         private long tagId;
 
-        //test
-//        private boolean complete;
-
-
-
     }
+
 
     @Getter
     @Setter
@@ -104,7 +94,6 @@ public class TodoDto {
         private int todoCount;
         private int completeCount;
     }
-
 
     @Getter
     @Setter
