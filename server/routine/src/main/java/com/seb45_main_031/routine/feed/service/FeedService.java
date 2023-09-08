@@ -5,8 +5,6 @@ import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.repository.FeedRepository;
-import com.seb45_main_031.routine.feedLike.entity.FeedLike;
-import com.seb45_main_031.routine.feedLike.repository.FeedLikeRepository;
 import com.seb45_main_031.routine.feedTag.repository.FeedTagRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,13 +21,11 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final FeedTagRepository feedTagRepository;
     private final JwtTokenizer jwtTokenizer;
-    private final FeedLikeRepository feedLikeRepository;
 
-    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository, JwtTokenizer jwtTokenizer, FeedLikeRepository feedLikeRepository) {
+    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository, JwtTokenizer jwtTokenizer) {
         this.feedRepository = feedRepository;
         this.feedTagRepository = feedTagRepository;
         this.jwtTokenizer = jwtTokenizer;
-        this.feedLikeRepository = feedLikeRepository;
     }
 
     // 피드 작성
@@ -112,13 +108,5 @@ public class FeedService {
         long memberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
 
         return memberId;
-    }
-
-    // 피드 좋아요
-    public FeedLike findFeedLike(long feedId, String accessToken) {
-        long findMemberId = findMemberId(accessToken);
-        FeedLike feedLike = feedLikeRepository.findByMemberMemberIdAndFeedFeedId(findMemberId, feedId);
-
-        return feedLike;
     }
 }

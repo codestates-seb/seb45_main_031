@@ -24,7 +24,7 @@ public class FeedLikeController {
         this.mapper = mapper;
     }
 
-    // 피드 좋아요 누르기
+    // 피드에 좋아요 누르기
     @PostMapping
     public ResponseEntity postFeedLike (@RequestBody FeedLikeDto.Post feedLikePostDto) {
         FeedLike feedLike = feedLikeService.createFeedLike(mapper.FeedLikePostDtoToFeedLikes(feedLikePostDto));

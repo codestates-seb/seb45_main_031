@@ -51,7 +51,6 @@ public class FeedDto {
         private LocalDateTime modifiedAt;
         private List<CommentResponse> comments;
         private List<TagResponse> tagsResponses;
-//        private List<FeedLikeResponse> feedLikeResponses;
         private FeedLikeInfo feedLikeInfo;
     }
 
@@ -89,16 +88,6 @@ public class FeedDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
-
-//    @Getter
-//    @Setter
-//    @Builder
-//    public static class FeedLikeResponse {
-//        private long feedId;
-//        private String content;
-//        private int likeCount;
-//        private FeedLikeInfo feedLikeInfo;
-//    }
 
     @Getter
     @Setter

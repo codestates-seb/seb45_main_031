@@ -43,9 +43,8 @@ public class FeedLikeService {
         boolean isLiked = findFeedLike.getFeedLikes() == FeedLike.FeedLikes.LIKE;
         findFeedLike.setFeedLikes(isLiked ? FeedLike.FeedLikes.NONE : FeedLike.FeedLikes.LIKE);
 
-        // likeCount : 전에 좋아요를 눌렀을 경우 감소 / 그렇지 않으면 증가
-        int likeCount = isLiked ? -1 : 1;
-        findFeed.setLikeCount(findFeed.getLikeCount() + likeCount);
+        // likeCount : 이전에 좋아요를 눌렀을 경우 감소 / 그렇지 않으면 증가
+        findFeed.setLikeCount(isLiked ? findFeed.getLikeCount() - 1 : findFeed.getLikeCount() + 1);
 
         return feedLikeRepository.save(findFeedLike);
     }

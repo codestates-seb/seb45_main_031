@@ -6,7 +6,6 @@ import com.seb45_main_031.routine.feed.dto.FeedDto;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.mapper.FeedMapper;
 import com.seb45_main_031.routine.feed.service.FeedService;
-import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.utils.UriCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -51,10 +50,11 @@ public class FeedController {
                                     @Valid @RequestBody FeedDto.Patch feedPatchDto,
                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         feedPatchDto.setFeedId(feedId);
+        long findMemberId = feedService.findMemberId(accessToken);
 
         Feed feed = feedService.updateFeed(mapper.feedPatchDtoToFeed(feedPatchDto), accessToken);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed, findMemberId)), HttpStatus.OK);
     }
 
     // 피드 조회
@@ -89,27 +89,4 @@ public class FeedController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-//    // 회원의 좋아요 피드 조회
-//    @GetMapping("/feedLike/{feed-id}")
-//    public ResponseEntity getFeedLikeFeed(@PathVariable("feed-id") @Positive long feedId,
-//                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-//        Feed feed = feedService.findFeed(feedId);
-//        long memberId = feedService.findMemberId(accessToken);
-//
-//        return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed, memberId)), HttpStatus.OK);
-//    }
-
-//    // 회원의 좋아요 피드 리스트 조회
-//    @GetMapping("/feedLike")
-//    public ResponseEntity getFeedLikeFeeds(@RequestParam(required = false, defaultValue = "1") int page,
-//                                           @RequestParam(required = false, defaultValue = "10") int size,
-//                                           @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
-//        Page<Feed> pageFeeds = feedService.findFeeds(page - 1, size);
-//        List<Feed> feeds = pageFeeds.getContent();
-//
-//        long memberId = feedService.findMemberId(accessToken);
-//
-//        return new ResponseEntity<>(new MultiResponseDto<>(mapper.feedLikeResponses(feeds, memberId), pageFeeds), HttpStatus.OK);
-//    }
 }

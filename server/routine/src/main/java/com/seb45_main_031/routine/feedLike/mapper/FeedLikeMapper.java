@@ -4,6 +4,7 @@ import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feedLike.dto.FeedLikeDto;
 import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.member.entity.Member;
+
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

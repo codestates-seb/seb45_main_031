@@ -1,8 +1,8 @@
 package com.seb45_main_031.routine.feedLike.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder;
 
 public class FeedLikeDto {
 

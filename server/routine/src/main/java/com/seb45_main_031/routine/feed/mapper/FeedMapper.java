@@ -141,32 +141,6 @@ public interface FeedMapper {
         return response;
     }
 
-//    default FeedDto.FeedLikeResponse feedLikeResponse(Feed feed, long memberId) {
-//
-//        FeedDto.FeedLikeResponse response = FeedDto.FeedLikeResponse.builder()
-//                .feedId(feed.getFeedId())
-//                .content(feed.getContent())
-//                .likeCount(feed.getLikeCount())
-//                .build();
-//
-//        // feedLike 에서 memberId 일치 / 아니면 null
-//        FeedLike feedLike = feed.getFeedLikes().stream()
-//                .filter(feedLikes -> feedLikes.getMember().getMemberId() == memberId)
-//                .findAny().orElse(null);
-//
-//        // feedLike가 null이 아닐 경우
-//        if (feedLike != null) {
-//            FeedDto.FeedLikeInfo feedLikeInfo = FeedDto.FeedLikeInfo.builder()
-//                    .memberId(feedLike.getMember().getMemberId())
-//                    .nickname(feedLike.getMember().getNickname())
-//                    .feedLikes(feedLike.getFeedLikes())
-//                    .build();
-//            response.setFeedLikeInfo(feedLikeInfo);
-//        }
-//
-//        return response;
-//    }
-
     default List<FeedDto.Response> feedsToFeedResponseDtos(List<Feed> feeds, long findMemberId) {
 
         List<FeedDto.Response> responses = feeds.stream()

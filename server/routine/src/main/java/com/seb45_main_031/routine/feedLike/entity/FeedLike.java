@@ -2,8 +2,8 @@ package com.seb45_main_031.routine.feedLike.entity;
 
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.member.entity.Member;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
