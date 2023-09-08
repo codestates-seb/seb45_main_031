@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+
+import { postList } from "../data/dummy";
+import FeedCard from "../components/FeedCard";
 
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 
@@ -12,7 +14,7 @@ export default function MyPage() {
         <MyInfo>
           <Title>내 정보</Title>
           <ProfileContent>
-            <ProfileSvg />
+            <ProfileSvg className="photo" />
             <div>
               <SubTitle>🐣 삐약이</SubTitle>
               <p>lalala@gmail.com</p>
@@ -22,10 +24,8 @@ export default function MyPage() {
             </div>
           </ProfileContent>
         </MyInfo>
-        <MyPost>
-          <Title>내 게시물 보기</Title>
-          <LogoutButton />
-        </MyPost>
+        <MyPost />
+        <Logout />
       </Container>
     </MaxContainer>
   );
@@ -43,7 +43,6 @@ const Container = styled.div`
   height: 100vh;
   width: 430px;
   background-color: #ececec;
-  gap: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +54,11 @@ const Title = styled.div`
   font-size: 1.2rem;
   color: #232629;
   font-weight: bold;
-  margin-bottom: 20px;
+  background-color: #fff;
+
+  &.myPost {
+    padding: 5px 20px 5px 20px;
+  }
 `;
 
 const SubTitle = styled.div`
@@ -135,13 +138,13 @@ const ModalButton = styled.button`
   }
 `;
 
-// 내 정보
+// Section 내 정보
 const MyInfo = styled.div`
   background-color: #fff;
   margin-top: 95px;
-  height: 230px;
+  height: 180px;
   width: 430px;
-  padding: 20px;
+  padding: 15px 20px 15px 20px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -150,32 +153,81 @@ const MyInfo = styled.div`
 const EditButton = styled(GreyButton)`
   width: 190px;
   height: 35px;
-  padding: 10px;
-  margin-top: 1rem;
+  padding: 5px;
+  margin-top: 0.8rem;
 `;
 
 const ProfileContent = styled.div`
   display: grid;
   grid-template-columns: 4fr 6fr;
   grid-template-rows: repeat(1, 1fr);
-  margin: 1rem;
+  margin: 0.5rem;
+  height: 100px;
+
+  .photo {
+    width: 100px;
+    margin: auto;
+  }
 
   p {
     color: #949597;
     line-height: 2rem;
+    font-size: 0.8rem;
   }
 `;
 
-// 내 게시물 보기
-const MyPost = styled.div`
+// Section 내 게시물 보기
+const MyPost = () => {
+  // 특정 사용자의 게시물 필터링
+  const getUserPosts = (userId) => {
+    return postList.posts.filter((posts) => posts.memberId === userId);
+  };
+  // 게시물 렌더링
+  const UserPosts = ({ userId }) => {
+    const userPosts = getUserPosts(userId);
+    return (
+      <MyPostList>
+        {userPosts.map((post) => (
+          <li key={post.id}>
+            <FeedCard post={post} />
+          </li>
+        ))}
+      </MyPostList>
+    );
+  };
+  // 사용자의 게시물 조회
+  const ShowMyPost = () => {
+    return (
+      <div>
+        <UserPosts userId={6} />
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <Title className="myPost">내 게시물 보기</Title>
+      <MyPostContainer>
+        <ShowMyPost />
+      </MyPostContainer>
+    </>
+  );
+};
+
+const MyPostContainer = styled.div`
   background-color: #fff;
-  height: 592px;
-  width: 430px;
+  max-height: 380px;
+  overflow-y: scroll;
   padding: 20px;
 `;
 
-//로그아웃 버튼
-function LogoutButton() {
+const MyPostList = styled.ul`
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
+`;
+
+//Section 로그아웃
+const Logout = () => {
   const [isModalOpen, setIsMOdalOpen] = useState(false);
   const handleLogout = () => {
     //로그아웃 로직 추가하기
@@ -189,10 +241,8 @@ function LogoutButton() {
   };
 
   return (
-    <div>
-      <WrapperLogoutButton onClick={handleModalOpen}>
-        로그아웃
-      </WrapperLogoutButton>
+    <LogoutSection>
+      <LogoutButton onClick={handleModalOpen}>로그아웃</LogoutButton>
       {isModalOpen && (
         <ModalOverlay>
           <ModalContent>
@@ -208,11 +258,21 @@ function LogoutButton() {
           </ModalContent>
         </ModalOverlay>
       )}
-    </div>
+    </LogoutSection>
   );
-}
+};
 
-const WrapperLogoutButton = styled(GreyButton)`
+const LogoutSection = styled.div`
+  height: 100%;
+  width: 430px;
+  padding: 5px 20px 5px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #ffffff;
+`;
+
+const LogoutButton = styled(GreyButton)`
   width: 100%;
   height: 35px;
   padding: 10px;
