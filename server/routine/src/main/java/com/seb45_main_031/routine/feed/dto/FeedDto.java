@@ -49,7 +49,7 @@ public class FeedDto {
         private int likeCount;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private List<CommentResponse> comments;
+        private List<ParentResponse> parentResponses;
         private List<TagResponse> tagsResponses;
         private FeedLikeInfo feedLikeInfo;
     }
@@ -57,7 +57,7 @@ public class FeedDto {
     @Getter
     @Setter
     @Builder
-    public static class CommentResponse {
+    public static class ParentResponse {
         private long commentId;
         private long memberId;
         private long feedId;
@@ -65,7 +65,7 @@ public class FeedDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private List<ReplyResponse> replyResponses;
+        private List<ChildResponse> childResponses;
     }
 
     @Getter
@@ -79,7 +79,7 @@ public class FeedDto {
     @Getter
     @Setter
     @Builder
-    public static class ReplyResponse {
+    public static class ChildResponse {
         private long commentId;
         private long parentId;
         private long memberId;

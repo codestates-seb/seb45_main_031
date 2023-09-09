@@ -35,9 +35,10 @@ public class FeedController {
 
     // 피드 작성
     @PostMapping
-    public ResponseEntity postFeed(@Valid @RequestBody FeedDto.Post feedPostDto) {
+    public ResponseEntity postFeed(@Valid @RequestBody FeedDto.Post feedPostDto,
+                                   @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
-        Feed feed = feedService.createFeed(mapper.feedPostDtoToFeed(feedPostDto));
+        Feed feed = feedService.createFeed(mapper.feedPostDtoToFeed(feedPostDto), accessToken);
 
         URI location = UriCreator.createUri(FEED_DEFAULT_URL, feed.getFeedId());
 
@@ -49,6 +50,7 @@ public class FeedController {
     public ResponseEntity patchFeed(@PathVariable("feed-id") @Positive long feedId,
                                     @Valid @RequestBody FeedDto.Patch feedPatchDto,
                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+
         feedPatchDto.setFeedId(feedId);
         long findMemberId = feedService.findMemberId(accessToken);
 
@@ -73,6 +75,7 @@ public class FeedController {
     public ResponseEntity getFeeds(@RequestParam(required = false, defaultValue = "1") int page,
                                    @RequestParam(required = false, defaultValue = "10") int size,
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+
         Page<Feed> pageFeeds = feedService.findFeeds(page - 1, size);
         List<Feed> feeds = pageFeeds.getContent();
 
@@ -85,6 +88,7 @@ public class FeedController {
     @DeleteMapping("/{feed-id}")
     public ResponseEntity deleteFeed(@PathVariable("feed-id") @Positive long feedId,
                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+
         feedService.deleteFeed(feedId, accessToken);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
