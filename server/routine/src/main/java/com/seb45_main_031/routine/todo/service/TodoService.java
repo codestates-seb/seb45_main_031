@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class TodoService {
     }
 
 
+    // Todo 할 일 등록
     public Todo createTodo(Todo todo, String accessToken){
 
         Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
@@ -54,6 +56,21 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
+    // Todo 할 일 여러 개 등록
+    public List<Todo> createTodos(List<Todo> todos, String accessToken){
+
+        for (Todo todo : todos){
+
+            Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
+            todo.setTag(findTag);
+        }
+
+        memberService.checkMemberId(todos.get(0).getMember().getMemberId(), accessToken);
+
+        return todoRepository.saveAll(todos);
+    }
+
+    // Todo 수정
 
     public Todo updateTodo(Todo todo, String accessToken){
 
@@ -80,6 +97,7 @@ public class TodoService {
         return todoRepository.save(findTodo);
     }
 
+    // Todo 완료 여부
     public Todo updateTodoComplete(Todo todo, String accessToken){
 
         Todo findTodo = findVerifiedTodo(todo.getTodoId());
@@ -95,18 +113,19 @@ public class TodoService {
     }
 
 
+    // Todo 단일 조회
     public Todo findTodo(long todoId, String accessToken) {
 
-        Optional<Todo> optionalTodo = todoRepository.findById(todoId);
+        Todo findTodo = findVerifiedTodo(todoId);
 
-        Todo findTodo = optionalTodo.orElseThrow(() -> new BusinessLogicException(ExceptionCode.TODO_NOT_FOUND));
-
-        memberService.checkMemberId(optionalTodo.get().getMember().getMemberId(), accessToken);
+        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         return findTodo;
 
     }
 
+
+    // Todo 리스트 조회
     public List<Todo> findTodos(LocalDate date, long memberId, String accessToken){
 
 //        List<Todo> findTodos = todoRepository.findByDate(date);
@@ -125,13 +144,13 @@ public class TodoService {
 
 
 
+    // Todo 삭제
     public void deleteTodo(long todoId, String accessToken){
+
         Todo findTodo = findVerifiedTodo(todoId);
 
         memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         todoRepository.delete(findTodo);
     }
-
-
 }

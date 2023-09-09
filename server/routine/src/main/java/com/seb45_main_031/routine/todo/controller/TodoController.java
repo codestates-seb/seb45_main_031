@@ -36,6 +36,7 @@ public class TodoController {
     }
 
 
+    //Todo 등록
     @PostMapping
     public ResponseEntity postTodo(@RequestBody @Valid TodoDto.Post todoPostDto,
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
@@ -46,6 +47,19 @@ public class TodoController {
 
     }
 
+
+    // Todo 여러 개 등록
+    @PostMapping("/todoList")
+    public ResponseEntity postTodos(@RequestBody @Valid TodoDto.PostList todoPostListDto,
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
+
+        List<Todo> todo = todoService.createTodos(mapper.todoPostDtosToTodos(todoPostListDto), accessToken);
+
+        return  new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoResponseDtos(todo)), HttpStatus.CREATED);
+
+    }
+
+    // Todo 수정
 
     @PatchMapping("/{todo-id}")
     public ResponseEntity patchTodo(@RequestBody @Valid TodoDto.Patch todoPatchDto,
@@ -61,7 +75,7 @@ public class TodoController {
 
 
 
-    // Patch Complete
+    // Todo Patch Complete 완료여부
     @PatchMapping("/complete/{todo-id}")
     public ResponseEntity patchTodoComplete(@RequestBody @Valid TodoDto.CompletePatch todoCompletePatchDto,
                                             @PathVariable("todo-id") long todoId,
@@ -72,7 +86,6 @@ public class TodoController {
 
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.OK);
-
 
     }
 
@@ -104,6 +117,7 @@ public class TodoController {
     }
 
 
+    // Todo 삭제
     @DeleteMapping("/{todo-id}")
     public ResponseEntity deleteTodo(@PathVariable("todo-id") @Positive long todoId,
                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
@@ -113,6 +127,4 @@ public class TodoController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 
     }
-
-
 }

@@ -6,7 +6,9 @@ import com.seb45_main_031.routine.todo.dto.TodoDto;
 import com.seb45_main_031.routine.todo.entity.Todo;
 import org.mapstruct.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface TodoMapper {
@@ -31,6 +33,16 @@ public interface TodoMapper {
 
 
         return todo;
+    }
+
+
+    default List<Todo> todoPostDtosToTodos(TodoDto.PostList postListDto){
+
+        List<Todo> todos = postListDto.getPostList().stream()
+                .map(post -> todoPostDtoToTodo(post))
+                .collect(Collectors.toList());
+
+        return todos;
     }
 
 

@@ -40,6 +40,14 @@ public class TodoDto {
 
     @Getter
     @Setter
+    public static class PostList{
+
+        List<Post> postList;
+    }
+
+
+    @Getter
+    @Setter
     @Builder
     public static class Patch{
 
@@ -103,5 +111,4 @@ public class TodoDto {
         private String tagName;
 
     }
-
 }
