@@ -17,11 +17,17 @@ public interface CommentMapper {
         Feed feed = new Feed();
         feed.setFeedId(commentPostDto.getFeedId());
 
-
         Comment comment = new Comment();
         comment.setMember(member);
         comment.setFeed(feed);
         comment.setContent(commentPostDto.getContent());
+
+        // 부모 댓글이 0이 아닐 경우, 대댓글 작성 시 부모 댓글 설정
+        if (commentPostDto.getParentId() != 0) {
+            Comment parent = new Comment();
+            parent.setCommentId(commentPostDto.getParentId());
+            comment.setParent(parent);
+        }
 
         return comment;
     }
@@ -30,7 +36,7 @@ public interface CommentMapper {
 
     default CommentDto.Response commentToCommentResponseDto(Comment comment) {
 
-        CommentDto.Response commentResponseDto = CommentDto.Response.builder()
+        CommentDto.Response response = CommentDto.Response.builder()
                 .commentId(comment.getCommentId())
                 .memberId(comment.getMember().getMemberId())
                 .feedId(comment.getFeed().getFeedId())
@@ -41,6 +47,6 @@ public interface CommentMapper {
                 .modifiedAt(comment.getModifiedAt())
                 .build();
 
-        return commentResponseDto;
+        return response;
     }
 }

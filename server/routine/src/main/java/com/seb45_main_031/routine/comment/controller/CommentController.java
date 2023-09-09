@@ -32,13 +32,12 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping
-    public ResponseEntity postComment(@Valid @RequestBody CommentDto.Post commentPostDto) {
+    public ResponseEntity postComment(@Valid @RequestBody CommentDto.Post commentPostDto,
+                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
-        Comment comment = mapper.commentPostDtoToComment(commentPostDto);
+        Comment comment = commentService.createComment(mapper.commentPostDtoToComment(commentPostDto), accessToken);
 
-        Comment savedComment = commentService.createComment(comment);
-
-        URI location = UriCreator.createUri(COMMENT_DEFAULT_URL, savedComment.getCommentId());
+        URI location = UriCreator.createUri(COMMENT_DEFAULT_URL, comment.getCommentId());
 
         return ResponseEntity.created(location).build();
     }
