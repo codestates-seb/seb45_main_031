@@ -6,6 +6,7 @@ import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.repository.FeedRepository;
 import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.feedLike.repository.FeedLikeRepository;
+import com.seb45_main_031.routine.member.service.MemberService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +18,21 @@ public class FeedLikeService {
 
     private final FeedLikeRepository feedLikeRepository;
     private final FeedRepository feedRepository;
+    private final MemberService memberService;
 
-    public FeedLikeService(FeedLikeRepository feedLikeRepository, FeedRepository feedRepository) {
+    public FeedLikeService(FeedLikeRepository feedLikeRepository, FeedRepository feedRepository, MemberService memberService) {
         this.feedLikeRepository = feedLikeRepository;
         this.feedRepository = feedRepository;
+        this.memberService = memberService;
     }
 
     // 피드 좋아요 누르기
-    public FeedLike createFeedLike(FeedLike feedLike) {
+    public FeedLike createFeedLike(FeedLike feedLike, String accessToken) {
         FeedLike findFeedLike = feedLikeRepository.findByMemberMemberIdAndFeedFeedId(
                 feedLike.getMember().getMemberId(),
                 feedLike.getFeed().getFeedId());
+
+        memberService.checkMemberId(feedLike.getMember().getMemberId(), accessToken);
 
         Optional<Feed> optional = feedRepository.findById(feedLike.getFeed().getFeedId());
         Feed findFeed = optional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));

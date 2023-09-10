@@ -99,9 +99,9 @@ public interface FeedMapper {
 
         List<Comment> comments = feed.getComments();
 
-        List<FeedDto.CommentResponse> commentResponses = comments.stream()
-                .filter(comment -> comment.getParentComment() == null)
-                .map(comment -> FeedDto.CommentResponse.builder()
+        List<FeedDto.ParentResponse> parentResponses = comments.stream()
+                .filter(comment -> comment.getParent() == null)
+                .map(comment -> FeedDto.ParentResponse.builder()
                         .commentId(comment.getCommentId())
                         .memberId(comment.getMember().getMemberId())
                         .feedId(comment.getFeed().getFeedId())
@@ -109,11 +109,11 @@ public interface FeedMapper {
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .replyResponses(
+                        .childResponses(
                                 comment.getChildren().stream()
-                                        .map(childComment -> FeedDto.ReplyResponse.builder()
+                                        .map(childComment -> FeedDto.ChildResponse.builder()
                                                 .commentId(childComment.getCommentId())
-                                                .parentId(childComment.getParentComment().getCommentId())
+                                                .parentId(childComment.getParent().getCommentId())
                                                 .memberId(childComment.getMember().getMemberId())
                                                 .content(childComment.getContent())
                                                 .nickname(childComment.getMember().getNickname())
@@ -125,7 +125,7 @@ public interface FeedMapper {
                         .build()
                 ).collect(Collectors.toList());
 
-        response.setComments(commentResponses);
+        response.setParentResponses(parentResponses);
 
         List<FeedTag> feedTags = feed.getFeedTags();
 

@@ -24,6 +24,8 @@ public class CommentDto {
 
         @NotBlank(message = "내용을 작성해주세요.")
         private String content;
+
+        private long parentId;
     }
 
     @Getter
