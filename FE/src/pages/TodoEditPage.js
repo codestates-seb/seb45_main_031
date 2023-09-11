@@ -314,9 +314,13 @@ const TodoEditSection = styled.section`
 
   background-color: #ececec;
 
+  padding: 95px 0px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  overflow: auto;
 `;
 
 const Title = () => {
