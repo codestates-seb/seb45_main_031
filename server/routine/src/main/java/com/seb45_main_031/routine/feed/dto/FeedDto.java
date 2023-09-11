@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -27,8 +28,10 @@ public class FeedDto {
         @NotBlank(message = "내용을 작성해주세요.")
         private String content;
 
+        @Valid
         private List<FeedTagDto> feedTagDtos;
 
+        @Valid
         private List<FeedTodoDto> feedTodoDtos;
     }
 
@@ -40,8 +43,10 @@ public class FeedDto {
         @NotBlank(message = "내용을 작성해주세요.")
         private String content;
 
+        @Valid
         private List<FeedTagDto> feedTagDtos;
 
+        @Valid
         private List<FeedTodoDto> feedTodoDtos;
     }
 
