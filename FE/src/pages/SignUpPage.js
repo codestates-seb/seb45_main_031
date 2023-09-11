@@ -1,8 +1,82 @@
 import { styled } from "styled-components";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 import googleIcon from "../assets/images/google.png";
 
 const SignUpPage = () => {
+  //이메일, 닉네임, 비밀번호, 비밀번호확인
+  const [email, setEmail] = useState("");
+  const [nickName, setNickName] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  //오류메세지 상태저장
+  const [emailMessege, setEmailMessage] = useState("");
+  const [nickNameMessage, setNickNameMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  //유효성 검사
+  const [isEmail, setIsEmail] = useState(false);
+  const [isNickName, setIsNickName] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+
+  //이메일
+  const onChangeEmail = (e) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("적절하지 않은 아이디 형식입니다.");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("");
+      setIsEmail(true);
+    }
+  };
+  //닉네임
+  const onChangeNickName = (e) => {
+    setNickName(e.target.value);
+    if (e.target.value.length < 2 || e.target.value.length > 8) {
+      setNickNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
+      setIsNickName(false);
+    } else {
+      setNickNameMessage("");
+      setIsNickName(true);
+    }
+  };
+  //비밀번호
+  const onChangePassword = (e) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+    const passwordCurrent = e.target.value;
+    setPassword(passwordCurrent);
+
+    if (!passwordRegex.test(passwordCurrent)) {
+      setPasswordMessage(
+        "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요.",
+      );
+      setIsPassword(false);
+    } else {
+      setPasswordMessage("");
+      setIsPassword(true);
+    }
+  };
+  //비밀번호 confirm
+  const onChangePasswordConfirm = (e) => {
+    const passwordConfirmCurrent = e.target.value;
+    setPasswordConfirm(passwordConfirmCurrent);
+
+    if (password === passwordConfirmCurrent) {
+      setPasswordConfirmMessage("");
+      setIsPasswordConfirm(true);
+    } else {
+      setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.");
+      setIsPasswordConfirm(false);
+    }
+  };
+
   return (
     <Container>
       <SignUpContainer>
@@ -18,9 +92,12 @@ const SignUpPage = () => {
             <InputId
               type="email"
               name="id"
+              onChange={onChangeEmail}
               placeholder="이메일 형식의 아이디를 입력해주세요."
             />
-            <IdErrorMessage>이미 사용중인 아이디입니다.</IdErrorMessage>
+            <IdErrorMessage>
+              {!isEmail && email.length > 0 && <div>{emailMessege}</div>}
+            </IdErrorMessage>
           </EmailContainer>
           {/*Nickname*/}
           <NickNameText>Nickname</NickNameText>
@@ -28,10 +105,13 @@ const SignUpPage = () => {
             <InputNickName
               type="text"
               name="nickname"
+              onChange={onChangeNickName}
               placeholder="사용하실 닉네임을 입력해주세요."
             />
             <NickNameErrorMassage>
-              이미 사용중인 닉네임입니다.
+              {!isNickName && nickName.length > 0 && (
+                <div>{nickNameMessage}</div>
+              )}
             </NickNameErrorMassage>
           </NickNameContainer>
           {/*Password*/}
@@ -40,9 +120,15 @@ const SignUpPage = () => {
             <InputPassword
               type="password"
               name="password"
+              onChange={onChangePassword}
               placeholder="비밀번호를 입력해주세요."
               autocomplete="current-password"
             />
+            <PasswordErrorMassage>
+              {!isPassword && password.length > 0 && (
+                <div>{passwordMessage}</div>
+              )}
+            </PasswordErrorMassage>
           </PasswordContainer>
           {/*Confirmation*/}
           <ConfirmationText>Confirmation</ConfirmationText>
@@ -50,18 +136,29 @@ const SignUpPage = () => {
             <InputConfirmation
               type="password"
               name="Confirmation"
+              onChange={onChangePasswordConfirm}
               placeholder="비밀번호를 한번 더 입력해주세요."
               autocomplete="current-password"
             />
             <ConfirmationErrorMassage>
-              비밀번호가 일치하지 않습니다.
+              {!isPasswordConfirm && passwordConfirm.length > 0 && (
+                <div>{passwordConfirmMessage}</div>
+              )}
             </ConfirmationErrorMassage>
           </ConfirmationContainer>
         </InputForm>
         {/*Confirm*/}
         <ConfirmContainer>
-          <Confirm>확인</Confirm>
-          <CancelBtn>취소</CancelBtn>
+          <ConfirmBtn
+          // disabled={
+          //   !(isEmail && isNickName && isPassword && isPasswordConfirm)
+          // }
+          >
+            <NavLink to="/todo">확인</NavLink>
+          </ConfirmBtn>
+          <CancelBtn>
+            <NavLink to="/login">취소</NavLink>
+          </CancelBtn>
         </ConfirmContainer>
       </SignUpContainer>
     </Container>
@@ -145,7 +242,7 @@ const IdErrorMessage = styled.div`
   color: firebrick;
   margin: 0;
   padding: 5px 10px;
-  margin-right: 150px;
+  margin-right: 120px;
 `;
 
 const NickNameText = styled.span`
@@ -177,7 +274,7 @@ const InputNickName = styled.input`
 const NickNameErrorMassage = styled.div`
   font-size: 0.7rem;
   color: firebrick;
-  margin-right: 150px;
+  margin-right: 80px;
   padding: 5px 10px;
 `;
 
@@ -207,7 +304,11 @@ const InputPassword = styled.input`
     padding-right: 15px;
   }
 `;
-
+const PasswordErrorMassage = styled.div`
+  font-size: 0.7rem;
+  color: firebrick;
+  padding: 5px 10px;
+`;
 const ConfirmationText = styled.span`
   display: block;
   font-size: 1.1rem;
@@ -248,7 +349,7 @@ const ConfirmContainer = styled.div`
   margin-top: 60px;
   /* margin-bottom: 200px; */
 `;
-const Confirm = styled.button`
+const ConfirmBtn = styled.button`
   height: 50px;
   font-size: 0.85rem;
   border: 1px solid 949597;
@@ -273,5 +374,7 @@ const CancelBtn = styled.button`
 
   &:hover {
     background-color: #676767;
+  }
+  &.action {
   }
 `;
