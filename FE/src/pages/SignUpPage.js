@@ -55,7 +55,7 @@ const SignUpPage = () => {
 
     if (!passwordRegex.test(passwordCurrent)) {
       setPasswordMessage(
-        "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요.",
+        "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요. ",
       );
       setIsPassword(false);
     } else {
