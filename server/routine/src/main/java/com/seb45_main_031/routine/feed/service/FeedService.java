@@ -6,6 +6,7 @@ import com.seb45_main_031.routine.exception.ExceptionCode;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.repository.FeedRepository;
 import com.seb45_main_031.routine.feedTag.repository.FeedTagRepository;
+import com.seb45_main_031.routine.feedTodo.repository.FeedTodoRepository;
 import com.seb45_main_031.routine.member.service.MemberService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,12 +22,15 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
     private final FeedTagRepository feedTagRepository;
+    private final FeedTodoRepository feedTodoRepository;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
 
-    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository, MemberService memberService, JwtTokenizer jwtTokenizer) {
+    public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository, FeedTodoRepository feedTodoRepository,
+                       MemberService memberService, JwtTokenizer jwtTokenizer) {
         this.feedRepository = feedRepository;
         this.feedTagRepository = feedTagRepository;
+        this.feedTodoRepository = feedTodoRepository;
         this.memberService = memberService;
         this.jwtTokenizer = jwtTokenizer;
     }
@@ -55,6 +59,14 @@ public class FeedService {
                     .forEach(id -> feedTagRepository.deleteById(id));
 
             findFeed.setFeedTags(feed.getFeedTags());
+        }
+
+        if (feed.getFeedTodos() != null) {
+            findFeed.getFeedTodos().stream()
+                    .map(feedTodo -> feedTodo.getFeedTodoId())
+                    .forEach(id -> feedTodoRepository.deleteById(id));
+
+            findFeed.setFeedTodos(feed.getFeedTodos());
         }
 
         return feedRepository.save(findFeed);
