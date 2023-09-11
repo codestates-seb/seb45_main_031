@@ -23,7 +23,11 @@ import TodoCard from "../components/TodoCard";
 import ModalBackground from "../components/ModalBackground";
 
 //삭제 할 더미 데이터
-const membersId = 1;
+const membersId = 2;
+const accessToken =
+  "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoyLCJ1c2VybmFtZSI6ImFiY2QxMjM0QGdtYWlsLmNvbSIsInN1YiI6ImFiY2QxMjM0QGdtYWlsLmNvbSIsImlhdCI6MTY5NDM5MzI0MywiZXhwIjoxNjk0Mzk1MDQzfQ.j2Slc3u1W6ZDIKPpqgZVUFL53k3MJ_3PUSPoAQAaHjY";
+// const refreshToken =
+//   "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6Miwic3ViIjoiYWJjZDEyMzRAZ21haWwuY29tIiwiaWF0IjoxNjk0MzkzMjQzLCJleHAiOjE2OTQ0MTg0NDN9.9wIbm9LGv7lrR0AwIlOHjDDxjPgvaWy5CShhapgih9A";
 
 const TodoPage = () => {
   const navigate = useNavigate();
@@ -62,19 +66,24 @@ const TodoPage = () => {
   //할 일 목록 데이터 api
   const getTodoList = (date) => {
     try {
-      axios.get(`${URL}/todos/${membersId}?date=${date}`).then((res) => {
-        const data = res.data.data;
-        setMeta(data);
-        setTodos(data.todoResponses);
-        calculatePercent(data.completeCount, data.todoCount);
-        let newFilterList = filterList;
-        data.todoResponses.map((todo) => {
-          const tagName = todo.tagResponse.tagName;
-          const value = newFilterList.filter((filter) => filter === tagName);
-          if (value.length === 0) newFilterList = [...newFilterList, tagName];
+      axios
+        .get(`${URL}/todos/${membersId}`, {
+          params: { date },
+          headers: { Authorization: accessToken },
+        })
+        .then((res) => {
+          const data = res.data.data;
+          setMeta(data);
+          setTodos(data.todoResponses);
+          calculatePercent(data.completeCount, data.todoCount);
+          let newFilterList = filterList;
+          data.todoResponses.map((todo) => {
+            const tagName = todo.tagResponse.tagName;
+            const value = newFilterList.filter((filter) => filter === tagName);
+            if (value.length === 0) newFilterList = [...newFilterList, tagName];
+          });
+          setFilterList(newFilterList);
         });
-        setFilterList(newFilterList);
-      });
     } catch (error) {
       console.error(error);
     }
@@ -143,9 +152,15 @@ const TodoPage = () => {
   const changeComplete = (todoId, complete) => {
     try {
       axios
-        .patch(`${URL}/todos/complete/${todoId}`, {
-          complete: complete === "DONE" ? "NONE" : "DONE",
-        })
+        .patch(
+          `${URL}/todos/complete/${todoId}`,
+          {
+            complete: complete === "DONE" ? "NONE" : "DONE",
+          },
+          {
+            headers: { Authorization: accessToken },
+          },
+        )
         .then(() => getTodoList(date));
 
       exitTodoModal(date);
@@ -157,7 +172,11 @@ const TodoPage = () => {
   //할 일 삭제 버튼
   const deleteTodo = (todoId) => {
     try {
-      axios.delete(`${URL}/todos/${todoId}`).then(() => getTodoList(date));
+      axios
+        .delete(`${URL}/todos/${todoId}`, {
+          headers: { Authorization: accessToken },
+        })
+        .then(() => getTodoList(date));
 
       exitTodoModal();
     } catch (error) {
