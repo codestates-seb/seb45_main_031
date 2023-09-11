@@ -26,17 +26,13 @@ import {
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
 import ErrorModal from "../components/ErrorModal";
-import countContentLength from "../utils/conutContentLength";
-
-//삭제 될 데이터
-const memberId = 2;
-const accessToken =
-  "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoyLCJ1c2VybmFtZSI6ImFiY2QxMjM0QGdtYWlsLmNvbSIsInN1YiI6ImFiY2QxMjM0QGdtYWlsLmNvbSIsImlhdCI6MTY5NDM5MzI0MywiZXhwIjoxNjk0Mzk1MDQzfQ.j2Slc3u1W6ZDIKPpqgZVUFL53k3MJ_3PUSPoAQAaHjY";
-// const refreshToken =
-//   "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6Miwic3ViIjoiYWJjZDEyMzRAZ21haWwuY29tIiwiaWF0IjoxNjk0MzkzMjQzLCJleHAiOjE2OTQ0MTg0NDN9.9wIbm9LGv7lrR0AwIlOHjDDxjPgvaWy5CShhapgih9A";
+import countContentLength from "../utils/countContentLength";
 
 const TodoEditPage = () => {
   const navigate = useNavigate();
+  const localUser = JSON.parse(localStorage.getItem("localUser"));
+  const memberId = localUser.memberId;
+  const accessToken = localUser.accessToken;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);

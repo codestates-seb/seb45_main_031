@@ -22,16 +22,30 @@ import trophyLevel1 from "../assets/images/trophyLevel1.png";
 import TodoCard from "../components/TodoCard";
 import ModalBackground from "../components/ModalBackground";
 
-//삭제 할 더미 데이터
-const membersId = 2;
-const accessToken =
-  "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoyLCJ1c2VybmFtZSI6ImFiY2QxMjM0QGdtYWlsLmNvbSIsInN1YiI6ImFiY2QxMjM0QGdtYWlsLmNvbSIsImlhdCI6MTY5NDM5MzI0MywiZXhwIjoxNjk0Mzk1MDQzfQ.j2Slc3u1W6ZDIKPpqgZVUFL53k3MJ_3PUSPoAQAaHjY";
-// const refreshToken =
-//   "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6Miwic3ViIjoiYWJjZDEyMzRAZ21haWwuY29tIiwiaWF0IjoxNjk0MzkzMjQzLCJleHAiOjE2OTQ0MTg0NDN9.9wIbm9LGv7lrR0AwIlOHjDDxjPgvaWy5CShhapgih9A";
+//삭제 될 로그인 파트
+axios
+  .post(`${URL}/auth/login`, {
+    email: "abcd1234@gmail.com",
+    password: "abcd1234",
+  })
+  .then((res) => {
+    const localUser = {
+      email: res.data.email,
+      memberId: res.data.memberId,
+      nickname: res.data.nickname,
+      accessToken: res.headers.authorization,
+      refresh: res.headers.refresh,
+    };
+    localStorage.setItem("localUser", JSON.stringify(localUser));
+  });
 
 const TodoPage = () => {
   const navigate = useNavigate();
   const { today } = useParams();
+
+  const localUser = JSON.parse(localStorage.getItem("localUser"));
+  const memberId = localUser.memberId;
+  const accessToken = localUser.accessToken;
 
   const [date, setDate] = useState(getDateFormat(today));
   const [meta, setMeta] = useState({
@@ -67,7 +81,7 @@ const TodoPage = () => {
   const getTodoList = (date) => {
     try {
       axios
-        .get(`${URL}/todos/${membersId}`, {
+        .get(`${URL}/todos/${memberId}`, {
           params: { date },
           headers: { Authorization: accessToken },
         })
