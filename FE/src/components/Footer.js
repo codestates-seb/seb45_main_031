@@ -94,6 +94,9 @@ const LogoItem = styled.button`
     height: 32px;
     object-fit: contain;
   }
+  &:hover {
+    color: black;
+  }
 `;
 
 // Modal Style
