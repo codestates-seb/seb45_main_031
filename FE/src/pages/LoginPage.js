@@ -1,51 +1,110 @@
 import { styled } from "styled-components";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+// import axios from "axios";
+
 import googleIcon from "../assets/images/google.png";
 
-const SignUp = () => {
+const LoginPage = () => {
+  //이메일, 비밀번호
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  //오류메세지 상태저장
+  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  //유효성 검사
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+
+  //이메일
+  const onChangeEmail = (e) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("적절하지 않은 아이디 형식입니다.");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("");
+      setIsEmail(true);
+    }
+  };
+  //비밀번호
+  const onChangePassword = (e) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+    const passwordCurrent = e.target.value;
+    setPassword(passwordCurrent);
+
+    if (!passwordRegex.test(passwordCurrent)) {
+      setPasswordMessage("아이디 혹은 비밀번호를 확인해주세요.");
+      setIsPassword(false);
+    } else {
+      setPasswordMessage("");
+      setIsPassword(true);
+    }
+  };
+
+  const loginHandler = async (e) => {
+    e.preventDefault();
+  };
+
   return (
     <Container>
       <LoginStyled>
         <LoginText>Login</LoginText>
         <GoogleButton>
-          <GoogleIcon src={googleIcon} alt="구글 아이콘" />
+          <GoogleIcon src={googleIcon} alt="구글 이미지" />
           <GoogleText>Sign in with Google</GoogleText>
         </GoogleButton>
-        {/*        */}
+        {/* 아이디 */}
         <InputForm>
           <IdText>ID</IdText>
           <EmailContainer>
             <InputId
               type="email"
-              name="id"
+              name="email"
+              // value={email}
+              onChange={onChangeEmail}
               placeholder="이메일 형식의 아이디를 입력해주세요."
+              required
             />
-            <IdErrorMessage>적절하지 않은 아이디 형식입니다.</IdErrorMessage>
+            <IdErrorMessage>
+              {!isEmail && email.length > 0 && <div>{emailMessage}</div>}
+            </IdErrorMessage>
           </EmailContainer>
-          {/*          */}
+          {/*비밀번호*/}
           <PasswordText>Password</PasswordText>
           <PasswordContainer>
             <InputPassword
               type="password"
               name="password"
+              // value={password}
+              onChange={onChangePassword}
               placeholder="비밀번호를 입력해주세요."
-              autocomplete="current-password"
+              required
             />
             <PasswordErrorMassage>
-              아이디 혹은 비밀번호를 확인해주세요.
+              {!isPassword && password.length > 0 && (
+                <div>{passwordMessage}</div>
+              )}
             </PasswordErrorMassage>
           </PasswordContainer>
         </InputForm>
-        {/*        */}
+        {/*confirm*/}
         <ConfirmContainer>
-          <LoginConfirm>로그인</LoginConfirm>
-          <SignUpButton>회원가입</SignUpButton>
+          <LoginButton onClick={(e) => loginHandler(e)}>로그인</LoginButton>
+          <SignUpButton>
+            <NavLink to="/signup">회원가입</NavLink>
+          </SignUpButton>
         </ConfirmContainer>
       </LoginStyled>
     </Container>
   );
 };
 
-export default SignUp;
+export default LoginPage;
 
 const Container = styled.div`
   display: flex;
@@ -164,7 +223,7 @@ const ConfirmContainer = styled.div`
   justify-content: center;
   margin-top: 90px;
 `;
-const LoginConfirm = styled.button`
+const LoginButton = styled.button`
   height: 50px;
   font-size: 0.85rem;
   border: 1px solid 949597;
@@ -187,5 +246,7 @@ const SignUpButton = styled.button`
   height: 35px;
   &:hover {
     background-color: #676767;
+    &.active {
+    }
   }
 `;
