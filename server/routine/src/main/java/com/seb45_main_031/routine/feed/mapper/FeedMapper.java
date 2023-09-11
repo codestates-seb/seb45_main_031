@@ -5,9 +5,11 @@ import com.seb45_main_031.routine.feed.dto.FeedDto;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.feedTag.entity.FeedTag;
+import com.seb45_main_031.routine.feedTodo.entity.FeedTodo;
 import com.seb45_main_031.routine.member.entity.Member;
 
 import com.seb45_main_031.routine.tag.entity.Tag;
+import com.seb45_main_031.routine.todo.entity.Todo;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -41,6 +43,24 @@ public interface FeedMapper {
 
             feed.setFeedTags(feedTags);
         }
+
+        if (feedPostDto.getFeedTodoDtos() != null) {
+
+            List<FeedTodo> feedTodos = feedPostDto.getFeedTodoDtos().stream()
+                    .map(feedTodoDto -> {
+                        FeedTodo feedTodo = new FeedTodo();
+                        Todo todo = new Todo();
+                        todo.setTodoId(feedTodoDto.getTodoId());
+
+                        feedTodo.setFeed(feed);
+                        feedTodo.setTodo(todo);
+
+                        return feedTodo;
+                    }).collect(Collectors.toList());
+
+            feed.setFeedTodos(feedTodos);
+        }
+
         return feed;
     }
 
@@ -66,6 +86,24 @@ public interface FeedMapper {
 
             feed.setFeedTags(feedTags);
         }
+
+        if (feedPatchDto.getFeedTodoDtos() != null) {
+
+            List<FeedTodo> feedTodos = feedPatchDto.getFeedTodoDtos().stream()
+                    .map(feedTodoDto -> {
+                        FeedTodo feedTodo = new FeedTodo();
+                        Todo todo = new Todo();
+                        todo.setTodoId(feedTodoDto.getTodoId());
+
+                        feedTodo.setFeed(feed);
+                        feedTodo.setTodo(todo);
+
+                        return feedTodo;
+                    }).collect(Collectors.toList());
+
+            feed.setFeedTodos(feedTodos);
+        }
+
         return feed;
     }
 
@@ -138,7 +176,23 @@ public interface FeedMapper {
 
         response.setTagsResponses(tagResponses);
 
-        return response;
+        List<FeedTodo> feedTodos = feed.getFeedTodos();
+
+        List<FeedDto.TodoResponse> todoResponses = feedTodos.stream()
+                .map(feedTodo -> FeedDto.TodoResponse.builder()
+                        .todoId(feedTodo.getTodo().getTodoId())
+                        .date(feedTodo.getTodo().getDate())
+                        .content(feedTodo.getTodo().getContent())
+                        .complete(feedTodo.getTodo().getComplete())
+                        .todoEmoji(feedTodo.getTodo().getTodoEmoji())
+                        .tagId(feedTodo.getTodo().getTag().getTagId())
+                        .tagName(feedTodo.getTodo().getTag().getTagName())
+                        .build()
+                ).collect(Collectors.toList());
+
+        response.setTodoResponses(todoResponses);
+
+         return response;
     }
 
     default List<FeedDto.Response> feedsToFeedResponseDtos(List<Feed> feeds, long findMemberId) {
