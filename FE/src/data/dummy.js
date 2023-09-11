@@ -29,6 +29,24 @@ const user = [
     email: "abc5@gmail.com",
     imgUrl: "FE/src/assets/images/memberImg.jpeg",
   },
+  {
+    memberId: 6,
+    nickname: "삐약이",
+    email: "lalala@gmail.com",
+    imgUrl: <img src="/assets/images/profile.svg" alt="기본 프로필" />,
+  },
+  {
+    memberId: 7,
+    nickname: "불사조꿈나무",
+    email: "dreaming@gmail.com",
+    imgUrl: <img src="/assets/images/profile.svg" alt="기본 프로필" />,
+  },
+  {
+    memberId: 8,
+    nickname: "방구석병아리",
+    email: "homebody@gmail.com",
+    imgUrl: <img src="/assets/images/profile.svg" alt="기본 프로필" />,
+  },
 ];
 
 const todoList = {
@@ -578,10 +596,10 @@ const postList = {
       ],
     },
     {
-      memberId: 1,
-      nickname: "김혜란1",
-      imgUrl: "FE/src/assets/images/memberImg.jpeg",
-      createdAt: "08.25 11:11",
+      memberId: 6,
+      nickname: "삐약이",
+      imgUrl: <img src="/assets/images/profile.svg" alt="기본 프로필" />,
+      createdAt: "09.08 11:11",
       todoList: [
         {
           content: "투두6",
@@ -613,22 +631,132 @@ const postList = {
       content: "게시글 내용",
       comments: [
         {
-          memberId: 1,
-          nickname: "김혜란1",
+          memberId: 7,
+          nickname: "불사조꿈나무",
           content: "댓글1",
-          createdAt: "08.25 11:11",
+          createdAt: "09.08 11:11",
         },
         {
-          memberId: 2,
-          nickname: "김혜란2",
+          memberId: 6,
+          nickname: "삐약이",
           content: "댓글2",
-          createdAt: "08.25 11:11",
+          createdAt: "09.08 11:11",
         },
         {
-          memberId: 3,
-          nickname: "김혜란3",
+          memberId: 8,
+          nickname: "방구석병아리",
           content: "댓글3",
-          createdAt: "08.25 11:11",
+          createdAt: "09.08 11:11",
+        },
+      ],
+    },
+    {
+      memberId: 6,
+      nickname: "삐약이",
+      imgUrl: <img src="/assets/images/profile.svg" alt="기본 프로필" />,
+      createdAt: "09.08 11:11",
+      todoList: [
+        {
+          content: "투두6",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: true,
+        },
+        {
+          content: "투두7",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: true,
+        },
+        {
+          content: "투두8",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: false,
+        },
+        {
+          content: "투두9",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: false,
+        },
+      ],
+      like: false,
+      likes: 2021,
+      content: "게시글 내용",
+      comments: [
+        {
+          memberId: 7,
+          nickname: "불사조꿈나무",
+          content: "댓글1",
+          createdAt: "09.08 11:11",
+        },
+        {
+          memberId: 6,
+          nickname: "삐약이",
+          content: "댓글2",
+          createdAt: "09.08 11:11",
+        },
+        {
+          memberId: 8,
+          nickname: "방구석병아리",
+          content: "댓글3",
+          createdAt: "09.08 11:11",
+        },
+      ],
+    },
+    {
+      memberId: 6,
+      nickname: "삐약이",
+      imgUrl: <img src="/assets/images/profile.svg" alt="기본 프로필" />,
+      createdAt: "09.08 11:11",
+      todoList: [
+        {
+          content: "투두6",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: true,
+        },
+        {
+          content: "투두7",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: true,
+        },
+        {
+          content: "투두8",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: false,
+        },
+        {
+          content: "투두9",
+          tagResponse: { tagName: "태그2" },
+          todoEmoji: "🐣",
+          complete: false,
+        },
+      ],
+      like: false,
+      likes: 2021,
+      content: "게시글 내용",
+      comments: [
+        {
+          memberId: 7,
+          nickname: "불사조꿈나무",
+          content: "댓글1",
+          createdAt: "09.08 11:11",
+        },
+        {
+          memberId: 6,
+          nickname: "삐약이",
+          content: "댓글2",
+          createdAt: "09.08 11:11",
+        },
+        {
+          memberId: 8,
+          nickname: "방구석병아리",
+          content: "댓글3",
+          createdAt: "09.08 11:11",
         },
       ],
     },
