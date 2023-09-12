@@ -4,77 +4,24 @@ import { useState } from "react";
 
 import googleIcon from "../assets/images/google.png";
 
+const emailRegex =
+  /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
 const SignUpPage = () => {
-  //이메일, 닉네임, 비밀번호, 비밀번호확인
-  const [email, setEmail] = useState("");
-  const [nickName, setNickName] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  //오류메세지 상태저장
-  const [emailMessege, setEmailMessage] = useState("");
-  const [nickNameMessage, setNickNameMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
-  //유효성 검사
-  const [isEmail, setIsEmail] = useState(false);
-  const [isNickName, setIsNickName] = useState(false);
-  const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+  const [user, setUser] = useState({
+    email: "",
+    nickName: "",
+    password: "",
+    passwordConfirm: "",
+  });
 
-  //이메일
-  const onChangeEmail = (e) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    const emailCurrent = e.target.value;
-    setEmail(emailCurrent);
-
-    if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage("적절하지 않은 아이디 형식입니다.");
-      setIsEmail(false);
-    } else {
-      setEmailMessage("");
-      setIsEmail(true);
-    }
-  };
-  //닉네임
-  const onChangeNickName = (e) => {
-    setNickName(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 8) {
-      setNickNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
-      setIsNickName(false);
-    } else {
-      setNickNameMessage("");
-      setIsNickName(true);
-    }
-  };
-  //비밀번호
-  const onChangePassword = (e) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    const passwordCurrent = e.target.value;
-    setPassword(passwordCurrent);
-
-    if (!passwordRegex.test(passwordCurrent)) {
-      setPasswordMessage(
-        "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요. ",
-      );
-      setIsPassword(false);
-    } else {
-      setPasswordMessage("");
-      setIsPassword(true);
-    }
-  };
-  //비밀번호 confirm
-  const onChangePasswordConfirm = (e) => {
-    const passwordConfirmCurrent = e.target.value;
-    setPasswordConfirm(passwordConfirmCurrent);
-
-    if (password === passwordConfirmCurrent) {
-      setPasswordConfirmMessage("");
-      setIsPasswordConfirm(true);
-    } else {
-      setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.");
-      setIsPasswordConfirm(false);
-    }
+  const onChange = (event) => {
+    const userType = event.target.name;
+    setUser({
+      ...user,
+      [userType]: event.target.value,
+    });
   };
 
   return (
@@ -91,12 +38,19 @@ const SignUpPage = () => {
           <EmailContainer>
             <InputId
               type="email"
-              name="id"
-              onChange={onChangeEmail}
+              name="email"
+              onChange={onChange}
               placeholder="이메일 형식의 아이디를 입력해주세요."
             />
             <IdErrorMessage>
-              {!isEmail && email.length > 0 && <div>{emailMessege}</div>}
+              {/* {!isEmail && email.length > 0 && <div>{emailMessege}</div>} */}
+              <div
+                style={{
+                  display: !emailRegex.test(user.email) ? "block" : "none",
+                }}
+              >
+                {"적절하지 않은 아이디 형식입니다."}
+              </div>
             </IdErrorMessage>
           </EmailContainer>
           {/*Nickname*/}
@@ -104,14 +58,22 @@ const SignUpPage = () => {
           <NickNameContainer>
             <InputNickName
               type="text"
-              name="nickname"
-              onChange={onChangeNickName}
+              name="nickName"
+              onChange={onChange}
               placeholder="사용하실 닉네임을 입력해주세요."
             />
             <NickNameErrorMassage>
-              {!isNickName && nickName.length > 0 && (
-                <div>{nickNameMessage}</div>
-              )}
+              {/* {!isNickName && nickName.length > 0 && ()} */}
+              <div
+                style={{
+                  display:
+                    user.nickName.length < 2 || user.nickName.length > 8
+                      ? "block"
+                      : "none",
+                }}
+              >
+                {"2글자 이상 8글자 미만으로 입력해주세요."}
+              </div>
             </NickNameErrorMassage>
           </NickNameContainer>
           {/*Password*/}
@@ -120,14 +82,23 @@ const SignUpPage = () => {
             <InputPassword
               type="password"
               name="password"
-              onChange={onChangePassword}
+              onChange={onChange}
               placeholder="비밀번호를 입력해주세요."
               autocomplete="current-password"
             />
             <PasswordErrorMassage>
-              {!isPassword && password.length > 0 && (
-                <div>{passwordMessage}</div>
-              )}
+              {/* {!isPassword && password.length > 0 && ( )} */}
+              <div
+                style={{
+                  display: !passwordRegex.test(user.password)
+                    ? "block"
+                    : "none",
+                }}
+              >
+                {
+                  "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요. "
+                }
+              </div>
             </PasswordErrorMassage>
           </PasswordContainer>
           {/*Confirmation*/}
@@ -135,15 +106,21 @@ const SignUpPage = () => {
           <ConfirmationContainer>
             <InputConfirmation
               type="password"
-              name="Confirmation"
-              onChange={onChangePasswordConfirm}
+              name="passwordConfirm"
+              onChange={onChange}
               placeholder="비밀번호를 한번 더 입력해주세요."
               autocomplete="current-password"
             />
             <ConfirmationErrorMassage>
-              {!isPasswordConfirm && passwordConfirm.length > 0 && (
-                <div>{passwordConfirmMessage}</div>
-              )}
+              <div
+                style={{
+                  display: !(user.password === user.passwordConfirm)
+                    ? "block"
+                    : "none",
+                }}
+              >
+                {"비밀번호가 일치하지 않습니다."}
+              </div>
             </ConfirmationErrorMassage>
           </ConfirmationContainer>
         </InputForm>
