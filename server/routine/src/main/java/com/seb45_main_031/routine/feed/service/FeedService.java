@@ -39,9 +39,8 @@ public class FeedService {
     }
 
     // 피드 작성
-    public Feed createFeed(Feed feed, String accessToken) {
+    public Feed createFeed(Feed feed) {
 
-        memberService.checkMemberId(feed.getMember().getMemberId(), accessToken);
 
         return feedRepository.save(feed);
     }
@@ -117,9 +116,11 @@ public class FeedService {
         return memberId;
     }
 
-    public Page<Feed> findFeedsByMember(int page, int size, long memberId){
+    public Page<Feed> findFeedsByMember(int page, int size, long memberId, String accessToken){
 
         Member findMember = memberService.findverifiedMember(memberId);
+
+        memberService.checkMemberId(findMember.getMemberId(), accessToken);
 
         List<Long> feedIds
                 = findMember.getFeeds().stream()

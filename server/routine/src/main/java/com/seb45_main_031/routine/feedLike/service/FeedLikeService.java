@@ -27,12 +27,10 @@ public class FeedLikeService {
     }
 
     // 피드 좋아요 누르기
-    public FeedLike createFeedLike(FeedLike feedLike, String accessToken) {
+    public FeedLike createFeedLike(FeedLike feedLike) {
         FeedLike findFeedLike = feedLikeRepository.findByMemberMemberIdAndFeedFeedId(
                 feedLike.getMember().getMemberId(),
                 feedLike.getFeed().getFeedId());
-
-        memberService.checkMemberId(feedLike.getMember().getMemberId(), accessToken);
 
         Optional<Feed> optional = feedRepository.findById(feedLike.getFeed().getFeedId());
         Feed findFeed = optional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));

@@ -5,6 +5,7 @@ import com.seb45_main_031.routine.comment.entity.Comment;
 import com.seb45_main_031.routine.comment.mapper.CommentMapper;
 import com.seb45_main_031.routine.comment.service.CommentService;
 import com.seb45_main_031.routine.dto.SingleResponseDto;
+import com.seb45_main_031.routine.member.service.MemberService;
 import com.seb45_main_031.routine.utils.UriCreator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,13 @@ import java.net.URI;
 public class CommentController {
 
     private final CommentService commentService;
+    private final MemberService memberService;
     private final CommentMapper mapper;
     private final static String COMMENT_DEFAULT_URL = "/comments";
 
-    public CommentController(CommentService commentService, CommentMapper mapper) {
+    public CommentController(CommentService commentService, MemberService memberService, CommentMapper mapper) {
         this.commentService = commentService;
+        this.memberService = memberService;
         this.mapper = mapper;
     }
 
@@ -35,7 +38,11 @@ public class CommentController {
     public ResponseEntity postComment(@Valid @RequestBody CommentDto.Post commentPostDto,
                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
-        Comment comment = commentService.createComment(mapper.commentPostDtoToComment(commentPostDto), accessToken);
+
+        long findMemberId = memberService.findMemberId(accessToken);
+        commentPostDto.setMemberId(findMemberId);
+
+        Comment comment = commentService.createComment(mapper.commentPostDtoToComment(commentPostDto));
 
         URI location = UriCreator.createUri(COMMENT_DEFAULT_URL, comment.getCommentId());
 

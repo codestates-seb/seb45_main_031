@@ -6,6 +6,7 @@ import com.seb45_main_031.routine.feed.dto.FeedDto;
 import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.mapper.FeedMapper;
 import com.seb45_main_031.routine.feed.service.FeedService;
+import com.seb45_main_031.routine.member.service.MemberService;
 import com.seb45_main_031.routine.utils.UriCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -25,20 +26,26 @@ import java.util.List;
 public class FeedController {
 
     private final FeedService feedService;
+    private final MemberService memberService;
     private final FeedMapper mapper;
     private final static String FEED_DEFAULT_URL = "/feeds";
 
-    public FeedController(FeedService feedService, FeedMapper mapper) {
+    public FeedController(FeedService feedService, MemberService memberService, FeedMapper mapper) {
         this.feedService = feedService;
+        this.memberService = memberService;
         this.mapper = mapper;
     }
+
 
     // 피드 작성
     @PostMapping
     public ResponseEntity postFeed(@Valid @RequestBody FeedDto.Post feedPostDto,
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
-        Feed feed = feedService.createFeed(mapper.feedPostDtoToFeed(feedPostDto), accessToken);
+        long findMemberId = memberService.findMemberId(accessToken);
+        feedPostDto.setMemberId(findMemberId);
+
+        Feed feed = feedService.createFeed(mapper.feedPostDtoToFeed(feedPostDto));
 
         URI location = UriCreator.createUri(FEED_DEFAULT_URL, feed.getFeedId());
 
@@ -52,7 +59,7 @@ public class FeedController {
                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
         feedPatchDto.setFeedId(feedId);
-        long findMemberId = feedService.findMemberId(accessToken);
+        long findMemberId = memberService.findMemberId(accessToken);
 
         Feed feed = feedService.updateFeed(mapper.feedPatchDtoToFeed(feedPatchDto), accessToken);
 
@@ -65,7 +72,7 @@ public class FeedController {
                                   @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
         Feed feed = feedService.findFeed(feedId);
-        long memberId = feedService.findMemberId(accessToken);
+        long memberId = memberService.findMemberId(accessToken);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.feedToFeedResponseDto(feed, memberId)), HttpStatus.OK);
     }
@@ -76,12 +83,14 @@ public class FeedController {
                                    @RequestParam(required = false, defaultValue = "10") int size,
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
+        long findMemberId = memberService.findMemberId(accessToken);
+
         Page<Feed> pageFeeds = feedService.findFeeds(page - 1, size);
         List<Feed> feeds = pageFeeds.getContent();
 
-        long findMemberId = feedService.findMemberId(accessToken);
-
-        return new ResponseEntity<>(new MultiResponseDto<>(mapper.feedsToFeedResponseDtos(feeds, findMemberId), pageFeeds), HttpStatus.OK);
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(
+                        mapper.feedsToFeedResponseDtos(feeds, findMemberId), pageFeeds), HttpStatus.OK);
     }
 
     // 피드 삭제
@@ -98,15 +107,15 @@ public class FeedController {
     @GetMapping("/members/{member-id}")
     public ResponseEntity getFeedsByMember(@RequestParam int page,
                                            @RequestParam int size,
-                                           @PathVariable("member-id") long memberId){
+                                           @PathVariable("member-id") long memberId,
+                                           @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        Page<Feed> pageFeeds = feedService.findFeedsByMember(page-1, size, memberId);
+        Page<Feed> pageFeeds = feedService.findFeedsByMember(page-1, size, memberId, accessToken);
         List<Feed> feeds = pageFeeds.getContent();
 
         return new ResponseEntity(
                 new MultiResponseDto<>(mapper.feedsToFeedResponseDtos(feeds, memberId), pageFeeds), HttpStatus.OK);
 
     }
-
 
 }

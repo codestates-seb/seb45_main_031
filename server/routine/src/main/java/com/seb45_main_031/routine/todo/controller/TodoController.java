@@ -2,10 +2,12 @@ package com.seb45_main_031.routine.todo.controller;
 
 import com.seb45_main_031.routine.dto.SingleResponseDto;
 
+import com.seb45_main_031.routine.member.service.MemberService;
 import com.seb45_main_031.routine.todo.dto.TodoDto;
 import com.seb45_main_031.routine.todo.entity.Todo;
 import com.seb45_main_031.routine.todo.mapper.TodoMapper;
 import com.seb45_main_031.routine.todo.service.TodoService;
+import com.seb45_main_031.routine.utils.UriCreator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,23 +30,29 @@ import java.util.List;
 public class TodoController {
 
     private final TodoService todoService;
-
+    private final MemberService memberService;
     private final TodoMapper mapper;
+    private static final String TODO_DEFAULT_URL = "/todos";
 
-    public TodoController(TodoService todoService, TodoMapper mapper) {
+    public TodoController(TodoService todoService, MemberService memberService, TodoMapper mapper) {
         this.todoService = todoService;
+        this.memberService = memberService;
         this.mapper = mapper;
     }
-
 
     //Todo 등록
     @PostMapping
     public ResponseEntity postTodo(@RequestBody @Valid TodoDto.Post todoPostDto,
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        Todo todo = todoService.createTodo(mapper.todoPostDtoToTodo(todoPostDto), accessToken);
+        long findMemberId = memberService.findMemberId(accessToken);
+        todoPostDto.setMemberId(findMemberId);
 
-        return  new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.CREATED);
+        Todo todo = todoService.createTodo(mapper.todoPostDtoToTodo(todoPostDto));
+
+        URI location = UriCreator.createUri(TODO_DEFAULT_URL, todo.getTodoId());
+
+        return ResponseEntity.created(location).build();
 
     }
 
@@ -53,9 +62,14 @@ public class TodoController {
     public ResponseEntity postTodos(@RequestBody @Valid TodoDto.PostList todoPostListDto,
                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        List<Todo> todo = todoService.createTodos(mapper.todoPostDtosToTodos(todoPostListDto), accessToken);
+        long findMemberId = memberService.findMemberId(accessToken);
 
-        return  new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoResponseDtos(todo)), HttpStatus.CREATED);
+        todoPostListDto.getPostList().stream()
+                .forEach(post -> post.setMemberId(findMemberId));
+
+        todoService.createTodos(mapper.todoPostDtosToTodos(todoPostListDto));
+
+        return new ResponseEntity(HttpStatus.CREATED);
 
     }
 
@@ -72,7 +86,6 @@ public class TodoController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.OK);
 
     }
-
 
 
     // Todo Patch Complete 완료여부
