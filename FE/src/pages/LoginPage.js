@@ -5,45 +5,23 @@ import { NavLink } from "react-router-dom";
 
 import googleIcon from "../assets/images/google.png";
 
+const emailRegex =
+  /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
 const LoginPage = () => {
-  //이메일, 비밀번호
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  //오류메세지 상태저장
-  const [emailMessage, setEmailMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
-  //유효성 검사
-  const [isEmail, setIsEmail] = useState(false);
-  const [isPassword, setIsPassword] = useState(false);
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
 
-  //이메일
-  const onChangeEmail = (e) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    const emailCurrent = e.target.value;
-    setEmail(emailCurrent);
-
-    if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage("적절하지 않은 아이디 형식입니다.");
-      setIsEmail(false);
-    } else {
-      setEmailMessage("");
-      setIsEmail(true);
-    }
-  };
-  //비밀번호
-  const onChangePassword = (e) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-    const passwordCurrent = e.target.value;
-    setPassword(passwordCurrent);
-
-    if (!passwordRegex.test(passwordCurrent)) {
-      setPasswordMessage("아이디 혹은 비밀번호를 확인해주세요.");
-      setIsPassword(false);
-    } else {
-      setPasswordMessage("");
-      setIsPassword(true);
-    }
+  const onChange = (event) => {
+    const userType = event.target.name;
+    setUser({
+      ...user,
+      [userType]: event.target.value,
+    });
   };
 
   const loginHandler = async (e) => {
@@ -66,12 +44,18 @@ const LoginPage = () => {
               type="email"
               name="email"
               // value={email}
-              onChange={onChangeEmail}
+              onChange={onChange}
               placeholder="이메일 형식의 아이디를 입력해주세요."
               required
             />
             <IdErrorMessage>
-              {!isEmail && email.length > 0 && <div>{emailMessage}</div>}
+              <div
+                style={{
+                  display: !emailRegex.test(user.email) ? "block" : "none",
+                }}
+              >
+                {"적절하지 않은 아이디 형식입니다."}
+              </div>
             </IdErrorMessage>
           </EmailContainer>
           {/*비밀번호*/}
@@ -81,14 +65,20 @@ const LoginPage = () => {
               type="password"
               name="password"
               // value={password}
-              onChange={onChangePassword}
+              onChange={onChange}
               placeholder="비밀번호를 입력해주세요."
               required
             />
             <PasswordErrorMassage>
-              {!isPassword && password.length > 0 && (
-                <div>{passwordMessage}</div>
-              )}
+              <div
+                style={{
+                  display: !passwordRegex.test(user.password)
+                    ? "block"
+                    : "none",
+                }}
+              >
+                {"아이디 혹은 비밀번호를 확인 해주세요."}
+              </div>
             </PasswordErrorMassage>
           </PasswordContainer>
         </InputForm>
