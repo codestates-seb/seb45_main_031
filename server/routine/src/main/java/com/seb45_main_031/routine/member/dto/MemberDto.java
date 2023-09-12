@@ -42,6 +42,8 @@ public class MemberDto {
         private String email;
         private String nickname;
         private Member.MemberStatus memberStatus;
+        private int exp;
+        private int level;
     }
 
 }
