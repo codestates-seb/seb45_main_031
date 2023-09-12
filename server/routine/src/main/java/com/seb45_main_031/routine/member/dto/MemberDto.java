@@ -1,5 +1,6 @@
 package com.seb45_main_031.routine.member.dto;
 
+import com.seb45_main_031.routine.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class MemberDto {
     public static class Patch{
         private long memberId;
         private String nickname;
+        private Member.MemberStatus memberStatus;
     }
 
     @Getter
@@ -39,6 +41,7 @@ public class MemberDto {
         private long memberId;
         private String email;
         private String nickname;
+        private Member.MemberStatus memberStatus;
     }
 
 }

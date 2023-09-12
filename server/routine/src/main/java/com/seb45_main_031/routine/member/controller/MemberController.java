@@ -58,11 +58,12 @@ public class MemberController {
 
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@RequestBody @Valid MemberDto.Patch memberPatchDto,
-                                      @PathVariable("member-id") @Positive long memberId){
+                                      @PathVariable("member-id") @Positive long memberId,
+                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
         memberPatchDto.setMemberId(memberId);
 
-        Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
+        Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto), accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.OK);
     }
@@ -93,9 +94,10 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId,
-                                       @RequestBody MemberDto.Password passwordDto){
+                                       @RequestBody MemberDto.Password passwordDto,
+                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        memberService.deleteMember(memberId, passwordDto.getPassword());
+        memberService.deleteMember(memberId, passwordDto.getPassword(), accessToken);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 
