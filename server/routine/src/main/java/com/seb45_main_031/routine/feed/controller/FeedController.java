@@ -93,4 +93,20 @@ public class FeedController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    // 마이페이지 -> member 가 작성한 feeds 조회
+    @GetMapping("/members/{member-id}")
+    public ResponseEntity getFeedsByMember(@RequestParam int page,
+                                           @RequestParam int size,
+                                           @PathVariable("member-id") long memberId){
+
+        Page<Feed> pageFeeds = feedService.findFeedsByMember(page-1, size, memberId);
+        List<Feed> feeds = pageFeeds.getContent();
+
+        return new ResponseEntity(
+                new MultiResponseDto<>(mapper.feedsToFeedResponseDtos(feeds, memberId), pageFeeds), HttpStatus.OK);
+
+    }
+
+
 }

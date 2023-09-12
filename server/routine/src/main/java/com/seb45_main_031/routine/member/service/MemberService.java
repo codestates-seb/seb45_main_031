@@ -33,7 +33,7 @@ public class MemberService {
         this.jwtTokenizer = jwtTokenizer;
     }
 
-    private Member findverifiedMember(long memberId){
+    public Member findverifiedMember(long memberId){
         Optional<Member> optionalMember = memberRepository.findById(memberId);
 
         Member findMember = optionalMember
