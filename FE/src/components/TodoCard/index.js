@@ -1,11 +1,11 @@
 import { styled } from "styled-components";
 
-const TodoCard = ({ value, todoPage, ChangeTodo }) => {
+const TodoCard = ({ value, todoPage, changeTodo }) => {
   return (
     <>
       <TodoCardSection
         onClick={() => {
-          todoPage ? ChangeTodo(value) : "";
+          todoPage ? changeTodo(value) : "";
         }}
       >
         <TagDiv>{value.tagResponse.tagName}</TagDiv>

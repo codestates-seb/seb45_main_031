@@ -5,11 +5,11 @@ import CommentCreate from "./CommentCreate";
 import Comment from "./Comment";
 
 const Comments = ({ comments }) => {
-  const [more, setMore] = useState(true);
+  const [moreActions, setMoreActions] = useState(true);
 
   const ChangeMore = () => {
     try {
-      setMore(!more);
+      setMoreActions(!moreActions);
     } catch (error) {
       console.error(error);
     }
@@ -19,13 +19,13 @@ const Comments = ({ comments }) => {
     <>
       <CommentContainer>
         <CommentCreate />
-        <CommentsUl more={more}>
+        <CommentsUl more={moreActions}>
           {comments.map((comment, idx) => (
             <Comment key={idx} comment={comment} />
           ))}
         </CommentsUl>
         <MoreCommentButton onClick={() => ChangeMore()}>
-          {more ? "··· More Comment ···" : "··· Close Comment ···"}
+          {moreActions ? "··· More Comment ···" : "··· Close Comment ···"}
         </MoreCommentButton>
       </CommentContainer>
     </>
