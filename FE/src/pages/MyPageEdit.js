@@ -1,5 +1,9 @@
 import { styled } from "styled-components";
 import { useState } from "react";
+import axios from "axios";
+
+// import { user } from "../data/dummy";
+import { URL } from "../data/constants";
 
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 import { ReactComponent as InfoIcon } from "../assets/icons/info.svg";
@@ -13,22 +17,24 @@ export default function MyPageEdit() {
   return (
     <MaxContainer>
       <Container>
-        <Section>
+        <Section className="myProfile">
+          <Title>프로필</Title>
           <Label>프로필 사진</Label>
-          <Profile>
-            <ProfileSvg className="photo" alt="avatar" />
-            <EditProfile />
-          </Profile>
+          <ariticle>
+            <Profile>
+              <ProfileSvg className="photo" alt="avatar" />
+              <EditProfile />
+            </Profile>
+          </ariticle>
+          <EditNickname />
         </Section>
-        <Section>
-          <Label>닉네임</Label>
-          <InputBox />
-        </Section>
-        <Section>
-          <span>
-            <Label>등급 조회</Label>
-            <InfoIcon />
-          </span>
+        <Section className="myLevel">
+          <div>
+            <Title>
+              등급 조회
+              <InfoIcon />
+            </Title>
+          </div>
           <Badges>
             <div className="badge">
               <img src={level0} alt="레벨0" />
@@ -43,8 +49,6 @@ export default function MyPageEdit() {
               <img src={level3} alt="레벨3" />
             </div>
           </Badges>
-        </Section>
-        <Section className="cancelMembership">
           <CancelMembership />
         </Section>
       </Container>
@@ -63,45 +67,56 @@ const MaxContainer = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  padding-top: 95px;
   height: 100vh;
   width: 430px;
-  background-color: #fefefe;
+  background-color: #ececee;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+`;
+
+const Title = styled.div`
+  width: 100%;
+  font-size: 1.2rem;
+  color: #232629;
+  font-weight: bold;
+  margin: 10px;
 `;
 
 const Section = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: left;
+  background-color: #fff;
+  border-radius: 15px;
   padding: 10px;
+  margin: 0 20px 15px 20px;
+  box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
 
-  .cancelMembership {
+  &.myProfile {
+    margin-top: 110px;
+  }
+
+  &.myLevel {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 100px;
+  }
+
+  &.cancelMembership {
     color: #949597;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
+    height: 500px;
+    margin-bottom: 110px;
   }
 `;
 
 const Label = styled.label`
   font-size: 0.9rem;
-  padding: 10px;
-  margin-bottom: 0.3rem;
-`;
-
-const InputBox = styled.input`
-  height: 35px;
-  padding: 10px;
-  margin: 5px;
-  font-size: 0.9rem;
-  border: 1px solid #d0d0d0;
-  border-radius: 15px;
-
-  &:focus {
-    border: 1px solid #949597;
-  }
+  padding: 10px 10px 5px 10px;
+  margin-bottom: 0.1rem;
 `;
 
 const ModalOverlay = styled.div`
@@ -186,37 +201,7 @@ const YesNoButton = styled.button`
   }
 `;
 
-//프로필 사진 편집 영역
-const Profile = styled.div`
-  position: relative;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .photo {
-    width: 150px;
-  }
-`;
-
-const EditButton = styled.button`
-  width: 60px;
-  height: 35px;
-  padding: 5px;
-  position: absolute;
-  background-color: #ffe866;
-  font-size: 0.85rem;
-  border-radius: 15px;
-  left: 55%;
-  top: 60%;
-
-  &:hover {
-    background-color: #ffd900;
-    cursor: pointer;
-    color: #232629;
-  }
-`;
-
+//프로필 사진 편집 모달창
 const EditProfile = () => {
   const [isModalOpen, setIsMOdalOpen] = useState(false);
 
@@ -250,8 +235,117 @@ const EditProfile = () => {
   );
 };
 
+// 닉네임 변경
+const EditNickname = () => {
+  const [currentNickname, setCurrentNickname] = useState("");
+  const [newNickname, setNewNickname] = useState("");
+
+  const memberId = 4; //삭제 예정
+  const editProfile = () => {
+    axios
+      .patch(`${URL}/members/${memberId}`, { nickname: newNickname })
+      .then((response) => {
+        response;
+      });
+  };
+
+  const handleNicknameChange = (event) => {
+    setNewNickname(event.target.value);
+  };
+
+  const handleSaveClick = () => {
+    if (newNickname.trim() !== "") {
+      setCurrentNickname(newNickname);
+      setNewNickname("");
+      editProfile();
+    }
+  };
+
+  return (
+    <>
+      <Label>닉네임</Label>
+      <InputBoxWrapper>
+        <InputBox
+          type="text"
+          placeholder={currentNickname}
+          value={newNickname}
+          onChange={(event) => handleNicknameChange(event)}
+        />
+        <SaveButton onClick={() => handleSaveClick()}>저장</SaveButton>
+      </InputBoxWrapper>
+    </>
+  );
+};
+
+const Profile = styled.div`
+  position: relative;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .photo {
+    width: 100px;
+    /* display: flex; */
+  }
+`;
+
+const EditButton = styled.button`
+  width: 60px;
+  height: 35px;
+  padding: 5px;
+  position: absolute;
+  background-color: #ffe866;
+  font-size: 0.85rem;
+  border-radius: 15px;
+  left: 55%;
+  top: 60%;
+
+  &:hover {
+    background-color: #ffd900;
+    cursor: pointer;
+    color: #232629;
+  }
+`;
+
+const InputBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const InputBox = styled.input`
+  height: 35px;
+  width: 100%;
+  padding: 10px;
+  margin: 5px;
+  font-size: 0.9rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 15px;
+
+  &:focus {
+    border: 1px solid #949597;
+  }
+`;
+
+const SaveButton = styled.button`
+  width: 60px;
+  height: 35px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #949597;
+  background-color: #fff;
+  border: 1px solid #ececec;
+  &:hover {
+    background-color: #ececec;
+    cursor: pointer;
+    color: #232629;
+  }
+`;
+
 // 회원 등급 영역
-const Badges = styled.div`
+const Badges = styled.article`
   height: 370px;
   padding: 10px;
   margin: 5px;
