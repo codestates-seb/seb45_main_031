@@ -1,5 +1,6 @@
 package com.seb45_main_031.routine.member.entity;
 
+import com.seb45_main_031.routine.feed.entity.Feed;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,8 +31,12 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Feed> feeds;
+
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
+
 
 
     public enum MemberStatus{

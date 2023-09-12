@@ -7,6 +7,7 @@ import com.seb45_main_031.routine.feed.entity.Feed;
 import com.seb45_main_031.routine.feed.repository.FeedRepository;
 import com.seb45_main_031.routine.feedTag.repository.FeedTagRepository;
 import com.seb45_main_031.routine.feedTodo.repository.FeedTodoRepository;
+import com.seb45_main_031.routine.member.entity.Member;
 import com.seb45_main_031.routine.member.service.MemberService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -112,5 +115,22 @@ public class FeedService {
         long memberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
 
         return memberId;
+    }
+
+    public Page<Feed> findFeedsByMember(int page, int size, long memberId){
+
+        Member findMember = memberService.findverifiedMember(memberId);
+
+        List<Long> feedIds
+                = findMember.getFeeds().stream()
+                .map(feed -> feed.getFeedId())
+                .collect(Collectors.toList());
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("feedId").descending());
+
+        Page<Feed> pageFeeds = feedRepository.findByFeedIdIn(feedIds, pageRequest);
+
+        return pageFeeds;
+
     }
 }
