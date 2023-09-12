@@ -174,7 +174,7 @@ const TodoModifyPage = () => {
         )}
         {isOpenTagModal && (
           <TagModal
-            tags={tags}
+            tags={Object.keys(tags)}
             tagModalClose={tagModalClose}
             changeTag={changeTag}
           />

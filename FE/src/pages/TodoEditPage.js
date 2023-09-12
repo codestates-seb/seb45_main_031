@@ -71,9 +71,9 @@ const TodoEditPage = () => {
     setIsOpenModalBack(false);
   };
 
-  const changeTag = (value) => {
-    setTagId(tags[value]);
-    setTodoTag(value);
+  const changeTag = (tagName) => {
+    setTagId(tags[tagName]);
+    setTodoTag(tagName);
 
     tagModalClose();
   };
@@ -162,7 +162,7 @@ const TodoEditPage = () => {
         )}
         {isOpenTagModal && (
           <TagModal
-            tags={tags}
+            tags={Object.keys(tags)}
             tagModalClose={tagModalClose}
             changeTag={changeTag}
           />

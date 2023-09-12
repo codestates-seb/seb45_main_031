@@ -10,7 +10,7 @@ const TagModal = ({ tags, tagModalClose, changeTag }) => {
           {CLOSE_TEXT}
         </TagExitButton>
         <TagGroup>
-          {Object.keys(tags).map((tag) => (
+          {tags.map((tag) => (
             <>
               <Tag>
                 <TagButton onClick={() => changeTag(tag)}>{tag}</TagButton>
