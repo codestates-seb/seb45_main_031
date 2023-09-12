@@ -50,6 +50,14 @@ public class MemberService {
         }
     }
 
+    private void verifyExistsNickname(String nickname){
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+
+        if(member.isPresent()){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_EXISTS);
+        }
+    }
+
     public void checkMemberId(long memberId, String accessToken){
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -58,6 +66,13 @@ public class MemberService {
         if(memberId != findMemberId){
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_MATCHED);
         }
+    }
+
+    public long findMemberId(String accessToken){
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        long findMemberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
+
+        return findMemberId;
     }
 
     private long verifyRefreshToken(String refreshToken, String base64EncodedSecretKey){
@@ -115,11 +130,21 @@ public class MemberService {
     }
 
 
-    public Member updateMember(Member member){
+    public Member updateMember(Member member, String accessToken){
         Member findMember = findverifiedMember(member.getMemberId());
 
+        checkMemberId(findMember.getMemberId(), accessToken);
+
         Optional.ofNullable(member.getNickname())
-                .ifPresent(nickname -> findMember.setNickname(nickname));
+                .ifPresent(nickname -> {
+                    if(!nickname.equals(findMember.getNickname())){
+                        verifyExistsNickname(nickname);
+                    }
+                    findMember.setNickname(nickname);
+                });
+
+        Optional.ofNullable(member.getMemberStatus())
+                .ifPresent(memberStatus -> findMember.setMemberStatus(memberStatus));
 
         return memberRepository.save(findMember);
 
@@ -139,8 +164,9 @@ public class MemberService {
                 PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
 
-    public void deleteMember(long memberId, String password){
+    public void deleteMember(long memberId, String password, String accessToken){
         Member findMember = findverifiedMember(memberId);
+        checkMemberId(findMember.getMemberId(), accessToken);
 
         if(!passwordEncoder.matches(password, findMember.getPassword())) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_PASSWORD_NOT_MATCHED);
