@@ -4,6 +4,7 @@ import com.seb45_main_031.routine.auth.jwt.JwtTokenizer;
 import com.seb45_main_031.routine.auth.utils.CustomAuthorityUtils;
 import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
+import com.seb45_main_031.routine.image.S3FileUploadService;
 import com.seb45_main_031.routine.member.entity.Member;
 import com.seb45_main_031.routine.member.repository.MemberRepository;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -22,15 +24,15 @@ public class MemberService {
     private final CustomAuthorityUtils customAuthorityUtils;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenizer jwtTokenizer;
+    private final S3FileUploadService s3FileUploadService;
 
-    public MemberService(MemberRepository memberRepository,
-                         CustomAuthorityUtils customAuthorityUtils,
-                         PasswordEncoder passwordEncoder,
-                         JwtTokenizer jwtTokenizer) {
+    public MemberService(MemberRepository memberRepository, CustomAuthorityUtils customAuthorityUtils,
+                         PasswordEncoder passwordEncoder, JwtTokenizer jwtTokenizer, S3FileUploadService s3FileUploadService) {
         this.memberRepository = memberRepository;
         this.customAuthorityUtils = customAuthorityUtils;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenizer = jwtTokenizer;
+        this.s3FileUploadService = s3FileUploadService;
     }
 
     public Member findverifiedMember(long memberId){
@@ -115,6 +117,21 @@ public class MemberService {
 
         return memberRepository.save(member);
 
+    }
+
+    public void uploadImage(MultipartFile multipartFile, String accessToken){
+        long findMemberId = findMemberId(accessToken);
+        Member findMember = findverifiedMember(findMemberId);
+
+        if(multipartFile.isEmpty()){
+            findMember.setImage(null);
+        }
+        else{
+            String imageUrl = s3FileUploadService.uploadImageFile(multipartFile);
+            findMember.setImage(imageUrl);
+        }
+
+        memberRepository.save(findMember);
     }
 
     public String renewAccessToken(String refreshToken){

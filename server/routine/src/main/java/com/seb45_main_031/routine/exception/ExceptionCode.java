@@ -11,7 +11,9 @@ public enum ExceptionCode {
     FEED_NOT_FOUND(404, "Feed not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
     TODO_NOT_FOUND(404, "Todo not found"),
-    TAG_NOT_FOUND(404, "Tag not found");
+    TAG_NOT_FOUND(404, "Tag not found"),
+    FILE_INPUT_STREAM_ERROR(500, "Failed to read image file"),
+    FILE_TYPES_NOT_ALLOWED(400, "Type of file not allowed");
 
 
     @Getter

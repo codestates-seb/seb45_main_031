@@ -44,6 +44,7 @@ public class MemberDto {
         private Member.MemberStatus memberStatus;
         private int exp;
         private int level;
+        private String image;
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -44,6 +45,16 @@ public class MemberController {
         return ResponseEntity.created(location).build();
 
     }
+
+    @PostMapping("/image")
+    public ResponseEntity postImage(@RequestParam("file") MultipartFile multipartFile,
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
+
+        memberService.uploadImage(multipartFile, accessToken);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
     @PostMapping("/renewAccessToken")
     public ResponseEntity renewAccessToken(@RequestHeader("Refresh") String refreshToken){
