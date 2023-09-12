@@ -14,8 +14,7 @@ public class CommentDto {
     @Getter
     @Setter
     public static class Post {
-        @Positive
-        @NotNull
+
         private long memberId;
 
         @Positive
