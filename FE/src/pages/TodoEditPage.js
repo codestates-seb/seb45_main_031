@@ -26,13 +26,13 @@ import {
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
 import ErrorModal from "../components/ErrorModal";
-import countContentLength from "../utils/conutContentLength";
-
-//삭제 될 데이터
-const memberId = 1;
+import countContentLength from "../utils/countContentLength";
 
 const TodoEditPage = () => {
   const navigate = useNavigate();
+  const localUser = JSON.parse(localStorage.getItem("localUser"));
+  const memberId = localUser.memberId;
+  const accessToken = localUser.accessToken;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
@@ -157,10 +157,14 @@ const TodoEditPage = () => {
         todoEmoji,
         date: newDate,
       };
-      axios.post(`${URL}/todos`, newData).then((res) => {
-        console.log(res);
-        navigate(`/todo/${newDate}`);
-      });
+      axios
+        .post(`${URL}/todos`, newData, {
+          headers: { Authorization: accessToken },
+        })
+        .then((res) => {
+          console.log(res);
+          navigate(`/todo/${newDate}`);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -314,9 +318,13 @@ const TodoEditSection = styled.section`
 
   background-color: #ececec;
 
+  padding: 95px 0px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  overflow: auto;
 `;
 
 const Title = () => {

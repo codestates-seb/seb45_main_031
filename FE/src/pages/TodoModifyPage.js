@@ -24,11 +24,13 @@ import {
 } from "../data/constants";
 import TagModal from "../components/TagModal";
 import ModalBackground from "../components/ModalBackground";
-import countContentLength from "../utils/conutContentLength";
+import countContentLength from "../utils/countContentLength";
 
 const TodoModifyPage = () => {
   const { todoId } = useParams();
   const navigate = useNavigate();
+  const localUser = JSON.parse(localStorage.getItem("localUser"));
+  const accessToken = localUser.accessToken;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
@@ -46,14 +48,18 @@ const TodoModifyPage = () => {
   //todo 불러오기
   useEffect(() => {
     try {
-      axios.get(`${URL}/todos/single/${todoId}`).then((res) => {
-        let data = res.data.data;
-        setTodoTag(data.tagResponse.tagName);
-        setTagId(tags[data.tagResponse.tagName]);
-        setContent(data.content);
-        setInputCount(countContentLength(data.content));
-        setTodoEmoji(data.todoEmoji);
-      });
+      axios
+        .get(`${URL}/todos/single/${todoId}`, {
+          headers: { Authorization: accessToken },
+        })
+        .then((res) => {
+          let data = res.data.data;
+          setTodoTag(data.tagResponse.tagName);
+          setTagId(tags[data.tagResponse.tagName]);
+          setContent(data.content);
+          setInputCount(countContentLength(data.content));
+          setTodoEmoji(data.todoEmoji);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -176,10 +182,14 @@ const TodoModifyPage = () => {
         tagId,
         date: newDate,
       };
-      axios.patch(`${URL}/todos/${todoId}`, newData).then((res) => {
-        console.log(res);
-        navigate(`/todo/${newDate}`);
-      });
+      axios
+        .patch(`${URL}/todos/${todoId}`, newData, {
+          headers: { Authorization: accessToken },
+        })
+        .then((res) => {
+          console.log(res);
+          navigate(`/todo/${newDate}`);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -370,9 +380,13 @@ const TodoEditSection = styled.section`
 
   background-color: #ececec;
 
+  padding: 95px 0px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  overflow: auto;
 `;
 
 const Title = () => {

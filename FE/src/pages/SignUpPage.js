@@ -1,8 +1,29 @@
 import { styled } from "styled-components";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 import googleIcon from "../assets/images/google.png";
 
+const emailRegex =
+  /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
 const SignUpPage = () => {
+  const [user, setUser] = useState({
+    email: "",
+    nickName: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const onChange = (event) => {
+    const userType = event.target.name;
+    setUser({
+      ...user,
+      [userType]: event.target.value,
+    });
+  };
+
   return (
     <Container>
       <SignUpContainer>
@@ -17,21 +38,42 @@ const SignUpPage = () => {
           <EmailContainer>
             <InputId
               type="email"
-              name="id"
+              name="email"
+              onChange={onChange}
               placeholder="이메일 형식의 아이디를 입력해주세요."
             />
-            <IdErrorMessage>이미 사용중인 아이디입니다.</IdErrorMessage>
+            <IdErrorMessage>
+              {/* {!isEmail && email.length > 0 && <div>{emailMessege}</div>} */}
+              <div
+                style={{
+                  display: !emailRegex.test(user.email) ? "block" : "none",
+                }}
+              >
+                {"적절하지 않은 아이디 형식입니다."}
+              </div>
+            </IdErrorMessage>
           </EmailContainer>
           {/*Nickname*/}
           <NickNameText>Nickname</NickNameText>
           <NickNameContainer>
             <InputNickName
               type="text"
-              name="nickname"
+              name="nickName"
+              onChange={onChange}
               placeholder="사용하실 닉네임을 입력해주세요."
             />
             <NickNameErrorMassage>
-              이미 사용중인 닉네임입니다.
+              {/* {!isNickName && nickName.length > 0 && ()} */}
+              <div
+                style={{
+                  display:
+                    user.nickName.length < 2 || user.nickName.length > 8
+                      ? "block"
+                      : "none",
+                }}
+              >
+                {"2글자 이상 8글자 미만으로 입력해주세요."}
+              </div>
             </NickNameErrorMassage>
           </NickNameContainer>
           {/*Password*/}
@@ -40,28 +82,60 @@ const SignUpPage = () => {
             <InputPassword
               type="password"
               name="password"
+              onChange={onChange}
               placeholder="비밀번호를 입력해주세요."
               autocomplete="current-password"
             />
+            <PasswordErrorMassage>
+              {/* {!isPassword && password.length > 0 && ( )} */}
+              <div
+                style={{
+                  display: !passwordRegex.test(user.password)
+                    ? "block"
+                    : "none",
+                }}
+              >
+                {
+                  "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요. "
+                }
+              </div>
+            </PasswordErrorMassage>
           </PasswordContainer>
           {/*Confirmation*/}
           <ConfirmationText>Confirmation</ConfirmationText>
           <ConfirmationContainer>
             <InputConfirmation
               type="password"
-              name="Confirmation"
+              name="passwordConfirm"
+              onChange={onChange}
               placeholder="비밀번호를 한번 더 입력해주세요."
               autocomplete="current-password"
             />
             <ConfirmationErrorMassage>
-              비밀번호가 일치하지 않습니다.
+              <div
+                style={{
+                  display: !(user.password === user.passwordConfirm)
+                    ? "block"
+                    : "none",
+                }}
+              >
+                {"비밀번호가 일치하지 않습니다."}
+              </div>
             </ConfirmationErrorMassage>
           </ConfirmationContainer>
         </InputForm>
         {/*Confirm*/}
         <ConfirmContainer>
-          <Confirm>확인</Confirm>
-          <CancelBtn>취소</CancelBtn>
+          <ConfirmBtn
+          // disabled={
+          //   !(isEmail && isNickName && isPassword && isPasswordConfirm)
+          // }
+          >
+            <NavLink to="/todo">확인</NavLink>
+          </ConfirmBtn>
+          <CancelBtn>
+            <NavLink to="/login">취소</NavLink>
+          </CancelBtn>
         </ConfirmContainer>
       </SignUpContainer>
     </Container>
@@ -145,7 +219,7 @@ const IdErrorMessage = styled.div`
   color: firebrick;
   margin: 0;
   padding: 5px 10px;
-  margin-right: 150px;
+  margin-right: 120px;
 `;
 
 const NickNameText = styled.span`
@@ -177,7 +251,7 @@ const InputNickName = styled.input`
 const NickNameErrorMassage = styled.div`
   font-size: 0.7rem;
   color: firebrick;
-  margin-right: 150px;
+  margin-right: 80px;
   padding: 5px 10px;
 `;
 
@@ -207,7 +281,11 @@ const InputPassword = styled.input`
     padding-right: 15px;
   }
 `;
-
+const PasswordErrorMassage = styled.div`
+  font-size: 0.7rem;
+  color: firebrick;
+  padding: 5px 10px;
+`;
 const ConfirmationText = styled.span`
   display: block;
   font-size: 1.1rem;
@@ -248,7 +326,7 @@ const ConfirmContainer = styled.div`
   margin-top: 60px;
   /* margin-bottom: 200px; */
 `;
-const Confirm = styled.button`
+const ConfirmBtn = styled.button`
   height: 50px;
   font-size: 0.85rem;
   border: 1px solid 949597;
@@ -273,5 +351,7 @@ const CancelBtn = styled.button`
 
   &:hover {
     background-color: #676767;
+  }
+  &.action {
   }
 `;

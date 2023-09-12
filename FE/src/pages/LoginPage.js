@@ -1,51 +1,100 @@
 import { styled } from "styled-components";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+// import axios from "axios";
+
 import googleIcon from "../assets/images/google.png";
 
-const SignUp = () => {
+const emailRegex =
+  /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+const LoginPage = () => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const onChange = (event) => {
+    const userType = event.target.name;
+    setUser({
+      ...user,
+      [userType]: event.target.value,
+    });
+  };
+
+  const loginHandler = async (e) => {
+    e.preventDefault();
+  };
+
   return (
     <Container>
       <LoginStyled>
         <LoginText>Login</LoginText>
         <GoogleButton>
-          <GoogleIcon src={googleIcon} alt="구글 아이콘" />
+          <GoogleIcon src={googleIcon} alt="구글 이미지" />
           <GoogleText>Sign in with Google</GoogleText>
         </GoogleButton>
-        {/*        */}
+        {/* 아이디 */}
         <InputForm>
           <IdText>ID</IdText>
           <EmailContainer>
             <InputId
               type="email"
-              name="id"
+              name="email"
+              // value={email}
+              onChange={onChange}
               placeholder="이메일 형식의 아이디를 입력해주세요."
+              required
             />
-            <IdErrorMessage>적절하지 않은 아이디 형식입니다.</IdErrorMessage>
+            <IdErrorMessage>
+              <div
+                style={{
+                  display: !emailRegex.test(user.email) ? "block" : "none",
+                }}
+              >
+                {"적절하지 않은 아이디 형식입니다."}
+              </div>
+            </IdErrorMessage>
           </EmailContainer>
-          {/*          */}
+          {/*비밀번호*/}
           <PasswordText>Password</PasswordText>
           <PasswordContainer>
             <InputPassword
               type="password"
               name="password"
+              // value={password}
+              onChange={onChange}
               placeholder="비밀번호를 입력해주세요."
-              autocomplete="current-password"
+              required
             />
             <PasswordErrorMassage>
-              아이디 혹은 비밀번호를 확인해주세요.
+              <div
+                style={{
+                  display: !passwordRegex.test(user.password)
+                    ? "block"
+                    : "none",
+                }}
+              >
+                {"아이디 혹은 비밀번호를 확인 해주세요."}
+              </div>
             </PasswordErrorMassage>
           </PasswordContainer>
         </InputForm>
-        {/*        */}
+        {/*confirm*/}
         <ConfirmContainer>
-          <LoginConfirm>로그인</LoginConfirm>
-          <SignUpButton>회원가입</SignUpButton>
+          <LoginButton onClick={(e) => loginHandler(e)}>로그인</LoginButton>
+          <SignUpButton>
+            <NavLink to="/signup">회원가입</NavLink>
+          </SignUpButton>
         </ConfirmContainer>
       </LoginStyled>
     </Container>
   );
 };
 
-export default SignUp;
+export default LoginPage;
 
 const Container = styled.div`
   display: flex;
@@ -164,7 +213,7 @@ const ConfirmContainer = styled.div`
   justify-content: center;
   margin-top: 90px;
 `;
-const LoginConfirm = styled.button`
+const LoginButton = styled.button`
   height: 50px;
   font-size: 0.85rem;
   border: 1px solid 949597;
@@ -187,5 +236,7 @@ const SignUpButton = styled.button`
   height: 35px;
   &:hover {
     background-color: #676767;
+    &.active {
+    }
   }
 `;
