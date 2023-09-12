@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
+import { CLOSE_TEXT } from "../../data/constants";
 
 const ErrorModal = ({ errorMessage, closeErrorModal }) => {
   return (
     <Body>
       <ErrorText>{errorMessage}</ErrorText>
       <CloseErrorModalButton onClick={() => closeErrorModal()}>
-        X
+        {CLOSE_TEXT}
       </CloseErrorModalButton>
     </Body>
   );

@@ -1,15 +1,19 @@
 import { styled } from "styled-components";
 
-const TagModal = ({ tags, TagModalClose, ChangeTag }) => {
+import { CLOSE_TEXT } from "../../data/constants";
+
+const TagModal = ({ tags, tagModalClose, changeTag }) => {
   return (
     <>
       <TagModalBody>
-        <TagExitButton onClick={() => TagModalClose()}>X</TagExitButton>
+        <TagExitButton onClick={() => tagModalClose()}>
+          {CLOSE_TEXT}
+        </TagExitButton>
         <TagGroup>
-          {Object.keys(tags).map((tag) => (
+          {tags.map((tag) => (
             <>
               <Tag>
-                <TagButton onClick={() => ChangeTag(tag)}>{tag}</TagButton>
+                <TagButton onClick={() => changeTag(tag)}>{tag}</TagButton>
               </Tag>
             </>
           ))}
