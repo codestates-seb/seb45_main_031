@@ -45,6 +45,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             setPassword(member.getPassword());
             setNickname(member.getNickname());
             setRoles(member.getRoles());
+            setExp(member.getExp());
+            setLevel(member.getLevel());
+            setImage(member.getImage());
         }
 
         @Override

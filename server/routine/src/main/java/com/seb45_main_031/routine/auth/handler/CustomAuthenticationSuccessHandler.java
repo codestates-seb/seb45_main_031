@@ -34,6 +34,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         loginUserInfo.setMemberId(member.getMemberId());
         loginUserInfo.setEmail(member.getEmail());
         loginUserInfo.setNickname(member.getNickname());
+        loginUserInfo.setExp(member.getExp());
+        loginUserInfo.setLevel(member.getLevel());
+        loginUserInfo.setImage(member.getImage());
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -47,5 +50,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         private long memberId;
         private String email;
         private String nickname;
+        private int exp;
+        private int level;
+        private String image;
     }
 }
