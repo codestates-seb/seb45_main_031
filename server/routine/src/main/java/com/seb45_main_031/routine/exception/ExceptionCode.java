@@ -13,6 +13,7 @@ public enum ExceptionCode {
     TODO_NOT_FOUND(404, "Todo not found"),
     TAG_NOT_FOUND(404, "Tag not found"),
     TODOSTORAGE_NOT_FOUND(404, "TodoStorage not found"),
+    SAVEDTODO_NOT_FOUND(404, "SavedTodo not found"),
     FILE_INPUT_STREAM_ERROR(500, "Failed to read image file"),
     FILE_TYPES_NOT_ALLOWED(400, "Type of file not allowed");
 
