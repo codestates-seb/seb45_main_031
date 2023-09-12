@@ -103,13 +103,7 @@ public class TodoService {
 
 
     // Todo 할 일 등록
-    public Todo createTodo(Todo todo, String accessToken){
-
-        Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
-        todo.setTag(findTag);
-
-        memberService.checkMemberId(todo.getMember().getMemberId(), accessToken);
-
+    public Todo createTodo(Todo todo){
 
         long findMemberId = todo.getMember().getMemberId();
         LocalDate findDate = todo.getDate();
@@ -135,37 +129,27 @@ public class TodoService {
     }
 
     // Todo 할 일 여러 개 등록
-    public List<Todo> createTodos(List<Todo> todos, String accessToken){
+    public void createTodos(List<Todo> todos){
 
         long findMemberId = todos.stream().map(todo -> todo.getMember().getMemberId()).findAny().orElse(null);
         LocalDate date = todos.stream().map(todo -> todo.getDate()).findAny().orElse(null);
 
         double beforePercent = calculatePercent(findMemberId, date);
 
-        for (Todo todo : todos){
-
-            Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
-            todo.setTag(findTag);
-        }
-
-        memberService.checkMemberId(todos.get(0).getMember().getMemberId(), accessToken);
-
 
         if(beforePercent == 0){
 
-            return todoRepository.saveAll(todos);
+            todoRepository.saveAll(todos);
 
         }
 
         else {
 
-            List<Todo> savedTodos = todoRepository.saveAll(todos);
+            todoRepository.saveAll(todos);
 
             double afterPercent = calculatePercent(findMemberId, date);
 
             setExpAndLevel(findMemberId, beforePercent, afterPercent);
-
-            return savedTodos;
 
         }
 

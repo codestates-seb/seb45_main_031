@@ -31,14 +31,12 @@ public class CommentService {
     }
 
     // 댓글 작성
-    public Comment createComment(Comment comment, String accessToken) {
-        Member member = memberRepository.findById(comment.getMember().getMemberId()).get();
-        Feed feed = feedRepository.findById(comment.getFeed().getFeedId()).get();
-
-        memberService.checkMemberId(comment.getMember().getMemberId(), accessToken);
-
-        comment.setMember(member);
-        comment.setFeed(feed);
+    public Comment createComment(Comment comment) {
+//        Member member = memberRepository.findById(comment.getMember().getMemberId()).get();
+//        Feed feed = feedRepository.findById(comment.getFeed().getFeedId()).get();
+//
+//        comment.setMember(member);
+//        comment.setFeed(feed);
 
         return commentRepository.save(comment);
     }
