@@ -33,6 +33,8 @@ public class Member {
 
     private int level = 0;
 
+    private String image;
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

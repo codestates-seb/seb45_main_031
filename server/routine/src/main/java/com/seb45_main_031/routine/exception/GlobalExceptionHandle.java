@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -63,6 +64,17 @@ public class GlobalExceptionHandle {
                 HttpStatus.UNAUTHORIZED, "RefreshToken expired");
 
         return new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e){
+        // 컨트롤러로 들어오는 파일 용량 -> yml 파일 설정된 크기를 초과하는 경우 -> 해당 예외 발생
+
+        ErrorResponse response = new ErrorResponse();
+        response.setStatusAndMessageFromHttpStatusAndMessage(
+                HttpStatus.BAD_REQUEST, "The file size exceeds the allowed maximum size of 5MB");
+
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
