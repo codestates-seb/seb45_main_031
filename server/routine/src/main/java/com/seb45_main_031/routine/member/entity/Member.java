@@ -28,6 +28,12 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String nickname;
 
+
+    private int exp = 0;
+
+    private int level = 0;
+
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -36,7 +42,6 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
-
 
 
     public enum MemberStatus{
