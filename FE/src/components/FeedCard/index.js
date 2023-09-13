@@ -73,7 +73,8 @@ const FeedCard = ({
 export default FeedCard;
 
 const CardContainer = styled.li`
-  width: 390px;
+  width: 100%;
+  max-width: 390px;
 
   background-color: #ffffff;
 
@@ -88,17 +89,19 @@ const CardContainer = styled.li`
 `;
 
 const TodoSection = styled.section`
-  width: 360px;
-  height: 200px;
+  width: 100%;
+  max-width: 360px;
+  max-height: 200px;
 
   border-top: 1px solid #d0d0d0;
   border-bottom: 1px solid #d0d0d0;
 
-  overflow: scroll;
+  overflow: auto;
 `;
 
 const Todo = styled.ul`
-  width: 350px;
+  width: 100%;
+  max-width: 350px;
 
   margin-bottom: 20px;
 `;

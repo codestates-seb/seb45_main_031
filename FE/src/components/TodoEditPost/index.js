@@ -39,8 +39,8 @@ const TodoEditPost = ({
 export default TodoEditPost;
 
 const PostSection = styled.section`
-  width: 390px;
-  height: 500px;
+  width: 90%;
+  max-width: 390px;
 
   background-color: #ffffff;
 

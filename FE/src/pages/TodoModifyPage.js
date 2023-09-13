@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Calendar } from "react-calendar";
 
 import "react-calendar/dist/Calendar.css"; // css import
 
@@ -15,11 +14,12 @@ import {
   TODO_TIPS,
 } from "../data/constants";
 import TagModal from "../components/TagModal";
-import ModalBackground from "../components/ModalBackground";
 import countContentLength from "../utils/countContentLength";
 import EditEmojiModal from "../components/EditEmojiModal";
 import EditTipContents from "../components/EditTipContents";
 import TodoEditPost from "../components/TodoEditPost";
+import TodoCalendarModal from "../components/TodoCalendarModal";
+import ErrorModal from "../components/ErrorModal";
 
 const TodoModifyPage = () => {
   const { todoId } = useParams();
@@ -27,9 +27,8 @@ const TodoModifyPage = () => {
   const localUser = JSON.parse(localStorage.getItem("localUser"));
   const accessToken = localUser.accessToken;
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenEmojiModal, setIsOpenEmojiModal] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
-  const [isOpenModalBack, setIsOpenModalBack] = useState(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState(false);
   const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
   const [todoEmoji, setTodoEmoji] = useState("");
@@ -62,14 +61,21 @@ const TodoModifyPage = () => {
     }
   };
 
-  const emojiModalOpen = () => {
-    setIsOpenModal(true);
-    setIsOpenModalBack(true);
+  const isEmojiModal = () => {
+    setIsOpenEmojiModal(!isOpenEmojiModal);
   };
 
-  const emojiModalClose = () => {
-    setIsOpenModal(false);
-    setIsOpenModalBack(false);
+  const isTagModal = () => {
+    setIsOpenTagModal(!isOpenTagModal);
+  };
+
+  const isCalendar = () => {
+    setIsOpenCalender(!isOpenCalender);
+  };
+
+  const isErrorModal = (message) => {
+    setErrorMessage(message);
+    setIsOpenErrorModal(!isOpenErrorModal);
   };
 
   const changeTodoEmoji = (value) => {
@@ -81,57 +87,29 @@ const TodoModifyPage = () => {
     setInputCount(countContentLength(value));
   };
 
-  const tagModalOpen = () => {
-    setIsOpenTagModal(true);
-    setIsOpenModalBack(true);
-  };
-
-  const tagModalClose = () => {
-    setIsOpenTagModal(false);
-    setIsOpenModalBack(false);
-  };
-
   const changeTag = (value) => {
     setTagId(tags[value]);
     setTodoTag(value);
 
-    tagModalClose();
-  };
-
-  const calendarOpen = () => {
-    setIsOpenCalender(true);
-    setIsOpenModalBack(true);
+    isTagModal();
   };
 
   function changeDate(value) {
     setDate(value);
 
-    setIsOpenCalender(false);
-    setIsOpenModalBack(false);
+    isCalendar();
   }
-
-  const openErrorModal = (message) => {
-    setErrorMessage(message);
-    setIsOpenErrorModal(true);
-    setIsOpenModalBack(true);
-  };
-
-  const closeErrorModal = () => {
-    setErrorMessage("");
-    setIsOpenErrorModal(false);
-    setIsOpenModalBack(false);
-  };
 
   const patchTodo = async () => {
     try {
       if (content === "") {
-        return openErrorModal("할 일 이름은 필수 항목 입니다.");
+        return isErrorModal("할 일 이름은 필수 항목 입니다.");
       }
       if (inputCount > 60) {
-        return openErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
+        return isErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
       }
       if (tagId === "") {
-        return openErrorModal("태그는 필수 항목 입니다.");
+        return isErrorModal("태그는 필수 항목 입니다.");
       }
 
       const newDate = getDateFormat(date);
@@ -154,32 +132,31 @@ const TodoModifyPage = () => {
 
   return (
     <>
-      <TodoEditBody>
+      <TodoEditWrapper>
         {isOpenErrorModal && (
           <ErrorModal
             errorMessage={errorMessage}
-            closeErrorModal={closeErrorModal}
+            closeErrorModal={isErrorModal}
           />
         )}
-        {isOpenModal && (
+        {isOpenEmojiModal && (
           <EditEmojiModal
             todoEmoji={todoEmoji}
-            emojiModalOpen={emojiModalOpen}
-            emojiModalClose={emojiModalClose}
+            emojiModalOpen={isEmojiModal}
+            emojiModalClose={isEmojiModal}
             changeTodoEmoji={changeTodoEmoji}
           />
         )}
         {isOpenCalender && (
-          <CalendarModal onChange={(event) => changeDate(event)} value={date} />
+          <TodoCalendarModal changeDate={changeDate} date={date} />
         )}
         {isOpenTagModal && (
           <TagModal
             tags={Object.keys(tags)}
-            tagModalClose={tagModalClose}
+            tagModalClose={isTagModal}
             changeTag={changeTag}
           />
         )}
-        {isOpenModalBack && <ModalBackground />}
         <TodoEditSection>
           <EditTipContents
             TITLE={TODO_MODIFY_TITLE}
@@ -187,12 +164,12 @@ const TodoModifyPage = () => {
             TIPS={TODO_TIPS}
           />
           <TodoEditPost
-            emojiModalOpen={emojiModalOpen}
+            emojiModalOpen={isEmojiModal}
             changeName={changeName}
-            tagModalOpen={tagModalOpen}
+            tagModalOpen={isTagModal}
             todoEmoji={todoEmoji}
             date={date}
-            calendarOpen={calendarOpen}
+            calendarOpen={isCalendar}
             content={content}
             todoTag={todoTag}
             inputCount={inputCount}
@@ -200,14 +177,14 @@ const TodoModifyPage = () => {
             navigate={navigate}
           />
         </TodoEditSection>
-      </TodoEditBody>
+      </TodoEditWrapper>
     </>
   );
 };
 
 export default TodoModifyPage;
 
-const TodoEditBody = styled.body`
+const TodoEditWrapper = styled.body`
   height: 100vh;
 
   display: flex;
@@ -215,43 +192,14 @@ const TodoEditBody = styled.body`
   align-items: center;
 `;
 
-const ErrorModal = styled.div`
-  width: 390px;
-  height: 150px;
-
-  border-radius: 15px;
-
-  background-color: #ffffff;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  position: absolute;
-  top: 350px;
-
-  z-index: 100;
-`;
-
-const CalendarModal = styled(Calendar)`
-  width: 390px;
-
-  border-radius: 15px;
-
-  position: absolute;
-  top: 300px;
-
-  z-index: 100;
-`;
-
 const TodoEditSection = styled.section`
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
   height: 100vh;
 
   background-color: #ececec;
 
-  padding: 95px 0px;
+  padding: 75px 0px;
 
   display: flex;
   flex-direction: column;

@@ -33,7 +33,8 @@ const CommunityEditPost = ({
 export default CommunityEditPost;
 
 const PostWrapper = styled.section`
-  width: 390px;
+  width: 90%;
+  max-width: 390px;
 
   margin-top: 15px;
   padding: 25px;

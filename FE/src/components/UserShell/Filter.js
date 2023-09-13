@@ -23,9 +23,10 @@ export default Filter;
 
 const FilterSection = styled.section`
   width: 100%;
-  height: 50px;
 
   background-color: #ffffff;
+
+  padding: 10px 10px 10px 0px;
 
   overflow-x: scroll;
   white-space: nowrap;

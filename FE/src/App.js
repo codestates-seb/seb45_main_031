@@ -15,6 +15,8 @@ import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import CommunityEditPage from "./pages/CommunityEditPage";
 import CommunityModifyPage from "./pages/CommunityModifyPage";
+import DirectoryPage from "./pages/DirectoryPage";
+import DirectoryDetailPage from "./pages/DirectoryDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,9 @@ const router = createBrowserRouter([
       { path: "/community", element: <CommunityPage /> },
       { path: "/community/edit", element: <CommunityEditPage /> },
       { path: "/community/modify/:feedId", element: <CommunityModifyPage /> },
+
+      { path: "/directory", element: <DirectoryPage /> },
+      { path: "/directory/:categoryId", element: <DirectoryDetailPage /> },
 
       { path: "/mypage", element: <MyPage /> },
     ],

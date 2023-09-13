@@ -2,23 +2,23 @@ import { styled } from "styled-components";
 
 import { CLOSE_TEXT } from "../../data/constants";
 
-const Exit = ({ isTodoModal }) => {
+const CloseButton = ({ isModal }) => {
   return (
-    <ExitWrapper>
-      <ExitButton
+    <Wrapper>
+      <Button
         onClick={() => {
-          isTodoModal();
+          isModal();
         }}
       >
         {CLOSE_TEXT}
-      </ExitButton>
-    </ExitWrapper>
+      </Button>
+    </Wrapper>
   );
 };
 
-export default Exit;
+export default CloseButton;
 
-const ExitWrapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   height: 20px;
 
@@ -31,7 +31,7 @@ const ExitWrapper = styled.div`
   justify-content: end;
 `;
 
-const ExitButton = styled.button`
+const Button = styled.button`
   width: 30px;
   height: 30px;
 

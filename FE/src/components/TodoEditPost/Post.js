@@ -55,14 +55,17 @@ const Post = ({
 
 export default Post;
 
-const PostWrapper = styled.div``;
+const PostWrapper = styled.div`
+  width: 100%;
+  max-width: 390px;
+`;
 
 const Label = styled.label`
   font-weight: bold;
 `;
 
 const Input = styled.input`
-  width: 340px;
+  width: 100%;
   height: 50px;
 
   font-size: 1rem;
@@ -74,7 +77,7 @@ const Input = styled.input`
 `;
 
 const Tag = styled.div`
-  width: 340px;
+  width: 100%;
   height: 50px;
 
   font-size: 1rem;
@@ -90,7 +93,8 @@ const Tag = styled.div`
 `;
 
 const Section = styled.section`
-  width: 340px;
+  width: 100%;
+  max-width: 340px;
 
   margin-bottom: 25px;
 
@@ -115,7 +119,7 @@ const TodoEmoji = styled.div`
 `;
 
 const Date = styled.div`
-  width: 340px;
+  width: 100%;
   height: 50px;
 
   font-size: 1rem;

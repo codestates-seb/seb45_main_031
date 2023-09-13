@@ -26,9 +26,9 @@ const TodoCard = ({
 
 const TodoCardSection = styled.li`
   width: 100%;
-  height: 70px;
 
   margin-top: 20px;
+  padding: 10px 15px;
   border: 1px solid #d0d0d0;
   border-radius: 15px;
 
@@ -38,6 +38,7 @@ const TodoCardSection = styled.li`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const TagDiv = styled.span`
@@ -46,7 +47,6 @@ const TagDiv = styled.span`
 
   background: #ececec;
 
-  margin: 15px;
   border-radius: 15px;
 
   display: flex;
@@ -55,16 +55,24 @@ const TagDiv = styled.span`
 `;
 
 const TitleDiv = styled.p`
-  width: 200px;
+  width: 80%;
+  max-width: 175px;
+  height: 30px;
 
   font-size: 0.9erm;
+  font-weight: bold;
+
+  margin: 10px;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
 `;
 
 const EmojiDiv = styled.div`
   width: 40px;
   height: 40px;
 
-  margin: 15px;
   border: 1px solid #949597;
   border-radius: 15px;
 

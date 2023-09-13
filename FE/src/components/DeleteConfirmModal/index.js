@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { CANCEL_TEXT, DELETE_TEXT, WARNING_TEXT } from "../../data/constants";
+import ModalBackground from "../ModalBackground";
 
 const DeleteConfirmModal = ({ closeDeleteModal, deleteFeed }) => {
   return (
@@ -11,6 +12,7 @@ const DeleteConfirmModal = ({ closeDeleteModal, deleteFeed }) => {
           <Button onClick={() => closeDeleteModal()}>{CANCEL_TEXT}</Button>
         </Buttons>
       </ModalWrapper>
+      <ModalBackground />
     </>
   );
 };
@@ -18,7 +20,8 @@ const DeleteConfirmModal = ({ closeDeleteModal, deleteFeed }) => {
 export default DeleteConfirmModal;
 
 const ModalWrapper = styled.div`
-  width: 390px;
+  width: 90%;
+  max-width: 390px;
   height: 200px;
 
   background-color: #ffffff;

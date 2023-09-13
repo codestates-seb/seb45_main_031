@@ -47,7 +47,8 @@ const Validation = ({
 export default Validation;
 
 const ValidationSection = styled.section`
-  width: 320px;
+  width: 95%;
+  max-width: 320px;
   height: 3px;
 
   margin: 0px 10px;

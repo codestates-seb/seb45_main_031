@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import { Calendar } from "react-calendar";
 import axios from "axios";
 
 import TodoModal from "../components/TodoModal";
 import UserShell from "../components/UserShell";
 import TodoList from "../components/TodoList";
-import ModalBackground from "../components/ModalBackground";
 
 import getDateFormat from "../utils/getDateFormat";
 
@@ -19,6 +17,7 @@ import {
 } from "../data/constants";
 
 import "react-calendar/dist/Calendar.css";
+import TodoCalendarModal from "../components/TodoCalendarModal";
 
 //삭제 될 로그인 파트 ==================================================
 axios
@@ -26,16 +25,16 @@ axios
     email: "abcd1234@gmail.com",
     password: "abcd1234",
   })
-  .then((res) => {
+  .then(({ data, headers }) => {
     const localUser = {
-      email: res.data.email,
-      memberId: res.data.memberId,
-      nickname: res.data.nickname,
-      exp: res.data.exp,
-      level: res.data.level,
-      image: res.data.image,
-      accessToken: res.headers.authorization,
-      refresh: res.headers.refresh,
+      email: data.email,
+      memberId: data.memberId,
+      nickname: data.nickname,
+      exp: data.exp,
+      level: data.level,
+      image: data.image,
+      accessToken: headers.authorization,
+      refresh: headers.refresh,
     };
     localStorage.setItem("localUser", JSON.stringify(localUser));
   });
@@ -58,14 +57,30 @@ const TodoPage = () => {
   const [todoGroup, setTodoGroup] = useState([]);
   const [filterList, setFilterList] = useState(DEFAULT_FILTER_LIST);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
-  const [isOpenModalBack, setIsOpenModalBack] = useState(false);
+  const [percent, setPercent] = useState(DEFAULT_PERCENT);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenTodoModal, setIsOpenTodoModal] = useState(false);
-  const [percent, setPercent] = useState(DEFAULT_PERCENT);
 
   useEffect(() => {
     getTodoList(date);
   }, []);
+
+  const isCalender = () => {
+    setIsOpenCalender(!isOpenCalender);
+  };
+
+  const isTodoModal = () => {
+    setTodo({});
+    setIsOpenTodoModal(!isOpenTodoModal);
+  };
+
+  const changeDate = (date) => {
+    const newDate = getDateFormat(date);
+    setDate(newDate);
+    window.location.replace(`/todo/${newDate}`);
+
+    isCalender();
+  };
 
   const calculatePercent = (numerator, denominator) => {
     if (denominator === 0) return setPercent(0);
@@ -73,6 +88,19 @@ const TodoPage = () => {
     const newPercent = Math.round((numerator / denominator) * 100);
 
     setPercent(newPercent);
+  };
+
+  const filtering = (filter) => {
+    setFilter(filter);
+
+    if (filter === DEFAULT_FILTER) {
+      setTodoGroup(meta.todoResponses);
+    } else {
+      const newTodo = meta.todoResponses.filter(
+        (data) => data.tagResponse.tagName === filter,
+      );
+      setTodoGroup(newTodo);
+    }
   };
 
   const getTodoList = async (date) => {
@@ -103,42 +131,8 @@ const TodoPage = () => {
     }
   };
 
-  const filtering = (filter) => {
-    setFilter(filter);
-
-    if (filter === DEFAULT_FILTER) {
-      setTodoGroup(meta.todoResponses);
-    } else {
-      const newTodo = meta.todoResponses.filter(
-        (data) => data.tagResponse.tagName === filter,
-      );
-      setTodoGroup(newTodo);
-    }
-  };
-
-  const openCalender = () => {
-    setIsOpenModalBack(true);
-    setIsOpenCalender(true);
-  };
-
-  const changeDate = (date) => {
-    const newDate = getDateFormat(date);
-    setDate(newDate);
-    window.location.replace(`/todo/${newDate}`);
-
-    setIsOpenCalender(!isOpenCalender);
-    setIsOpenModalBack(!isOpenModalBack);
-  };
-
   const changeTodo = (todoInformation) => {
     setTodo(todoInformation);
-    setIsOpenModalBack(!isOpenModalBack);
-    setIsOpenTodoModal(!isOpenTodoModal);
-  };
-
-  const closeTodoModal = () => {
-    setTodo({});
-    setIsOpenModalBack(!isOpenModalBack);
     setIsOpenTodoModal(!isOpenTodoModal);
   };
 
@@ -156,7 +150,7 @@ const TodoPage = () => {
 
       getTodoList(date);
 
-      closeTodoModal(date);
+      isTodoModal();
     } catch (error) {
       console.error(error);
     }
@@ -170,7 +164,7 @@ const TodoPage = () => {
 
       getTodoList(date);
 
-      closeTodoModal();
+      isTodoModal();
     } catch (error) {
       console.error(error);
     }
@@ -178,22 +172,21 @@ const TodoPage = () => {
 
   return (
     <>
-      <TodoBody>
-        {isOpenModalBack && <ModalBackground />}
+      <TodoWrapper>
         {isOpenCalender && (
-          <CalendarModal onChange={(e) => changeDate(e)} value={date} />
+          <TodoCalendarModal date={date} changeDate={changeDate} />
         )}
         {isOpenTodoModal && (
           <TodoModal
             todo={todo}
-            closeTodoModal={closeTodoModal}
+            isTodoModal={isTodoModal}
             changeComplete={changeComplete}
             deleteTodo={deleteTodo}
           />
         )}
         <UserShell
           date={date}
-          openCalender={openCalender}
+          openCalender={isCalender}
           isOpenCalender={isOpenCalender}
           percent={percent}
           filterList={filterList}
@@ -201,28 +194,17 @@ const TodoPage = () => {
           filter={filter}
         />
         <TodoList todoGroup={todoGroup} changeTodo={changeTodo} />
-      </TodoBody>
+      </TodoWrapper>
     </>
   );
 };
 
 export default TodoPage;
 
-const TodoBody = styled.body`
+const TodoWrapper = styled.body`
   height: 100vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const CalendarModal = styled(Calendar)`
-  width: 390px;
-
-  border-radius: 15px;
-
-  position: absolute;
-  top: 115px;
-
-  z-index: 100;
 `;
