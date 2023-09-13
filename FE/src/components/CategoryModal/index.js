@@ -1,14 +1,15 @@
 import { styled } from "styled-components";
 
 import ModalBackground from "../ModalBackground";
+import CloseButton from "../CloseButton";
 
-import { CLOSE_TEXT, DELETE_TEXT, MODIFY_TEXT } from "../../data/constants";
+import { DELETE_TEXT, MODIFY_TEXT } from "../../data/constants";
 
 const CategoryModal = ({ closeModal }) => {
   return (
     <>
       <ModalWrapper>
-        <CloseButton onClick={() => closeModal()}>{CLOSE_TEXT}</CloseButton>
+        <CloseButton isModal={closeModal} />
         <ButtonSection>
           <Button>{MODIFY_TEXT}</Button>
           <Button>{DELETE_TEXT}</Button>
@@ -38,18 +39,6 @@ const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
-`;
-
-const CloseButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  border: 1px solid #d0d0d0;
-  border-radius: 50%;
-
-  &:hover {
-    background-color: #d0d0d0;
-  }
 `;
 
 const ButtonSection = styled.section`
