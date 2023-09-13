@@ -34,8 +34,6 @@ public class TodoDto {
 
         @NotNull
         private String todoEmoji = ":person_running:";
-
-
     }
 
 
@@ -62,9 +60,7 @@ public class TodoDto {
 
         private String todoEmoji;
 
-        @Positive(message = "양수 tagId 값을 넣어주세요")
         private long tagId;
-
     }
 
 
@@ -75,7 +71,6 @@ public class TodoDto {
         private long todoId;
 
         public Todo.Complete complete;
-
     }
 
 
@@ -92,7 +87,6 @@ public class TodoDto {
         private Todo.Complete complete;
 
         private TagResponse tagResponse;
-
     }
 
     @Getter
@@ -111,6 +105,5 @@ public class TodoDto {
     public static class TagResponse{
         private long tagId;
         private String tagName;
-
     }
 }

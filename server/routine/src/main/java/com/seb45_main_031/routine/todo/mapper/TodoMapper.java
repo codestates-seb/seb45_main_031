@@ -52,16 +52,18 @@ public interface TodoMapper {
 
         Todo todo = new Todo();
 
-        Tag tag = new Tag();
-
-        tag.setTagId(todoPatchDto.getTagId());
-        todo.setTag(tag);
-
         todo.setTodoId(todoPatchDto.getTodoId());
         todo.setContent(todoPatchDto.getContent());
         todo.setDate(todoPatchDto.getDate());
         todo.setTodoEmoji(todoPatchDto.getTodoEmoji());
 
+        if (todoPatchDto.getTagId() != 0){
+
+            Tag tag = new Tag();
+            tag.setTagId(todoPatchDto.getTagId());
+
+            todo.setTag(tag);
+        }
 
         return todo;
     }

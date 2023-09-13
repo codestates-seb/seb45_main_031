@@ -124,8 +124,6 @@ public class TodoService {
 
             return savedTodo;
         }
-
-
     }
 
     // Todo 할 일 여러 개 등록
@@ -152,7 +150,6 @@ public class TodoService {
             setExpAndLevel(findMemberId, beforePercent, afterPercent);
 
         }
-
     }
 
     // Todo 수정
@@ -161,8 +158,7 @@ public class TodoService {
 
         Todo findTodo = findVerifiedTodo(todo.getTodoId());
 
-        Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
-        todo.setTag(findTag);
+        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         Optional.ofNullable(todo.getContent())
                 .ifPresent(content -> findTodo.setContent(content));
@@ -173,11 +169,14 @@ public class TodoService {
         Optional.ofNullable(todo.getTodoEmoji())
                 .ifPresent(todoEmoji -> findTodo.setTodoEmoji(todoEmoji));
 
-        Optional.ofNullable(todo.getTag())
-                .ifPresent(tagId -> findTodo.setTag(tagId));
 
-        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
+        if(todo.getTag() != null){
 
+            Tag findTag = tagService.findVerifiedTag(todo.getTag().getTagId());
+            todo.setTag(findTag);
+
+            findTodo.setTag(findTag);
+        }
 
         return todoRepository.save(findTodo);
     }
@@ -186,6 +185,8 @@ public class TodoService {
     public Todo updateTodoComplete(Todo todo, String accessToken){
 
         Todo findTodo = findVerifiedTodo(todo.getTodoId());
+
+        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         long findMemberId = findTodo.getMember().getMemberId();
         LocalDate findDate = findTodo.getDate();
@@ -197,7 +198,6 @@ public class TodoService {
             findTodo.setComplete(todo.getComplete());
         }
 
-        memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         Todo updatedTodo = todoRepository.save(findTodo);
 
@@ -206,7 +206,6 @@ public class TodoService {
         setExpAndLevel(findMemberId, beforePercent, afterPercent);
 
         return updatedTodo;
-
     }
 
 
@@ -218,12 +217,13 @@ public class TodoService {
         memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
         return findTodo;
-
     }
 
 
     // Todo 리스트 조회
     public List<Todo> findTodos(LocalDate date, long memberId, String accessToken){
+
+        memberService.checkMemberId(memberId, accessToken);
 
 //        List<Todo> findTodos = todoRepository.findByDate(date);
 //
@@ -233,8 +233,6 @@ public class TodoService {
 //                        .collect(Collectors.toList());
 
         List<Todo> todos = todoRepository.findByMemberMemberIdAndDate(memberId, date);
-
-        memberService.checkMemberId(memberId, accessToken);
 
         return todos;
     }
