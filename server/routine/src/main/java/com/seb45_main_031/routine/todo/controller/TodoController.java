@@ -53,7 +53,6 @@ public class TodoController {
         URI location = UriCreator.createUri(TODO_DEFAULT_URL, todo.getTodoId());
 
         return ResponseEntity.created(location).build();
-
     }
 
 
@@ -70,7 +69,6 @@ public class TodoController {
         todoService.createTodos(mapper.todoPostDtosToTodos(todoPostListDto));
 
         return new ResponseEntity(HttpStatus.CREATED);
-
     }
 
     // Todo 수정
@@ -84,7 +82,6 @@ public class TodoController {
         Todo todo = todoService.updateTodo(mapper.todoPatchDtoToTodo(todoPatchDto), accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.OK);
-
     }
 
 
@@ -99,7 +96,6 @@ public class TodoController {
 
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todo)), HttpStatus.OK);
-
     }
 
 
@@ -113,7 +109,6 @@ public class TodoController {
         Todo todos = todoService.findTodo(todoId, accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todoToTodoResponseDto(todos)), HttpStatus.OK);
-
     }
 
 
@@ -126,7 +121,6 @@ public class TodoController {
         List<Todo> todos = todoService.findTodos(date, memberId, accessToken);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoAllResponseDtos(todos)), HttpStatus.OK);
-
     }
 
 
@@ -138,6 +132,5 @@ public class TodoController {
         todoService.deleteTodo(todoId, accessToken);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-
     }
 }

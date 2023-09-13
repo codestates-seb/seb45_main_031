@@ -8,10 +8,4 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findByMemberMemberIdAndDate(long memberId, LocalDate date);
-
-
-//    Todo findByDateAndMember(LocalDate date, long memberId);
-
-//    List<Todo> findByComplete(Boolean complete);
-
 }
