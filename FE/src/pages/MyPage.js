@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
+import { URL } from "../data/constants";
 import { postList } from "../data/dummy";
-import FeedCard from "../components/FeedCard";
 
+import FeedCard from "../components/FeedCard";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 
 export default function MyPage() {
@@ -13,16 +15,7 @@ export default function MyPage() {
       <Container>
         <MyInfo>
           <Title>내 정보</Title>
-          <ProfileContent>
-            <ProfileSvg className="photo" />
-            <div>
-              <SubTitle>🐣 삐약이</SubTitle>
-              <p>lalala@gmail.com</p>
-              <Link to="/mypage/edit">
-                <EditButton>프로필 편집</EditButton>
-              </Link>
-            </div>
-          </ProfileContent>
+          <ShowMyProfile />
         </MyInfo>
         <MyPost />
         <Logout />
@@ -137,8 +130,41 @@ const ModalButton = styled.button`
     }
   }
 `;
-
 // Section 내 정보
+// 회원조회 기능
+const ShowMyProfile = () => {
+  const [userInfo, setUserInfo] = useState({});
+  const memberId = 4; //삭제 예정
+
+  useEffect(() => {
+    axios
+      .get(`${URL}/members/myPage/${memberId}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo0LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NDgzMDIxLCJleHAiOjE2OTQ1Njk0MjF9.JggcZgNG_Zi6ZgRXWMb32Jpks6vfLT-2IimpzpT4OBk`,
+        },
+      })
+      .then((response) => {
+        const userData = response.data.data;
+        setUserInfo(userData);
+      });
+  }, []);
+
+  return (
+    <>
+      <ProfileContent>
+        <ProfileSvg className="photo" />
+        <div>
+          <SubTitle>🐣 {userInfo.nickname}</SubTitle>
+          <p>{userInfo.email}</p>
+          <Link to="/mypage/edit">
+            <EditButton>프로필 편집</EditButton>
+          </Link>
+        </div>
+      </ProfileContent>
+    </>
+  );
+};
+
 const MyInfo = styled.div`
   background-color: #fff;
   margin-top: 95px;
@@ -176,34 +202,35 @@ const ProfileContent = styled.div`
   }
 `;
 
-// Section 내 게시물 보기
-const MyPost = () => {
+// 게시물 렌더링
+const UserPosts = ({ userId }) => {
   // 특정 사용자의 게시물 필터링
   const getUserPosts = (userId) => {
     return postList.posts.filter((posts) => posts.memberId === userId);
   };
-  // 게시물 렌더링
-  const UserPosts = ({ userId }) => {
-    const userPosts = getUserPosts(userId);
-    return (
-      <MyPostList>
-        {userPosts.map((post) => (
-          <li key={post.id}>
-            <FeedCard post={post} />
-          </li>
-        ))}
-      </MyPostList>
-    );
-  };
-  // 사용자의 게시물 조회
-  const ShowMyPost = () => {
-    return (
-      <div>
-        <UserPosts userId={6} />
-      </div>
-    );
-  };
+  const userPosts = getUserPosts(userId);
 
+  return (
+    <MyPostList>
+      {userPosts.map((post) => (
+        <li key={post.id}>
+          <FeedCard post={post} />
+        </li>
+      ))}
+    </MyPostList>
+  );
+};
+// 사용자의 게시물 조회
+const ShowMyPost = () => {
+  return (
+    <div>
+      <UserPosts userId={6} />
+    </div>
+  );
+};
+
+// Section 내 게시물 보기
+const MyPost = () => {
   return (
     <>
       <Title className="myPost">내 게시물 보기</Title>
@@ -228,16 +255,16 @@ const MyPostList = styled.ul`
 
 //Section 로그아웃
 const Logout = () => {
-  const [isModalOpen, setIsMOdalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleLogout = () => {
     //로그아웃 로직 추가하기
-    setIsMOdalOpen(false);
+    setIsModalOpen(false);
   };
   const handleModalOpen = () => {
-    setIsMOdalOpen(true);
+    setIsModalOpen(true);
   };
   const handleModalClose = () => {
-    setIsMOdalOpen(false);
+    setIsModalOpen(false);
   };
 
   return (
