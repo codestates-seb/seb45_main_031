@@ -19,12 +19,14 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
 
-        if(request.getAttribute("ExpiredJwtException") != null){
-            ErrorResponder.sendJwtErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        if(request.getAttribute("SignatureException") != null){
+            ErrorResponder.sendJwtSignatureErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        }
+        else if(request.getAttribute("ExpiredJwtException") != null){
+            ErrorResponder.sendExpiredJwtErrorResponse(response, HttpStatus.UNAUTHORIZED);
         }
         else{
             ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
         }
-
     }
 }
