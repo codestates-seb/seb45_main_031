@@ -1,16 +1,21 @@
 import { styled } from "styled-components";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-// import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
+import { URL } from "../data/constants";
 import googleIcon from "../assets/images/google.png";
 
 const emailRegex =
   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
+// const accessToken =
+//   "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJ1c2VybmFtZSI6ImFiY2RAZ21haWwuY29tIiwic3ViIjoiYWJjZEBnbWFpbC5jb20iLCJpYXQiOjE2OTM0NDg3NjksImV4cCI6MTY5MzQ0OTA2OX0.gAqT-8waOAQ_PWyHIGPSmg6EcMDF0du1nklkIDYtpgA";
+
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -24,8 +29,33 @@ const LoginPage = () => {
     });
   };
 
-  const loginHandler = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`${URL}/auth/login`, user);
+
+      const { email, memberId, nickname, exp, level, image } = response.data;
+      const accessToken = response.headers.authorization;
+      const refresh = response.headers.refresh;
+
+      const localUser = {
+        email,
+        memberId,
+        nickname,
+        exp,
+        level,
+        image,
+        accessToken,
+        refresh,
+      };
+
+      localStorage.setItem("localUser", JSON.stringify(localUser));
+
+      navigate("/todo");
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -43,7 +73,6 @@ const LoginPage = () => {
             <InputId
               type="email"
               name="email"
-              // value={email}
               onChange={onChange}
               placeholder="이메일 형식의 아이디를 입력해주세요."
               required
@@ -64,7 +93,6 @@ const LoginPage = () => {
             <InputPassword
               type="password"
               name="password"
-              // value={password}
               onChange={onChange}
               placeholder="비밀번호를 입력해주세요."
               required
@@ -84,7 +112,7 @@ const LoginPage = () => {
         </InputForm>
         {/*confirm*/}
         <ConfirmContainer>
-          <LoginButton onClick={(e) => loginHandler(e)}>로그인</LoginButton>
+          <LoginButton onClick={(event) => onSubmit(event)}>로그인</LoginButton>
           <SignUpButton>
             <NavLink to="/signup">회원가입</NavLink>
           </SignUpButton>
