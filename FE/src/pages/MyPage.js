@@ -10,6 +10,29 @@ import { URL } from "../data/constants";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 
 export default function MyPage() {
+  const navigate = useNavigate();
+
+  //마이페이지 진입 시 로그인 상태 확인
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const memberStatus = localStorage.getItem("memberStatus");
+      if (memberStatus !== "MEMBER_ACTIVE") {
+        // 로그인 기능 구현 후 삭제
+        localStorage.setItem("memberStatus", "MEMBER_ACTIVE");
+        localStorage.setItem("memberId", "3");
+        // localStorage.clear();
+        // navigate("/login");
+      }
+    };
+    checkLoginStatus();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    //로그아웃 시 로그인 상태 삭제
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <MaxContainer>
       <Container>
@@ -18,7 +41,7 @@ export default function MyPage() {
           <ShowMyProfile />
         </MyInfo>
         {/* <MyPost /> */}
-        <Logout />
+        <Logout onLogout={handleLogout} />
       </Container>
     </MaxContainer>
   );
@@ -271,7 +294,6 @@ const Logout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = () => {
-    //로그아웃 로직 추가
     localStorage.clear();
     setIsModalOpen(false);
     navigate("/login");
@@ -290,11 +312,6 @@ const Logout = () => {
         <ModalOverlay>
           <ModalContent>
             <div>로그아웃 하시겠습니까?</div>
-            <input
-              type="text"
-              placeholder="비밀번호를 입력해주세요"
-              // value={password}
-            />
             <div className="yesNo">
               <ModalButton className="yes" onClick={handleLogout}>
                 예
