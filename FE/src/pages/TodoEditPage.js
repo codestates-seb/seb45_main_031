@@ -26,7 +26,6 @@ import EditTipContents from "../components/EditTipContents";
 const TodoEditPage = () => {
   const navigate = useNavigate();
   const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const memberId = localUser.memberId;
   const accessToken = localUser.accessToken;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -91,13 +90,10 @@ const TodoEditPage = () => {
   };
 
   const openErrorModal = (message) => {
-    try {
-      setErrorMessage(message);
-      setIsOpenErrorModal(true);
-      setIsOpenModalBack(true);
-    } catch (error) {
-      console.error(error);
-    }
+    setErrorMessage(message);
+
+    setIsOpenErrorModal(true);
+    setIsOpenModalBack(true);
   };
 
   const closeErrorModal = () => {
@@ -123,7 +119,6 @@ const TodoEditPage = () => {
 
       const newDate = getDateFormat(date);
       const newData = {
-        memberId,
         content,
         tagId,
         todoEmoji,
@@ -131,7 +126,7 @@ const TodoEditPage = () => {
       };
 
       await axios.post(`${URL}/todos`, newData, {
-        headers: { Authorization: accessToken },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
 
       navigate(`/todo/${newDate}`);

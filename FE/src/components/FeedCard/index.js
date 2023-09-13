@@ -5,34 +5,66 @@ import Comments from "./Comments";
 import PostContents from "./PostContents";
 import PostUser from "./PostUser";
 
-const FeedCard = ({ post }) => {
-  const {
-    memberId,
-    nickname,
-    createdAt,
-    todoList,
-    content,
-    like,
-    likes,
-    comments,
-  } = post;
+const FeedCard = ({
+  feedId,
+  memberId,
+  nickname,
+  createdAt,
+  todoList,
+  content,
+  likeCount,
+  feedLikeInfo,
+  comments,
+  openDeleteModal,
+  isLike,
+  commentId,
+  commentContent,
+  changeComment,
+  createComment,
+  openCommentModal,
+  getFeedTodoList,
+}) => {
   return (
     <>
       <CardContainer>
         <PostUser
+          feedId={feedId}
           memberId={memberId}
           nickname={nickname}
           createdAt={createdAt}
+          openDeleteModal={openDeleteModal}
         />
         <TodoSection>
           <Todo>
             {todoList.map((todo, idx) => (
-              <TodoCard key={idx} value={todo} />
+              <TodoCard
+                key={idx}
+                tagName={todo.tagName}
+                content={todo.content}
+                complete={todo.complete}
+                todoEmoji={todo.todoEmoji}
+                todoPage={false}
+              />
             ))}
           </Todo>
         </TodoSection>
-        <PostContents content={content} like={like} likes={likes} />
-        <Comments comments={comments} />
+        <PostContents
+          feedId={feedId}
+          content={content}
+          feedLikeInfo={feedLikeInfo}
+          likeCount={likeCount}
+          isLike={isLike}
+          getFeedTodoList={getFeedTodoList}
+        />
+        <Comments
+          feedId={feedId}
+          comments={comments}
+          commentId={commentId}
+          commentContent={commentContent}
+          changeComment={changeComment}
+          createComment={createComment}
+          openCommentModal={openCommentModal}
+        />
       </CardContainer>
     </>
   );

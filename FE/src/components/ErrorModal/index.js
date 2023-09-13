@@ -28,7 +28,7 @@ const Body = styled.body`
   justify-content: center;
 
   position: absolute;
-  top: 350px;
+  top: 30%;
 
   z-index: 100;
 `;

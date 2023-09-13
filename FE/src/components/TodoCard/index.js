@@ -1,16 +1,24 @@
 import { styled } from "styled-components";
 
-const TodoCard = ({ value, todoPage, changeTodo }) => {
+const TodoCard = ({
+  todo,
+  tagName,
+  content,
+  complete,
+  todoEmoji,
+  todoPage,
+  changeTodo,
+}) => {
   return (
     <>
       <TodoCardSection
         onClick={() => {
-          todoPage ? changeTodo(value) : "";
+          todoPage ? changeTodo(todo) : "";
         }}
       >
-        <TagDiv>{value.tagResponse.tagName}</TagDiv>
-        <TitleDiv>{value.content}</TitleDiv>
-        <EmojiDiv>{value.complete === "DONE" ? value.todoEmoji : ""}</EmojiDiv>
+        <TagDiv>{tagName}</TagDiv>
+        <TitleDiv>{content}</TitleDiv>
+        <EmojiDiv>{complete === "DONE" ? todoEmoji : ""}</EmojiDiv>
       </TodoCardSection>
     </>
   );

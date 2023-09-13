@@ -8,7 +8,17 @@ const TodoGroup = ({ todoList }) => {
       <TodoSection>
         {todoList.length === 0
           ? "할 일 목록이 없습니다."
-          : todoList.map((todo) => <TodoCard value={todo} key={todo.todoId} />)}
+          : todoList.map((todo, idx) => (
+              <TodoCard
+                todo={todo}
+                tagName={todo.tagResponse.tagName}
+                content={todo.content}
+                complete={todo.complete}
+                todoEmoji={todo.todoEmoji}
+                todoPage={false}
+                key={idx}
+              />
+            ))}
       </TodoSection>
     </>
   );

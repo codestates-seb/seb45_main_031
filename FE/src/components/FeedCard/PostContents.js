@@ -1,15 +1,36 @@
 import { styled } from "styled-components";
+import parse from "html-react-parser";
 
-const PostContents = ({ content, like, likes }) => {
+import likeIcon from "../../assets/images/like.png";
+import isLikeIcon from "../../assets/images/isLike.png";
+
+import { SCRAP_BUTTON } from "../../data/constants";
+
+const PostContents = ({
+  feedId,
+  content,
+  feedLikeInfo,
+  likeCount,
+  isLike,
+  getFeedTodoList,
+}) => {
   return (
     <>
       <ContentsContainer>
         <LikeSection>
-          <LikeButton>{like ? "♥" : "♡"}</LikeButton>
-          <LikeCount>{likes}</LikeCount>
-          <ScrapButton>가져오기</ScrapButton>
+          <LikeButton onClick={() => isLike(feedId)}>
+            {feedLikeInfo && feedLikeInfo.feedLikes === "LIKE" ? (
+              <img src={likeIcon} alt="like" />
+            ) : (
+              <img src={isLikeIcon} alt="isLike" />
+            )}
+          </LikeButton>
+          <LikeCount>{likeCount}</LikeCount>
+          <ScrapButton onClick={() => getFeedTodoList(feedId)}>
+            {SCRAP_BUTTON}
+          </ScrapButton>
         </LikeSection>
-        <TextDiv>{content}</TextDiv>
+        <TextDiv>{parse(content)}</TextDiv>
       </ContentsContainer>
     </>
   );
@@ -41,9 +62,10 @@ const LikeSection = styled.section`
 
 const LikeButton = styled.button`
   width: 25px;
-  height: 30px;
+  height: 25px;
 
-  font-size: 2rem;
+  margin-top: 3px;
+  margin-right: 10px;
 
   display: flex;
   align-items: center;

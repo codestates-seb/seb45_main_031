@@ -1,24 +1,39 @@
 import { styled } from "styled-components";
 
-const Comment = ({ comment }) => {
-  const { memberId, nickname, content, createdAt } = comment;
+import getDateFormat from "../../utils/getDateFormat";
+
+const localUser = JSON.parse(localStorage.getItem("localUser"));
+
+const Comment = ({
+  feedId,
+  commentId,
+  memberId,
+  nickname,
+  content,
+  createdAt,
+  openCommentModal,
+}) => {
   return (
     <>
-      <CommentLi>
+      <CommentWrapper>
         <CommentUserName>{nickname}</CommentUserName>
         <Content>{content}</Content>
-        <CreatedAt>{createdAt}</CreatedAt>
-        {Number(memberId) === Number(localStorage.memberId) && (
-          <ModalButton>···</ModalButton>
+        <CreatedAt>{getDateFormat(createdAt)}</CreatedAt>
+        {Number(memberId) === Number(localUser.memberId) && (
+          <ModalButton
+            onClick={() => openCommentModal(feedId, commentId, content)}
+          >
+            ···
+          </ModalButton>
         )}
-      </CommentLi>
+      </CommentWrapper>
     </>
   );
 };
 
 export default Comment;
 
-const CommentLi = styled.li`
+const CommentWrapper = styled.li`
   margin: 5px;
 
   display: flex;
@@ -37,12 +52,12 @@ const CommentUserName = styled.div`
 `;
 
 const Content = styled.div`
-  width: 190px;
+  width: 200px;
   font-size: 0.9rem;
 `;
 
 const CreatedAt = styled.div`
-  width: 60px;
+  width: 50px;
 
   font-size: 0.7rem;
   color: #949597;
