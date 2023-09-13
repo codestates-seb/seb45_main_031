@@ -1,17 +1,20 @@
 import { styled } from "styled-components";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+import { URL } from "../data/constants";
 import googleIcon from "../assets/images/google.png";
+import axios from "axios";
 
 const emailRegex =
   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
-    nickName: "",
+    nickname: "",
     password: "",
     passwordConfirm: "",
   });
@@ -24,6 +27,18 @@ const SignUpPage = () => {
     });
   };
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post(`${URL}/members/signup`, user, {})
+      .than((response) => {
+        navigate("/login");
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Container>
       <SignUpContainer>
@@ -58,7 +73,7 @@ const SignUpPage = () => {
           <NickNameContainer>
             <InputNickName
               type="text"
-              name="nickName"
+              name="nickname"
               onChange={onChange}
               placeholder="사용하실 닉네임을 입력해주세요."
             />
@@ -67,7 +82,7 @@ const SignUpPage = () => {
               <div
                 style={{
                   display:
-                    user.nickName.length < 2 || user.nickName.length > 8
+                    user.nickname.length < 2 || user.nickname.length > 8
                       ? "block"
                       : "none",
                 }}
@@ -126,16 +141,8 @@ const SignUpPage = () => {
         </InputForm>
         {/*Confirm*/}
         <ConfirmContainer>
-          <ConfirmBtn
-          // disabled={
-          //   !(isEmail && isNickName && isPassword && isPasswordConfirm)
-          // }
-          >
-            <NavLink to="/todo">확인</NavLink>
-          </ConfirmBtn>
-          <CancelBtn>
-            <NavLink to="/login">취소</NavLink>
-          </CancelBtn>
+          <ConfirmBtn onClick={(event) => onSubmit(event)}>확인</ConfirmBtn>
+          <CancelBtn to="/login">취소</CancelBtn>
         </ConfirmContainer>
       </SignUpContainer>
     </Container>
