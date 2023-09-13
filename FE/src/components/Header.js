@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import bell from "../assets/images/bell.png";
 import mainIcon from "../assets/images/mainIcon.png";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [hasAlarm, setHasAlarm] = useState(true);
 
   const handleModalAlarm = () => {
@@ -17,9 +18,9 @@ const Header = () => {
       <HeaderFixed>
         <HeaderSpacer>
           <HeaderTitle>
-            <LogoLink to="/todo">
+            <Logo onClick={() => navigate("/todo")}>
               <img src={mainIcon} alt="mainIcon" />
-            </LogoLink>
+            </Logo>
           </HeaderTitle>
         </HeaderSpacer>
         <AlarmContainer>
@@ -46,7 +47,7 @@ const Container = styled.div`
 const HeaderFixed = styled.header`
   position: fixed;
   top: 0;
-  height: 95px;
+  height: 70px;
   width: 430px;
 
   background-color: #fff;
@@ -68,11 +69,11 @@ const HeaderTitle = styled.h1`
   margin: auto;
   padding-left: 70px;
 `;
-const LogoLink = styled(Link)`
+const Logo = styled.button`
   display: flex;
   justify-content: flex-end;
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   > img {
     border-radius: 50px;
     cursor: pointer;
@@ -87,7 +88,7 @@ const AlarmContainer = styled.button`
 `;
 const AlarmBell = styled.div`
   > img {
-    width: 30px;
+    width: 25px;
     cursor: pointer;
   }
 `;
@@ -95,11 +96,11 @@ const RedDot = styled.div`
   position: absolute;
   background-color: #ff3838;
   border: 1px solid #ff3838;
-  height: 12px;
-  width: 12px;
+  height: 10px;
+  width: 10px;
   border-radius: 15px;
-  margin-left: 24px;
-  margin-top: 18px;
+  margin-left: 20px;
+  margin-top: 15px;
 `;
 
 const AlarmDot = ({ show }) => {

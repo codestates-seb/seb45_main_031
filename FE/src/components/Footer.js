@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import write from "../assets/images/write.png";
@@ -9,7 +9,14 @@ import mypage from "../assets/images/mypage.png";
 import getDateFormat from "../utils/getDateFormat";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clickColor, setClickColor] = useState("");
+  const LogoClick = (event) => {
+    setClickColor(event.target.alt);
+    console.log(event.target.alt);
+  };
 
   return (
     <Container>
@@ -17,37 +24,59 @@ const Footer = () => {
         <FooterSpacer>
           <Logo>
             {/* <PageNavigation> */}
-            <LogoItem onClick={() => setIsModalOpen(true)}>
+            <LogoItem
+              color={clickColor === "작성하기 버튼"}
+              onClick={(event) => {
+                LogoClick(event);
+                setIsModalOpen(true);
+              }}
+            >
               <img src={write} alt="작성하기 버튼" />
               작성하기
             </LogoItem>
             {isModalOpen && (
               <ModalWrapper onClick={() => setIsModalOpen(false)}>
                 <ModalContent isOpen={isModalOpen}>
-                  <PageButton to="/todo/edit">할 일 작성하기</PageButton>
-                  <PageButton to="/community/edit">게시글 작성하기</PageButton>
+                  <PageButton onClick={() => navigate("/todo/edit")}>
+                    할 일 작성하기
+                  </PageButton>
+                  <PageButton onClick={() => navigate("/community/edit")}>
+                    게시글 작성하기
+                  </PageButton>
                 </ModalContent>
               </ModalWrapper>
             )}
             {/* </PageNavigation> */}
-            <Link to={`/todo/${getDateFormat()}`}>
-              <LogoItem>
-                <img src={list} alt="할일목록 버튼" />
-                할일목록
-              </LogoItem>
-            </Link>
-            <Link to="/community">
-              <LogoItem>
-                <img src={community} alt="커뮤니티 버튼" />
-                커뮤니티
-              </LogoItem>
-            </Link>
-            <Link to="/mypage">
-              <LogoItem>
-                <img src={mypage} alt="마이페이지 버튼" />
-                마이페이지
-              </LogoItem>
-            </Link>
+            <LogoItem
+              color={clickColor === "할일목록 버튼"}
+              onClick={(event) => {
+                LogoClick(event);
+                navigate(`/todo/${getDateFormat()}`);
+              }}
+            >
+              <img src={list} alt="할일목록 버튼" />
+              할일목록
+            </LogoItem>
+            <LogoItem
+              color={clickColor === "커뮤니티 버튼"}
+              onClick={(event) => {
+                LogoClick(event);
+                navigate("/community");
+              }}
+            >
+              <img src={community} alt="커뮤니티 버튼" />
+              커뮤니티
+            </LogoItem>
+            <LogoItem
+              color={clickColor === "마이페이지 버튼"}
+              onClick={(event) => {
+                LogoClick(event);
+                navigate("/mypage");
+              }}
+            >
+              <img src={mypage} alt="마이페이지 버튼" />
+              마이페이지
+            </LogoItem>
           </Logo>
         </FooterSpacer>
       </FooterFixed>
@@ -73,7 +102,7 @@ const FooterFixed = styled.div`
   border-radius: 15px 15px 0 0;
   box-shadow: 0 -2px 2px 0 #d0d0d0;
   width: 430px;
-  height: 80px;
+  height: 70px;
 `;
 
 const FooterSpacer = styled.div`
@@ -87,15 +116,15 @@ const Logo = styled.div`
 `;
 
 const LogoItem = styled.button`
-  color: #949597;
+  display: block;
+  /* color: #949597; */
+  color: ${(props) => (props.color ? "#000000" : "#949597")};
   text-align: center;
+  font-size: 0.7rem;
   margin: 1px;
   > img {
     height: 32px;
     object-fit: contain;
-  }
-  &:hover {
-    color: black;
   }
 `;
 
@@ -120,7 +149,7 @@ const ModalContent = styled.div`
   height: 150px;
   border-radius: 15px;
   background-color: #ffffff;
-  margin-top: 600px;
+  margin-top: 630px;
   margin-right: 130px;
   opacity: 1;
 
@@ -132,8 +161,8 @@ const ModalContent = styled.div`
   background-color: white;
 `;
 
-const PageButton = styled(Link)`
-  width: 180px;
+const PageButton = styled.button`
+  width: 200px;
   height: 35px;
   padding: 7px;
   margin: 8px;
@@ -141,7 +170,7 @@ const PageButton = styled(Link)`
   font-size: 1.1rem;
   text-align: center;
   background-color: #ffe866;
-  &:hover {
+  &:visited {
     background-color: #d0d0d0;
   }
 `;
