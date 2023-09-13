@@ -19,7 +19,7 @@ const PostContents = ({
       <ContentsContainer>
         <LikeSection>
           <LikeButton onClick={() => isLike(feedId)}>
-            {feedLikeInfo === "LIKE" ? (
+            {feedLikeInfo && feedLikeInfo.feedLikes === "LIKE" ? (
               <img src={likeIcon} alt="like" />
             ) : (
               <img src={isLikeIcon} alt="isLike" />

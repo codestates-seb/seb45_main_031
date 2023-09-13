@@ -112,7 +112,6 @@ const CommunityPage = () => {
       await axios.post(
         `${URL}/feedLikes`,
         {
-          memberId,
           feedId,
         },
         {
@@ -120,7 +119,7 @@ const CommunityPage = () => {
         },
       );
 
-      getFeedList();
+      changeFeed({ feedId });
     } catch (error) {
       console.error(error);
     }
