@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { URL } from "../data/constants";
-import { postList } from "../data/dummy";
+// import { postList } from "../data/dummy";
 
-import FeedCard from "../components/FeedCard";
+// import FeedCard from "../components/FeedCard";
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 
 export default function MyPage() {
@@ -17,7 +17,7 @@ export default function MyPage() {
           <Title>내 정보</Title>
           <ShowMyProfile />
         </MyInfo>
-        <MyPost />
+        {/* <MyPost /> */}
         <Logout />
       </Container>
     </MaxContainer>
@@ -133,33 +133,46 @@ const ModalButton = styled.button`
 // Section 내 정보
 // 회원조회 기능
 const ShowMyProfile = () => {
-  const [userInfo, setUserInfo] = useState({});
-  const memberId = 4; //삭제 예정
+  // 사용자 정보 관리
+  const [localUser, setLocalUser] = useState(null);
+  const memberId = 3; //삭제 예정
 
   useEffect(() => {
-    axios
-      .get(`${URL}/members/myPage/${memberId}`, {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo0LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NDgzMDIxLCJleHAiOjE2OTQ1Njk0MjF9.JggcZgNG_Zi6ZgRXWMb32Jpks6vfLT-2IimpzpT4OBk`,
-        },
-      })
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${URL}/members/myPage/${memberId}`, {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjozLCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NjEzODI1LCJleHAiOjE2OTQ3MDAyMjV9.kz9C9ZraMMr63_LKn9RX5JGfLIC-aTLKfxEPmvoStXM`,
+          },
+        });
         const userData = response.data.data;
-        setUserInfo(userData);
-      });
+
+        //사용자 정보를 상태로 설정
+        setLocalUser(userData);
+        localStorage.setItem("localUser", JSON.stringify(userData));
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <>
       <ProfileContent>
         <ProfileSvg className="photo" />
-        <div>
-          <SubTitle>🐣 {userInfo.nickname}</SubTitle>
-          <p>{userInfo.email}</p>
-          <Link to="/mypage/edit">
-            <EditButton>프로필 편집</EditButton>
-          </Link>
-        </div>
+        {localUser ? (
+          <div>
+            <SubTitle>🐣 {localUser.nickname}</SubTitle>
+            <p>{localUser.email}</p>
+            <Link to="/mypage/edit">
+              <EditButton>프로필 편집</EditButton>
+            </Link>
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
       </ProfileContent>
     </>
   );
@@ -203,62 +216,65 @@ const ProfileContent = styled.div`
 `;
 
 // 게시물 렌더링
-const UserPosts = ({ userId }) => {
-  // 특정 사용자의 게시물 필터링
-  const getUserPosts = (userId) => {
-    return postList.posts.filter((posts) => posts.memberId === userId);
-  };
-  const userPosts = getUserPosts(userId);
+// const UserPosts = ({ userId }) => {
+//   // 특정 사용자의 게시물 필터링
+//   const getUserPosts = (userId) => {
+//     return postList.posts.filter((posts) => posts.memberId === userId);
+//   };
+//   const userPosts = getUserPosts(userId);
 
-  return (
-    <MyPostList>
-      {userPosts.map((post) => (
-        <li key={post.id}>
-          <FeedCard post={post} />
-        </li>
-      ))}
-    </MyPostList>
-  );
-};
-// 사용자의 게시물 조회
-const ShowMyPost = () => {
-  return (
-    <div>
-      <UserPosts userId={6} />
-    </div>
-  );
-};
+//   return (
+//     <MyPostList>
+//       {userPosts.map((post) => (
+//         <li key={post.id}>
+//           <FeedCard post={post} />
+//         </li>
+//       ))}
+//     </MyPostList>
+//   );
+// };
+// // 사용자의 게시물 조회
+// const ShowMyPost = () => {
+//   return (
+//     <div>
+//       <UserPosts userId={6} />
+//     </div>
+//   );
+// };
 
-// Section 내 게시물 보기
-const MyPost = () => {
-  return (
-    <>
-      <Title className="myPost">내 게시물 보기</Title>
-      <MyPostContainer>
-        <ShowMyPost />
-      </MyPostContainer>
-    </>
-  );
-};
+// // Section 내 게시물 보기
+// const MyPost = () => {
+//   return (
+//     <>
+//       <Title className="myPost">내 게시물 보기</Title>
+//       <MyPostContainer>
+//         <ShowMyPost />
+//       </MyPostContainer>
+//     </>
+//   );
+// };
 
-const MyPostContainer = styled.div`
-  background-color: #fff;
-  max-height: 380px;
-  overflow-y: scroll;
-  padding: 20px;
-`;
+// const MyPostContainer = styled.div`
+//   background-color: #fff;
+//   max-height: 380px;
+//   overflow-y: scroll;
+//   padding: 20px;
+// `;
 
-const MyPostList = styled.ul`
-  border-radius: 15px;
-  box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
-`;
+// const MyPostList = styled.ul`
+//   border-radius: 15px;
+//   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
+// `;
 
 //Section 로그아웃
 const Logout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const handleLogout = () => {
-    //로그아웃 로직 추가하기
+    //로그아웃 로직 추가
+    localStorage.clear();
     setIsModalOpen(false);
+    navigate("/login");
   };
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -274,6 +290,11 @@ const Logout = () => {
         <ModalOverlay>
           <ModalContent>
             <div>로그아웃 하시겠습니까?</div>
+            <input
+              type="text"
+              placeholder="비밀번호를 입력해주세요"
+              // value={password}
+            />
             <div className="yesNo">
               <ModalButton className="yes" onClick={handleLogout}>
                 예

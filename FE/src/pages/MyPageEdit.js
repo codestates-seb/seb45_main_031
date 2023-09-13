@@ -240,10 +240,18 @@ const EditNickname = () => {
   const [currentNickname, setCurrentNickname] = useState("");
   const [newNickname, setNewNickname] = useState("");
 
-  const memberId = 4; //삭제 예정
+  const memberId = 3; //삭제 예정
   const editProfile = () => {
     axios
-      .patch(`${URL}/members/${memberId}`, { nickname: newNickname })
+      .patch(
+        `${URL}/members/${memberId}`,
+        { nickname: newNickname },
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjozLCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NTcyMTQ3LCJleHAiOjE2OTQ2NTg1NDd9.81jMaAWCgf5iOUiVcbwkuG4UJKyOyJum6YMfe_wz284`,
+          },
+        },
+      )
       .then((response) => {
         response;
       });
