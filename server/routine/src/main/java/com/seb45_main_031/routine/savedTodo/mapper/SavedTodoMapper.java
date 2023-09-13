@@ -28,12 +28,9 @@ public interface SavedTodoMapper {
         todoStorage.setTodoStorageId(savedTodoPostDto.getTodoStorageId());
         savedTodo.setTodoStorage(todoStorage);
 
-        if(savedTodoPostDto.getTagId() !=0) {
-
-            Tag tag = new Tag();
-            tag.setTagId(savedTodoPostDto.getTagId());
-            savedTodo.setTag(tag);
-        }
+        Tag tag = new Tag();
+        tag.setTagId(savedTodoPostDto.getTagId());
+        savedTodo.setTag(tag);
 
         return savedTodo;
 
@@ -96,14 +93,14 @@ public interface SavedTodoMapper {
         response.setUserInfo(userInfo);
 
 
-        if(savedTodo.getTag() != null) {
-            SavedTodoDto.TagResponse tagResponse = SavedTodoDto.TagResponse.builder()
-                    .tagId(savedTodo.getTag().getTagId())
-                    .tagName(savedTodo.getTag().getTagName())
-                    .build();
 
-            response.setTagResponse(tagResponse);
-        }
+        SavedTodoDto.TagResponse tagResponse = SavedTodoDto.TagResponse.builder()
+                .tagId(savedTodo.getTag().getTagId())
+                .tagName(savedTodo.getTag().getTagName())
+                .build();
+
+        response.setTagResponse(tagResponse);
+
 
         return response;
 
