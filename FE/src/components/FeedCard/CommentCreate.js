@@ -1,15 +1,35 @@
 import { styled } from "styled-components";
 
-const CommentCreate = () => {
+import commentIcon from "../../assets/images/commentIcon.png";
+import { COMMENT_POST_BUTTON } from "../../data/constants";
+
+const CommentCreate = ({
+  feedId,
+  content,
+  commentContent,
+  createComment,
+  changeComment,
+}) => {
   return (
     <>
       <CreateSection>
-        <Label for="CommentInput">ㅇ</Label>
+        <Label for="CommentInput">
+          <img src={commentIcon} alt="commentIcon" />
+        </Label>
         <Input
           id="CommentInput"
           placeholder="여기에 댓글을 입력해주세요."
-        ></Input>
-        <CreateButton>등록</CreateButton>
+          value={content}
+          onChange={(event) => changeComment(event)}
+        />
+        <CreateButton
+          onClick={() => {
+            createComment(feedId, commentContent);
+            changeComment({ target: { value: "" } });
+          }}
+        >
+          {COMMENT_POST_BUTTON}
+        </CreateButton>
       </CreateSection>
     </>
   );
@@ -31,6 +51,8 @@ const CreateSection = styled.section`
 const Label = styled.label`
   width: 20px;
   height: 20px;
+
+  margin-left: -10px;
 `;
 
 const Input = styled.input`

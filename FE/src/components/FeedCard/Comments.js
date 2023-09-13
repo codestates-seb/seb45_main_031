@@ -4,29 +4,49 @@ import { styled } from "styled-components";
 import CommentCreate from "./CommentCreate";
 import Comment from "./Comment";
 
-const Comments = ({ comments }) => {
+const Comments = ({
+  feedId,
+  comments,
+  commentContent,
+  changeComment,
+  createComment,
+  openCommentModal,
+}) => {
   const [moreActions, setMoreActions] = useState(true);
 
-  const ChangeMore = () => {
-    try {
-      setMoreActions(!moreActions);
-    } catch (error) {
-      console.error(error);
-    }
+  const changeMore = () => {
+    setMoreActions(!moreActions);
   };
 
   return (
     <>
       <CommentContainer>
-        <CommentCreate />
-        <CommentsUl more={moreActions}>
+        <CommentCreate
+          feedId={feedId}
+          content={commentContent}
+          commentContent={commentContent}
+          createComment={createComment}
+          changeComment={changeComment}
+        />
+        <CommentsGroup more={moreActions}>
           {comments.map((comment, idx) => (
-            <Comment key={idx} comment={comment} />
+            <Comment
+              key={idx}
+              feedId={feedId}
+              commentId={comment.commentId}
+              memberId={comment.memberId}
+              nickname={comment.nickname}
+              content={comment.content}
+              createdAt={comment.createdAt}
+              openCommentModal={openCommentModal}
+            />
           ))}
-        </CommentsUl>
-        <MoreCommentButton onClick={() => ChangeMore()}>
-          {moreActions ? "··· More Comment ···" : "··· Close Comment ···"}
-        </MoreCommentButton>
+        </CommentsGroup>
+        {comments.length > 3 && (
+          <MoreCommentButton onClick={() => changeMore()}>
+            {moreActions ? "··· More Comment ···" : "··· Close Comment ···"}
+          </MoreCommentButton>
+        )}
       </CommentContainer>
     </>
   );
@@ -45,7 +65,7 @@ const CommentContainer = styled.div`
   justify-content: space-between;
 `;
 
-const CommentsUl = styled.ul`
+const CommentsGroup = styled.ul`
   width: 100%;
   max-height: ${(props) => (props.more ? "80px" : "")};
 

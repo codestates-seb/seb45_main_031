@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import getDateFormat from "../utils/getDateFormat";
@@ -19,7 +19,8 @@ import CommunityEditCalendarModal from "../components/CommunityEditCalendarModal
 import EditTipContents from "../components/EditTipContents";
 import CommunityEditPost from "../components/CommunityEditPost";
 
-const CommunityEditPage = () => {
+const CommunityModifyPage = () => {
+  const { feedId } = useParams();
   const navigate = useNavigate();
 
   const localUser = JSON.parse(localStorage.getItem("localUser"));
@@ -38,7 +39,7 @@ const CommunityEditPage = () => {
   const [todoList, setTodoList] = useState([]);
 
   useEffect(() => {
-    getTodoList(date);
+    getFeed();
   }, []);
 
   const openCalender = () => {
@@ -49,6 +50,27 @@ const CommunityEditPage = () => {
   const closeCalender = () => {
     setIsOpenModalBack(false);
     setIsOpenCalender(false);
+  };
+
+  const getFeed = async () => {
+    try {
+      const {
+        data: { data },
+      } = await axios.get(`${URL}/feeds/${feedId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (data.tagsResponses.length === 1) {
+        setTagName(data.tagsResponses[0].tagName);
+      }
+
+      setDate(data.todoResponses[0].date);
+      setContent(data.content);
+      getTodoList(data.todoResponses[0].date);
+      setTodoList(data.todoResponses);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getTodoList = async (date) => {
@@ -108,6 +130,8 @@ const CommunityEditPage = () => {
         }
       });
 
+      console.log(newTagId);
+
       setTagId(newTagId);
       setTagName(DEFAULT_FILTER);
       setTodoList(meta);
@@ -124,22 +148,19 @@ const CommunityEditPage = () => {
     tagModalClose();
   };
 
-  const postFeed = async () => {
+  const patchFeed = async () => {
     try {
       const feedIdGroup = todoList.map((todo) => {
         return { todoId: todo.todoId };
       });
 
       const newFeed = {
-        memberId,
         content,
         feedTagDtos: tagId,
         feedTodoDtos: feedIdGroup,
       };
 
-      console.log(newFeed);
-
-      await axios.post(`${URL}/feeds`, newFeed, {
+      await axios.patch(`${URL}/feeds/${feedId}`, newFeed, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
@@ -182,7 +203,7 @@ const CommunityEditPage = () => {
             content={content}
             setContent={setContent}
             navigate={navigate}
-            postFeed={postFeed}
+            postFeed={patchFeed}
           />
         </EditContainer>
       </CommunityEditWrapper>
@@ -190,7 +211,7 @@ const CommunityEditPage = () => {
   );
 };
 
-export default CommunityEditPage;
+export default CommunityModifyPage;
 
 const CommunityEditWrapper = styled.div`
   height: 100vh;

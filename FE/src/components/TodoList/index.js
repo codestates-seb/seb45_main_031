@@ -7,10 +7,14 @@ const TodoList = ({ todoGroup, changeTodo }) => {
     <>
       <ListContainer>
         <TodoGroup>
-          {todoGroup.map((value, idx) => (
+          {todoGroup.map((todo, idx) => (
             <TodoCard
               key={idx}
-              value={value}
+              todo={todo}
+              tagName={todo.tagResponse.tagName}
+              content={todo.content}
+              complete={todo.complete}
+              todoEmoji={todo.todoEmoji}
               todoPage={true}
               changeTodo={changeTodo}
             />

@@ -14,6 +14,7 @@ import CommunityPage from "./pages/CommunityPage";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import CommunityEditPage from "./pages/CommunityEditPage";
+import CommunityModifyPage from "./pages/CommunityModifyPage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
 
       { path: "/community", element: <CommunityPage /> },
       { path: "/community/edit", element: <CommunityEditPage /> },
+      { path: "/community/modify/:feedId", element: <CommunityModifyPage /> },
 
       { path: "/mypage", element: <MyPage /> },
     ],

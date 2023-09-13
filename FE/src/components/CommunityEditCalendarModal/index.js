@@ -31,7 +31,7 @@ export default CommunityEditCalendarModal;
 
 const CalenderWrapper = styled.body`
   width: 390px;
-  height: 650px;
+  max-height: 65vh;
 
   background-color: #ffffff;
 
@@ -46,6 +46,8 @@ const CalenderWrapper = styled.body`
   top: 115px;
 
   z-index: 100;
+
+  overflow: auto;
 `;
 
 const CalenderSection = styled(Calendar)`

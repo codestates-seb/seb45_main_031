@@ -1,9 +1,23 @@
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
+
+import getDateFormat from "../../utils/getDateFormat";
+import { FEED_DELETE_TEXT, FEED_MODIFY_TEXT } from "../../data/constants";
+
+const localUser = JSON.parse(localStorage.getItem("localUser"));
 
 //더미데이터
 import imgUrl from "../../assets/images/memberImg.jpeg";
 
-const PostUser = ({ memberId, nickname, createdAt }) => {
+const PostUser = ({
+  feedId,
+  memberId,
+  nickname,
+  createdAt,
+  openDeleteModal,
+}) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <UserSection>
@@ -12,12 +26,16 @@ const PostUser = ({ memberId, nickname, createdAt }) => {
         </UserImgDiv>
         <PostElement>
           <UserName>{nickname}</UserName>
-          <PostCreatedAt>{createdAt}</PostCreatedAt>
+          <PostCreatedAt>{getDateFormat(createdAt)}</PostCreatedAt>
         </PostElement>
-        {Number(memberId) === Number(localStorage.memberId) && (
+        {Number(memberId) === Number(localUser.memberId) && (
           <PostButtons>
-            <PostButton>수정</PostButton>
-            <PostButton>삭제</PostButton>
+            <PostButton onClick={() => navigate(`/community/modify/${feedId}`)}>
+              {FEED_MODIFY_TEXT}
+            </PostButton>
+            <PostButton onClick={() => openDeleteModal(feedId)}>
+              {FEED_DELETE_TEXT}
+            </PostButton>
           </PostButtons>
         )}
       </UserSection>

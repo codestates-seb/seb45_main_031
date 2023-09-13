@@ -31,6 +31,9 @@ axios
       email: res.data.email,
       memberId: res.data.memberId,
       nickname: res.data.nickname,
+      exp: res.data.exp,
+      level: res.data.level,
+      image: res.data.image,
       accessToken: res.headers.authorization,
       refresh: res.headers.refresh,
     };

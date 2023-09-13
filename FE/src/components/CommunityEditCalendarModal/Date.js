@@ -27,9 +27,7 @@ const DateWrapper = styled.section`
 `;
 
 const DateText = styled.div`
-  height: 100%;
-
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #ffb039;
 
   margin-left: 20px;
