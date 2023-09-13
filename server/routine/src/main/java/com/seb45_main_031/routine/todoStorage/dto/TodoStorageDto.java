@@ -13,6 +13,15 @@ public class TodoStorageDto {
     public static class Post{
         private String category;
         private long memberId;
+        private List<SavedTodoPost> savedTodoPosts;
+    }
+
+    @Getter
+    @Setter
+    public static class SavedTodoPost{
+        private String content;
+        private String emoji;
+        private long tagId;
     }
 
     @Getter

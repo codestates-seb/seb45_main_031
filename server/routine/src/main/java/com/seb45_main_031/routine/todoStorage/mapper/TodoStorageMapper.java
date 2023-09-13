@@ -2,6 +2,7 @@ package com.seb45_main_031.routine.todoStorage.mapper;
 
 import com.seb45_main_031.routine.member.entity.Member;
 import com.seb45_main_031.routine.savedTodo.entity.SavedTodo;
+import com.seb45_main_031.routine.tag.entity.Tag;
 import com.seb45_main_031.routine.todoStorage.dto.TodoStorageDto;
 import com.seb45_main_031.routine.todoStorage.entity.TodoStorage;
 import org.mapstruct.Mapper;
@@ -21,6 +22,27 @@ public interface TodoStorageMapper {
         TodoStorage todoStorage = new TodoStorage();
         todoStorage.setCategory(todoStoragePostDto.getCategory());
         todoStorage.setMember(member);
+
+        if(todoStoragePostDto.getSavedTodoPosts() != null) {
+            List<SavedTodo> savedTodos
+                    = todoStoragePostDto.getSavedTodoPosts().stream()
+                    .map(savedTodoPost -> {
+                        SavedTodo savedTodo = new SavedTodo();
+                        savedTodo.setContent(savedTodoPost.getContent());
+                        savedTodo.setEmoji(savedTodoPost.getEmoji());
+
+                        Tag tag = new Tag();
+                        tag.setTagId(savedTodoPost.getTagId());
+                        savedTodo.setTag(tag);
+                        savedTodo.setMember(member);
+
+                        savedTodo.setTodoStorage(todoStorage);
+
+                        return savedTodo;
+                    }).collect(Collectors.toList());
+
+            todoStorage.setSavedTodos(savedTodos);
+        }
 
         return todoStorage;
     }
@@ -50,27 +72,6 @@ public interface TodoStorageMapper {
 
     default TodoStorageDto.StorageResponse todoStorageToTodoStorageResponseDtos(TodoStorage todoStorage){
 
-
-        // todoStorage -> List<SavedTodo>
-        //     public static class StorageResponse{
-        //        private long todoStorageId;
-        //        private String category;
-        //        private UserInfo userInfo;
-        //        private List<SavedTodoResponse> savedTodoResponses;
-        //    }
-        //
-        //    @Getter
-        //    @Setter
-        //    @Builder
-        //    public static class SavedTodoResponse{
-        //        private long savedTodoId;
-        //        private String content;
-        //        private String emoji;
-        //        private long tagId;
-        //        private String tagName;
-        //        private long memberId;
-        //    }
-
         TodoStorageDto.StorageResponse response = TodoStorageDto.StorageResponse.builder()
                 .todoStorageId(todoStorage.getTodoStorageId())
                 .category(todoStorage.getCategory())
@@ -95,19 +96,16 @@ public interface TodoStorageMapper {
                             .memberId(savedTodo.getMember().getMemberId())
                             .build();
 
-                    if(savedTodo.getTag() != null){
-                        TodoStorageDto.TagResponse tagResponse = TodoStorageDto.TagResponse.builder()
-                                .tagId(savedTodo.getTag().getTagId())
-                                .tagName(savedTodo.getTag().getTagName())
-                                .build();
-                        savedTodoResponse.setTagResponse(tagResponse);
-                    }
+
+                    TodoStorageDto.TagResponse tagResponse = TodoStorageDto.TagResponse.builder()
+                            .tagId(savedTodo.getTag().getTagId())
+                            .tagName(savedTodo.getTag().getTagName())
+                            .build();
+                    savedTodoResponse.setTagResponse(tagResponse);
+
                     return savedTodoResponse;
 
                 }).collect(Collectors.toList());
-
-
-
 
         response.setSavedTodoResponses(savedTodoResponses);
 

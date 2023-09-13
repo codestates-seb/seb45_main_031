@@ -25,7 +25,7 @@ public class TodoStorage {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany(mappedBy = "todoStorage", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "todoStorage", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<SavedTodo> savedTodos;
 
 }
