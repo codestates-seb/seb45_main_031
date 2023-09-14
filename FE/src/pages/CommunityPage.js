@@ -117,7 +117,7 @@ const CommunityPage = () => {
 
       setFeedId();
       getFeedList(1);
-      isOpenDeleteModal();
+      isDeleteModal();
     } catch (error) {
       console.error(error);
     }
