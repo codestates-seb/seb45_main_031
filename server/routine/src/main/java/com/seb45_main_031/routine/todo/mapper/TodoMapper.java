@@ -54,7 +54,6 @@ public interface TodoMapper {
 
         todo.setTodoId(todoPatchDto.getTodoId());
         todo.setContent(todoPatchDto.getContent());
-        todo.setDate(todoPatchDto.getDate());
         todo.setTodoEmoji(todoPatchDto.getTodoEmoji());
 
         if (todoPatchDto.getTagId() != 0){
