@@ -76,7 +76,7 @@ const TodoEditPage = () => {
   const isErrorModal = (message) => {
     setErrorMessage(message);
 
-    setIsOpenErrorModal(!isOpenEmojiModal);
+    setIsOpenErrorModal(!isOpenErrorModal);
   };
 
   const postTodo = async () => {
