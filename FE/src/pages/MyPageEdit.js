@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// import { user } from "../data/dummy";
 import { URL } from "../data/constants";
 
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
@@ -14,6 +14,7 @@ import level2 from "../assets/images/level2.png";
 import level3 from "../assets/images/level3.png";
 
 export default function MyPageEdit() {
+  const navigate = useNavigate();
   return (
     <MaxContainer>
       <Container>
@@ -49,7 +50,7 @@ export default function MyPageEdit() {
               <img src={level3} alt="레벨3" />
             </div>
           </Badges>
-          <CancelMembership />
+          <CancelMembership navigate={navigate} />
         </Section>
       </Container>
     </MaxContainer>
@@ -240,12 +241,23 @@ const EditNickname = () => {
   const [currentNickname, setCurrentNickname] = useState("");
   const [newNickname, setNewNickname] = useState("");
 
-  const memberId = 4; //삭제 예정
+  const memberId = 12; //삭제 예정
   const editProfile = () => {
     axios
-      .patch(`${URL}/members/${memberId}`, { nickname: newNickname })
+      .patch(
+        `${URL}/members/${memberId}`,
+        { nickname: newNickname },
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxMiwidXNlcm5hbWUiOiJsYWxhbGFAZ21haWwuY29tIiwic3ViIjoibGFsYWxhQGdtYWlsLmNvbSIsImlhdCI6MTY5NDY4Mzc5NSwiZXhwIjoxNjk0NzcwMTk1fQ.Saz7AKbdwtW54JSozWbRfBDBNa3wp-TanbGz6D7Rx3A`,
+          },
+        },
+      )
       .then((response) => {
         response;
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -368,15 +380,50 @@ const Badges = styled.article`
 //회원 탈퇴 영역 - 회원 탈퇴 버튼
 const CancelMembership = () => {
   const [isModalOpen, setIsMOdalOpen] = useState(false);
-  const handleCancel = () => {
-    //회원탈퇴 로직 추가하기
-    setIsMOdalOpen(false);
-  };
+  const [password, setPassword] = useState("");
+
   const handleModalOpen = () => {
     setIsMOdalOpen(true);
   };
   const handleModalClose = () => {
     setIsMOdalOpen(false);
+  };
+
+  const handleConfirmCancel = ({ navigate }) => {
+    const memberId = "12"; //삭제 예정
+    console.log("Input Password:", password);
+
+    if (!password) {
+      //비밀번호 입력하지 않은 경우
+      alert("비밀번호를 입력하세요");
+    } else {
+      //비밀번호 입력이 완료된 경우
+      axios
+        .delete(`${URL}/members/${memberId}`, {
+          data: { password: `${password}` },
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxMiwidXNlcm5hbWUiOiJsYWxhbGFAZ21haWwuY29tIiwic3ViIjoibGFsYWxhQGdtYWlsLmNvbSIsImlhdCI6MTY5NDY4Mzc5NSwiZXhwIjoxNjk0NzcwMTk1fQ.Saz7AKbdwtW54JSozWbRfBDBNa3wp-TanbGz6D7Rx3A`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          //회원 탈퇴가 성공했을 경우
+          alert("회원탈퇴가 완료되었습니다.");
+          localStorage.clear();
+          setIsMOdalOpen(false);
+          navigate("/login");
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            alert("비밀번호가 올바르지 않습니다");
+          } else if (error.response.status === 404) {
+            console.log("존재하지 않는 사용자입니다.");
+          } else {
+            console.log("회원탈퇴 중 오류가 발생했습니다.");
+          }
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -386,14 +433,22 @@ const CancelMembership = () => {
         <ModalOverlay>
           <ModalContent>
             <div>회원탈퇴 하시겠습니까?</div>
-            <div className="yesNo">
-              <YesNoButton className="yes" onClick={handleCancel}>
+            <InputPassword>
+              <input
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </InputPassword>
+            <ButtonWrapper>
+              <YesNoButton className="yes" onClick={handleConfirmCancel}>
                 예
               </YesNoButton>
               <YesNoButton className="no" onClick={handleModalClose}>
                 아니오
               </YesNoButton>
-            </div>
+            </ButtonWrapper>
           </ModalContent>
         </ModalOverlay>
       )}
@@ -412,4 +467,20 @@ const CancelButton = styled.button`
     color: #000000;
     text-decoration: underline;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InputPassword = styled.div`
+  border-radius: 15px;
+  cursor: pointer;
+  border: 1px solid #ececec;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
