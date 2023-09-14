@@ -175,7 +175,7 @@ const DirectoryDetailPage = () => {
 export default DirectoryDetailPage;
 
 const DirectoryWrapper = styled.div`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -185,11 +185,11 @@ const DirectoryWrapper = styled.div`
 const DirectorySection = styled.section`
   width: 100vw;
   max-width: 430px;
-  height: 100vh;
+  height: 100%;
 
   background-color: #ffffff;
 
-  padding: 100px 0px;
+  padding-top: 95px;
 
   position: fixed;
 

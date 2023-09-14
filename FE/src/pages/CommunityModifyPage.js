@@ -199,7 +199,7 @@ const CommunityModifyPage = () => {
 export default CommunityModifyPage;
 
 const CommunityEditWrapper = styled.div`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -209,12 +209,11 @@ const CommunityEditWrapper = styled.div`
 const EditContainer = styled.div`
   width: 100%;
   max-width: 430px;
-  height: 100%;
 
   background-color: #ececec;
 
-  padding-top: 120px;
-  padding-bottom: 95px;
+  padding-top: 80px;
+  padding-bottom: 180px;
 
   display: flex;
   flex-direction: column;

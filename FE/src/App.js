@@ -17,6 +17,7 @@ import CommunityEditPage from "./pages/CommunityEditPage";
 import CommunityModifyPage from "./pages/CommunityModifyPage";
 import DirectoryPage from "./pages/DirectoryPage";
 import DirectoryDetailPage from "./pages/DirectoryDetailPage";
+import Page from "./pages/Page";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,8 @@ const router = createBrowserRouter([
       { path: "/directory/:categoryId", element: <DirectoryDetailPage /> },
 
       { path: "/mypage", element: <MyPage /> },
+
+      { path: "/login/google", element: <Page /> },
     ],
   },
   {

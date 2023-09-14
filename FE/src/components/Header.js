@@ -48,7 +48,8 @@ const HeaderFixed = styled.header`
   position: fixed;
   top: 0;
   height: 70px;
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
 
   background-color: #fff;
   border: 1px solid #d0d0d0;

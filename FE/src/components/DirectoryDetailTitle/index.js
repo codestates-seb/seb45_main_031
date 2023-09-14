@@ -17,7 +17,7 @@ const TitleWrapper = styled.div`
   max-width: 390px;
 
   padding-left: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 `;
 
 const Title = styled.p`

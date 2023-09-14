@@ -5,13 +5,17 @@ import CloseButton from "../CloseButton";
 
 import { DELETE_TEXT, MODIFY_TEXT } from "../../data/constants";
 
-const CategoryModal = ({ closeModal }) => {
+const CategoryModal = ({ closeModal, navigate, todoStorageId }) => {
   return (
     <>
       <ModalWrapper>
         <CloseButton isModal={closeModal} />
         <ButtonSection>
-          <Button>{MODIFY_TEXT}</Button>
+          <Button
+            onClick={() => navigate(`/directory/modify/${todoStorageId}`)}
+          >
+            {MODIFY_TEXT}
+          </Button>
           <Button>{DELETE_TEXT}</Button>
         </ButtonSection>
       </ModalWrapper>

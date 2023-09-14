@@ -38,6 +38,7 @@ axios
     };
     localStorage.setItem("localUser", JSON.stringify(localUser));
   });
+
 //삭제 될 로그인 파트 ==================================================
 
 const TodoPage = () => {
@@ -46,6 +47,8 @@ const TodoPage = () => {
   const localUser = JSON.parse(localStorage.getItem("localUser"));
   const memberId = localUser.memberId;
   const accessToken = localUser.accessToken;
+
+  console.log(localUser);
 
   const [date, setDate] = useState(getDateFormat(today));
   const [meta, setMeta] = useState({
@@ -202,7 +205,7 @@ const TodoPage = () => {
 export default TodoPage;
 
 const TodoWrapper = styled.body`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;

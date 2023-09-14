@@ -185,7 +185,7 @@ const TodoModifyPage = () => {
 export default TodoModifyPage;
 
 const TodoEditWrapper = styled.body`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -195,11 +195,11 @@ const TodoEditWrapper = styled.body`
 const TodoEditSection = styled.section`
   width: 100%;
   max-width: 430px;
-  height: 100vh;
 
   background-color: #ececec;
 
-  padding: 75px 0px;
+  padding-top: 80px;
+  padding-bottom: 180px;
 
   display: flex;
   flex-direction: column;

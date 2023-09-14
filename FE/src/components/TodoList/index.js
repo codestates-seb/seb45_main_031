@@ -34,6 +34,8 @@ const ListContainer = styled.div`
 
   background-color: #ececec;
 
+  padding-bottom: 100px;
+
   display: flex;
   flex-direction: column;
   align-items: center;

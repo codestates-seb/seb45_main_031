@@ -1,5 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+
 const GlobalStyles = createGlobalStyle`
   /* variables */
   :root {
@@ -20,6 +23,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    height: calc(var(--var, 1vh) * 100);
+
     color: var(--color-black);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Adjusted","Segoe UI","Liberation Sans", sans-serif;
     font-size: 16px;

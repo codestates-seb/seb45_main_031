@@ -27,6 +27,9 @@ export default DirectoryDetailTodoGroup;
 const SavedTodoGroup = styled.ul`
   width: 90%;
   max-width: 390px;
+  height: 100%;
 
-  overflow: auto;
+  margin-bottom: 95px;
+
+  overflow: scroll;
 `;
