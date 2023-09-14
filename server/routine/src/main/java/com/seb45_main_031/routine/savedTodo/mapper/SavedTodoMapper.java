@@ -39,6 +39,11 @@ public interface SavedTodoMapper {
 
     default List<SavedTodo> savedTodoPostListDtoToSavedTodos(SavedTodoDto.PostList savedTodoPostListDto){
 
+        long todoStorageId = savedTodoPostListDto.getTodoStorageId();
+
+        savedTodoPostListDto.getPosts().stream()
+                .forEach(post -> post.setTodoStorageId(todoStorageId));
+
         List<SavedTodo> savedTodos = savedTodoPostListDto.getPosts().stream()
                 .map(post -> savedTodoPostDtoToSavedTodo(post))
                 .collect(Collectors.toList());

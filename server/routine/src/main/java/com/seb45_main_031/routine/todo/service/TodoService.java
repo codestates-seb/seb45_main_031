@@ -163,9 +163,6 @@ public class TodoService {
         Optional.ofNullable(todo.getContent())
                 .ifPresent(content -> findTodo.setContent(content));
 
-        Optional.ofNullable(todo.getDate())
-                .ifPresent(date -> findTodo.setDate(date));
-
         Optional.ofNullable(todo.getTodoEmoji())
                 .ifPresent(todoEmoji -> findTodo.setTodoEmoji(todoEmoji));
 

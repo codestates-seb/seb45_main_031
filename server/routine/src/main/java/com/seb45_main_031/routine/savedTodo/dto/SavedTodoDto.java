@@ -23,6 +23,8 @@ public class SavedTodoDto {
     @Setter
     public static class PostList{
         private List<Post> posts;
+
+        private long todoStorageId;
     }
 
     @Getter

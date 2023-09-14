@@ -53,8 +53,6 @@ public class TodoDto {
 
         private long todoId;
 
-        private LocalDate date;
-
         @Size(min = 1, max = 20, message = "내용은 문자의 종류와 관계없이 1자 이상 20자 이하로 입력해주세요(띄어쓰기 포함)")
         private String content;
 
