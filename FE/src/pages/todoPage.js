@@ -48,8 +48,6 @@ const TodoPage = () => {
   const memberId = localUser.memberId;
   const accessToken = localUser.accessToken;
 
-  console.log(localUser);
-
   const [date, setDate] = useState(getDateFormat(today));
   const [meta, setMeta] = useState({
     completeCount: 0,
