@@ -4,6 +4,7 @@ import Buttons from "./Buttons";
 import Post from "./Post";
 
 const TodoEditPost = ({
+  isEdit,
   tagModalOpen,
   emojiModalOpen,
   changeName,
@@ -20,6 +21,7 @@ const TodoEditPost = ({
     <>
       <PostSection>
         <Post
+          isEdit={isEdit}
           tagModalOpen={tagModalOpen}
           emojiModalOpen={emojiModalOpen}
           changeName={changeName}

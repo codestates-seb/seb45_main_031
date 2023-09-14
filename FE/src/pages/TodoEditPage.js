@@ -146,6 +146,7 @@ const TodoEditPage = () => {
             TIPS={TODO_TIPS}
           />
           <TodoEditPost
+            isEdit={true}
             tagModalOpen={isTagModal}
             emojiModalOpen={isEmojiModal}
             changeName={changeName}

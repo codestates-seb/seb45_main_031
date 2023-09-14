@@ -11,6 +11,7 @@ import getDateFormat from "../../utils/getDateFormat";
 import Validation from "./Validation";
 
 const Post = ({
+  isEdit,
   tagModalOpen,
   emojiModalOpen,
   todoEmoji,
@@ -45,7 +46,11 @@ const Post = ({
         </Section>
         <Section>
           <Label>{CALENDAR_LABEL}</Label>
-          <Date onClick={() => calendarOpen()}>{getDateFormat(date)}</Date>
+          {isEdit ? (
+            <Date onClick={() => calendarOpen()}>{getDateFormat(date)}</Date>
+          ) : (
+            <Date>{getDateFormat(date)}</Date>
+          )}
           <Validation isDate={true} date={date} />
         </Section>
       </PostWrapper>
