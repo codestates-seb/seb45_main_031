@@ -1,9 +1,11 @@
 import { styled } from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { URL } from "../data/constants";
+
+// import { checkLoginStatus } from "../utils/checkLoginStatus";//utility 함수 추가하기
 
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
 import { ReactComponent as InfoIcon } from "../assets/icons/info.svg";
@@ -15,6 +17,12 @@ import level3 from "../assets/images/level3.png";
 
 export default function MyPageEdit() {
   const navigate = useNavigate();
+
+  //마이페이지 진입 시 로그인 상태 확인 (utilitiy 함수 완성되면 추가)
+  // useEffect(() => {
+  //   checkLoginStatus();
+  // }, [navigate]);
+
   return (
     <MaxContainer>
       <Container>
@@ -63,6 +71,7 @@ const EditProfile = () => {
 
   const openModal = () => {
     setIsMOdalOpen(true);
+    alert("개발 중인 기능입니다.");
   };
   const closeModal = () => {
     setIsMOdalOpen(false);
@@ -95,24 +104,32 @@ const EditProfile = () => {
 const EditNickname = () => {
   const [currentNickname, setCurrentNickname] = useState("");
   const [newNickname, setNewNickname] = useState("");
+  const localUser = JSON.parse(localStorage.getItem("localUser"));
 
-  const memberId = 6; //삭제 예정
   const editProfile = () => {
     axios
       .patch(
-        `${URL}/members/${memberId}`,
-        { nickname: newNickname },
+        `${URL}/members/${localUser.memberId}`,
+        {
+          nickname: `${newNickname}`,
+        },
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo2LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NzU4MzUzLCJleHAiOjE2OTQ4NDQ3NTN9.npS2RhNxsF80LoLCfAbXVct1nnI7nL3J3K8BhbahoSA`,
+            Authorization: `Bearer ${localUser.accessToken}`,
           },
         },
       )
-      .then((response) => {
-        response;
+      .then(() => {
+        setCurrentNickname(newNickname); //닉네임 변경 후 상태 업데이트
+        localUser.nickname = newNickname;
+        localStorage.setItem("localUser", JSON.stringify(localUser));
+        alert("닉네임 변경이 완료됐습니다");
       })
       .catch((error) => {
         console.error(error);
+        if (error.response.status === 409) {
+          alert("중복된 닉네임입니다");
+        }
       });
   };
 
@@ -122,11 +139,15 @@ const EditNickname = () => {
 
   const handleSaveClick = () => {
     if (newNickname.trim() !== "") {
-      setCurrentNickname(newNickname);
-      setNewNickname("");
       editProfile();
+    } else {
+      alert("닉네임은 필수값입니다");
     }
   };
+
+  useEffect(() => {
+    setCurrentNickname(localUser.nickname); //컴포넌트가 마운트될 때 현재 닉네임 설정
+  }, [localUser.nickname]);
 
   return (
     <>
@@ -145,7 +166,7 @@ const EditNickname = () => {
 };
 
 //회원 탈퇴 영역 - 회원 탈퇴 버튼
-const CancelMembership = () => {
+const CancelMembership = ({ navigate }) => {
   const [isModalOpen, setIsMOdalOpen] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -156,9 +177,10 @@ const CancelMembership = () => {
     setIsMOdalOpen(false);
   };
 
-  const handleConfirmCancel = ({ navigate }) => {
-    const memberId = "6"; //삭제 예정
-    console.log("Input Password:", password);
+  const handleConfirmCancel = () => {
+    const { memberId, accessToken } = JSON.parse(
+      localStorage.getItem("localUser"),
+    );
 
     if (!password) {
       //비밀번호 입력하지 않은 경우
@@ -167,9 +189,9 @@ const CancelMembership = () => {
       //비밀번호 입력이 완료된 경우
       axios
         .delete(`${URL}/members/${memberId}`, {
-          data: { password: `${password}` },
+          data: { password },
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo2LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NzU4MzUzLCJleHAiOjE2OTQ4NDQ3NTN9.npS2RhNxsF80LoLCfAbXVct1nnI7nL3J3K8BhbahoSA`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
         .then((response) => {
@@ -185,10 +207,10 @@ const CancelMembership = () => {
             alert("비밀번호가 올바르지 않습니다");
           } else if (error.response.status === 404) {
             console.log("존재하지 않는 사용자입니다.");
-            // navigate("/login");
+            navigate("/login");
           } else {
             console.log("회원탈퇴 중 오류가 발생했습니다.");
-            // navigate("/login");
+            navigate("/login");
           }
         });
     }
@@ -223,35 +245,6 @@ const CancelMembership = () => {
     </div>
   );
 };
-
-const CancelButton = styled.button`
-  font-size: 0.9rem;
-  padding: 10px;
-  margin-bottom: 0.3rem;
-  cursor: pointer;
-  color: #949597;
-
-  &:hover {
-    color: #000000;
-    text-decoration: underline;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const InputPassword = styled.div`
-  border-radius: 15px;
-  cursor: pointer;
-  border: 1px solid #ececec;
-  height: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 //공통 스타일
 // common
@@ -486,4 +479,34 @@ const Badges = styled.article`
     height: 100px;
     margin: auto;
   }
+`;
+
+//회원탈퇴 영역
+const CancelButton = styled.button`
+  font-size: 0.9rem;
+  padding: 10px;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  color: #949597;
+
+  &:hover {
+    color: #000000;
+    text-decoration: underline;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InputPassword = styled.div`
+  border-radius: 15px;
+  cursor: pointer;
+  border: 1px solid #ececec;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
