@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// import { user } from "../data/dummy";
 import { URL } from "../data/constants";
 
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
@@ -14,6 +14,7 @@ import level2 from "../assets/images/level2.png";
 import level3 from "../assets/images/level3.png";
 
 export default function MyPageEdit() {
+  const navigate = useNavigate();
   return (
     <MaxContainer>
       <Container>
@@ -49,13 +50,210 @@ export default function MyPageEdit() {
               <img src={level3} alt="레벨3" />
             </div>
           </Badges>
-          <CancelMembership />
+          <CancelMembership navigate={navigate} />
         </Section>
       </Container>
     </MaxContainer>
   );
 }
 
+//프로필 사진 편집 모달창
+const EditProfile = () => {
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsMOdalOpen(true);
+  };
+  const closeModal = () => {
+    setIsMOdalOpen(false);
+  };
+
+  return (
+    <div>
+      <EditButton onClick={openModal}>편집</EditButton>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>
+              <CloseButton onClick={closeModal} alt="모달창 닫기">
+                <CloseIcon />
+              </CloseButton>
+            </div>
+            <div>프로필 사진 설정</div>
+            <div className="editProfile">
+              <ModalButton className="update">사진 업로드</ModalButton>
+              <ModalButton className="delete">사진 삭제</ModalButton>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
+};
+
+// 닉네임 변경
+const EditNickname = () => {
+  const [currentNickname, setCurrentNickname] = useState("");
+  const [newNickname, setNewNickname] = useState("");
+
+  const memberId = 6; //삭제 예정
+  const editProfile = () => {
+    axios
+      .patch(
+        `${URL}/members/${memberId}`,
+        { nickname: newNickname },
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo2LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NzU4MzUzLCJleHAiOjE2OTQ4NDQ3NTN9.npS2RhNxsF80LoLCfAbXVct1nnI7nL3J3K8BhbahoSA`,
+          },
+        },
+      )
+      .then((response) => {
+        response;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleNicknameChange = (event) => {
+    setNewNickname(event.target.value);
+  };
+
+  const handleSaveClick = () => {
+    if (newNickname.trim() !== "") {
+      setCurrentNickname(newNickname);
+      setNewNickname("");
+      editProfile();
+    }
+  };
+
+  return (
+    <>
+      <Label>닉네임</Label>
+      <InputBoxWrapper>
+        <InputBox
+          type="text"
+          placeholder={currentNickname}
+          value={newNickname}
+          onChange={(event) => handleNicknameChange(event)}
+        />
+        <SaveButton onClick={() => handleSaveClick()}>저장</SaveButton>
+      </InputBoxWrapper>
+    </>
+  );
+};
+
+//회원 탈퇴 영역 - 회원 탈퇴 버튼
+const CancelMembership = () => {
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleModalOpen = () => {
+    setIsMOdalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsMOdalOpen(false);
+  };
+
+  const handleConfirmCancel = ({ navigate }) => {
+    const memberId = "6"; //삭제 예정
+    console.log("Input Password:", password);
+
+    if (!password) {
+      //비밀번호 입력하지 않은 경우
+      alert("비밀번호를 입력하세요");
+    } else {
+      //비밀번호 입력이 완료된 경우
+      axios
+        .delete(`${URL}/members/${memberId}`, {
+          data: { password: `${password}` },
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo2LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NzU4MzUzLCJleHAiOjE2OTQ4NDQ3NTN9.npS2RhNxsF80LoLCfAbXVct1nnI7nL3J3K8BhbahoSA`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          //회원 탈퇴가 성공했을 경우
+          alert("회원탈퇴가 완료되었습니다.");
+          localStorage.clear();
+          setIsMOdalOpen(false);
+          navigate("/login");
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            alert("비밀번호가 올바르지 않습니다");
+          } else if (error.response.status === 404) {
+            console.log("존재하지 않는 사용자입니다.");
+            // navigate("/login");
+          } else {
+            console.log("회원탈퇴 중 오류가 발생했습니다.");
+            // navigate("/login");
+          }
+        });
+    }
+  };
+
+  return (
+    <div>
+      <CancelButton onClick={handleModalOpen}>회원탈퇴</CancelButton>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>회원탈퇴 하시겠습니까?</div>
+            <InputPassword>
+              <input
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </InputPassword>
+            <ButtonWrapper>
+              <YesNoButton className="yes" onClick={handleConfirmCancel}>
+                예
+              </YesNoButton>
+              <YesNoButton className="no" onClick={handleModalClose}>
+                아니오
+              </YesNoButton>
+            </ButtonWrapper>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
+  );
+};
+
+const CancelButton = styled.button`
+  font-size: 0.9rem;
+  padding: 10px;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  color: #949597;
+
+  &:hover {
+    color: #000000;
+    text-decoration: underline;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InputPassword = styled.div`
+  border-radius: 15px;
+  cursor: pointer;
+  border: 1px solid #ececec;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+//공통 스타일
 // common
 const MaxContainer = styled.div`
   width: 100vw;
@@ -94,7 +292,7 @@ const Section = styled.div`
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
 
   &.myProfile {
-    margin-top: 110px;
+    margin-top: 90px;
   }
 
   &.myLevel {
@@ -201,82 +399,7 @@ const YesNoButton = styled.button`
   }
 `;
 
-//프로필 사진 편집 모달창
-const EditProfile = () => {
-  const [isModalOpen, setIsMOdalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsMOdalOpen(true);
-  };
-  const closeModal = () => {
-    setIsMOdalOpen(false);
-  };
-
-  return (
-    <div>
-      <EditButton onClick={openModal}>편집</EditButton>
-      {isModalOpen && (
-        <ModalOverlay>
-          <ModalContent>
-            <div>
-              <CloseButton onClick={closeModal} alt="모달창 닫기">
-                <CloseIcon />
-              </CloseButton>
-            </div>
-            <div>프로필 사진 설정</div>
-            <div className="editProfile">
-              <ModalButton className="update">사진 업로드</ModalButton>
-              <ModalButton className="delete">사진 삭제</ModalButton>
-            </div>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-    </div>
-  );
-};
-
-// 닉네임 변경
-const EditNickname = () => {
-  const [currentNickname, setCurrentNickname] = useState("");
-  const [newNickname, setNewNickname] = useState("");
-
-  const memberId = 4; //삭제 예정
-  const editProfile = () => {
-    axios
-      .patch(`${URL}/members/${memberId}`, { nickname: newNickname })
-      .then((response) => {
-        response;
-      });
-  };
-
-  const handleNicknameChange = (event) => {
-    setNewNickname(event.target.value);
-  };
-
-  const handleSaveClick = () => {
-    if (newNickname.trim() !== "") {
-      setCurrentNickname(newNickname);
-      setNewNickname("");
-      editProfile();
-    }
-  };
-
-  return (
-    <>
-      <Label>닉네임</Label>
-      <InputBoxWrapper>
-        <InputBox
-          type="text"
-          placeholder={currentNickname}
-          value={newNickname}
-          onChange={(event) => handleNicknameChange(event)}
-        />
-        <SaveButton onClick={() => handleSaveClick()}>저장</SaveButton>
-      </InputBoxWrapper>
-    </>
-  );
-};
-
+//닉네임 변경
 const Profile = styled.div`
   position: relative;
   height: 100px;
@@ -362,54 +485,5 @@ const Badges = styled.article`
     width: 100px;
     height: 100px;
     margin: auto;
-  }
-`;
-
-//회원 탈퇴 영역 - 회원 탈퇴 버튼
-const CancelMembership = () => {
-  const [isModalOpen, setIsMOdalOpen] = useState(false);
-  const handleCancel = () => {
-    //회원탈퇴 로직 추가하기
-    setIsMOdalOpen(false);
-  };
-  const handleModalOpen = () => {
-    setIsMOdalOpen(true);
-  };
-  const handleModalClose = () => {
-    setIsMOdalOpen(false);
-  };
-
-  return (
-    <div>
-      <CancelButton onClick={handleModalOpen}>회원탈퇴</CancelButton>
-      {isModalOpen && (
-        <ModalOverlay>
-          <ModalContent>
-            <div>회원탈퇴 하시겠습니까?</div>
-            <div className="yesNo">
-              <YesNoButton className="yes" onClick={handleCancel}>
-                예
-              </YesNoButton>
-              <YesNoButton className="no" onClick={handleModalClose}>
-                아니오
-              </YesNoButton>
-            </div>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-    </div>
-  );
-};
-
-const CancelButton = styled.button`
-  font-size: 0.9rem;
-  padding: 10px;
-  margin-bottom: 0.3rem;
-  cursor: pointer;
-  color: #949597;
-
-  &:hover {
-    color: #000000;
-    text-decoration: underline;
   }
 `;
