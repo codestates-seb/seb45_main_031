@@ -95,7 +95,7 @@ const Section = styled.div`
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
 
   &.myProfile {
-    margin-top: 110px;
+    margin-top: 90px;
   }
 
   &.myLevel {
@@ -390,7 +390,7 @@ const CancelMembership = () => {
   };
 
   const handleConfirmCancel = ({ navigate }) => {
-    const memberId = "12"; //삭제 예정
+    const memberId = "3"; //삭제 예정
     console.log("Input Password:", password);
 
     if (!password) {
@@ -402,7 +402,7 @@ const CancelMembership = () => {
         .delete(`${URL}/members/${memberId}`, {
           data: { password: `${password}` },
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxMiwidXNlcm5hbWUiOiJsYWxhbGFAZ21haWwuY29tIiwic3ViIjoibGFsYWxhQGdtYWlsLmNvbSIsImlhdCI6MTY5NDY4Mzc5NSwiZXhwIjoxNjk0NzcwMTk1fQ.Saz7AKbdwtW54JSozWbRfBDBNa3wp-TanbGz6D7Rx3A`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjozLCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NzQwMzEyLCJleHAiOjE2OTQ4MjY3MTJ9.gpKcQuEU-noMhYZDHbWav13avUk5XKEoS2P8zXOFSvQ`,
           },
         })
         .then((response) => {

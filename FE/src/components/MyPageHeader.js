@@ -13,7 +13,6 @@ const MyPageHeader = () => {
           </Link>
         </ButtonContainer>
         <Title>프로필 변경</Title>
-        <SaveButton>저장</SaveButton>
       </HeaderContainer>
     </MaxContainer>
   );
@@ -31,7 +30,7 @@ const MaxContainer = styled.div`
 const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
-  height: 95px;
+  height: 70px;
   width: 430px;
 
   background-color: #fff;
@@ -40,7 +39,6 @@ const HeaderContainer = styled.header`
   box-shadow: 0 4px 4px -4px #d0d0d0;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -55,20 +53,6 @@ const Title = styled.div`
   color: #232629;
 
   display: flex;
-  justify-content: center;
+  margin-left: 110px;
   align-items: center;
-`;
-
-const SaveButton = styled.button`
-  width: 100px;
-  height: 35px;
-  border-radius: 15px;
-  font-size: 1rem;
-  font-weight: bold;
-  margin-right: 1.5rem;
-  color: #949597;
-  &:hover {
-    color: #000000;
-    background-color: #ececec;
-  }
 `;
