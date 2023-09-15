@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// import FeedCard from "../components/FeedCard";
+// import DeleteConfirmModal from "../components/DeleteConfirmModal";
+
 import { URL } from "../data/constants";
 
 // import { checkLoginStatus } from "../utils/checkLoginStatus";//utility 함수 추가하기
@@ -30,7 +33,7 @@ export default function MyPage() {
           <Title>내 정보</Title>
           <ProfileInfo />
         </ProfileSection>
-        {/* <MyPost /> */}
+        {/* <MyPostSection /> */}
         <LogoutSection onLogout={handleLogout} />
       </Container>
     </MaxContainer>
@@ -42,21 +45,20 @@ const ProfileInfo = () => {
   const navigate = useNavigate();
   // 사용자 정보 관리
   const [localUser, setLocalUser] = useState(null);
-  const memberId = 6; //삭제 예정
+  const { accessToken, memberId } = JSON.parse(
+    localStorage.getItem("localUser"),
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${URL}/members/myPage/${memberId}`, {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjo2LCJ1c2VybmFtZSI6ImxhbGFsYUBnbWFpbC5jb20iLCJzdWIiOiJsYWxhbGFAZ21haWwuY29tIiwiaWF0IjoxNjk0NzU5OTA1LCJleHAiOjE2OTQ4NDYzMDV9.ySvw5xrfzG7ww9nVK_i7jZOoymhn5ENZoxp07H146V0`,
-          },
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
         const userData = response.data.data;
 
         //사용자 정보를 상태로 설정
         setLocalUser(userData);
-        localStorage.setItem("localUser", JSON.stringify(userData));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -88,6 +90,21 @@ const ProfileInfo = () => {
 };
 
 // Section 내 게시물 보기
+// const MyPostSection = () => {
+//   const localUser = JSON.parse(localStorage.getItem("localUser"));
+//   const memberId = localUser.memberId;
+//   const accessToken = localUser.accessToken;
+
+//   return (
+//     <>
+//       <Title className="myPost">내 게시물 보기</Title>
+//       <MyPostContainer>
+//         <ShowMyPost />
+//       </MyPostContainer>
+//     </>
+//   );
+// };
+
 // const UserPosts = ({ userId }) => {
 //   // 특정 사용자의 게시물 필터링
 //   const getUserPosts = (userId) => {
@@ -111,18 +128,6 @@ const ProfileInfo = () => {
 //     <div>
 //       <UserPosts userId={6} />
 //     </div>
-//   );
-// };
-
-// // Section 내 게시물 보기
-// const MyPost = () => {
-//   return (
-//     <>
-//       <Title className="myPost">내 게시물 보기</Title>
-//       <MyPostContainer>
-//         <ShowMyPost />
-//       </MyPostContainer>
-//     </>
 //   );
 // };
 
@@ -337,7 +342,7 @@ const LogoutButton = styled(GreyButton)`
 // `;
 
 // const MyPostTitle = styled.div`
-//   ${BaseTitleStyle}
+//   ${BaseTitle}
 //   padding: 5px 20px 5px 20px;
 // `;
 
