@@ -22,11 +22,12 @@ const Buttons = ({ navigate, postFeed }) => {
 export default Buttons;
 
 const ButtonGroup = styled.div`
-  margin-top: 20px;
+  margin-top: 40px;
 
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const Button = styled.button`

@@ -1,42 +1,42 @@
 import { styled } from "styled-components";
 
-import { CLOSE_TEXT } from "../../data/constants";
+import CloseButton from "../CloseButton";
+import ModalBackground from "../ModalBackground";
+import Tag from "./Tag";
 
 const TagModal = ({ tags, tagModalClose, changeTag }) => {
   return (
     <>
-      <TagModalBody>
-        <TagExitButton onClick={() => tagModalClose()}>
-          {CLOSE_TEXT}
-        </TagExitButton>
+      <ModalWrapper>
+        <CloseButton isModal={tagModalClose} />
         <TagGroup>
           {tags.map((tag) => (
             <>
-              <Tag>
-                <TagButton onClick={() => changeTag(tag)}>{tag}</TagButton>
-              </Tag>
+              <Tag tag={tag} changeTag={changeTag} />
             </>
           ))}
         </TagGroup>
-      </TagModalBody>
+      </ModalWrapper>
+      <ModalBackground />
     </>
   );
 };
 
 export default TagModal;
 
-const TagModalBody = styled.div`
-  width: 390px;
+const ModalWrapper = styled.div`
+  width: 90%;
+  max-width: 390px;
   height: 400px;
 
-  padding: 15px;
+  padding: 20px;
 
   border-radius: 15px;
 
   background-color: #ffffff;
 
   position: absolute;
-  top: 300px;
+  top: 100px;
 
   z-index: 100;
 
@@ -48,7 +48,9 @@ const TagModalBody = styled.div`
 
 const TagGroup = styled.ul`
   width: 100%;
-  height: 75%;
+  height: 80%;
+
+  margin-top: 10px;
 
   display: flex;
   flex-direction: column;
@@ -56,39 +58,4 @@ const TagGroup = styled.ul`
   justify-content: start;
 
   overflow: auto;
-`;
-
-const Tag = styled.li`
-  width: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TagButton = styled.button`
-  width: 250px;
-
-  margin-bottom: 10px;
-  padding: 10px 0px;
-  border: 1px solid #949597;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffe866;
-    border: 1px solid #ffe866;
-  }
-`;
-
-const TagExitButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  margin-bottom: 30px;
-  border: 1px solid #ffb039;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffb039;
-  }
 `;

@@ -56,7 +56,8 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 220px;
+  width: 75%;
+  max-width: 220px;
   height: 30px;
 
   margin: 0px 15px;

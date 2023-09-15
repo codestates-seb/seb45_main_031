@@ -26,7 +26,7 @@ const DateSection = styled.section`
   width: 100%;
   height: 40px;
 
-  padding: 120px 20px 20px 20px;
+  padding: 90px 20px 20px 20px;
 
   background-color: #ffffff;
 
@@ -34,6 +34,8 @@ const DateSection = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  z-index: 99;
 `;
 
 const DateText = styled.p`

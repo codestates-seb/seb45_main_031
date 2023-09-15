@@ -28,12 +28,11 @@ const Buttons = ({ postTodo, navigate }) => {
 export default Buttons;
 
 const ButtonSection = styled.section`
-  height: 200px;
-
   display: flex;
   flex-direction: row;
   align-items: end;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const Button = styled.button`

@@ -7,6 +7,7 @@ import TodoGroup from "./TodoGroup";
 import Date from "./Date";
 
 import "react-calendar/dist/Calendar.css";
+import ModalBackground from "../ModalBackground";
 
 const CommunityEditCalendarModal = ({
   getTodoList,
@@ -15,23 +16,27 @@ const CommunityEditCalendarModal = ({
   date,
 }) => {
   return (
-    <CalenderWrapper>
-      <Date date={date} closeCalender={closeCalender} />
-      <CalenderSection
-        onChange={(event) => {
-          getTodoList(getDateFormat(event));
-        }}
-      />
-      <TodoGroup todoList={todoList} />
-    </CalenderWrapper>
+    <>
+      <CalenderWrapper>
+        <Date date={date} closeCalender={closeCalender} />
+        <CalenderSection
+          onChange={(event) => {
+            getTodoList(getDateFormat(event));
+          }}
+        />
+        <TodoGroup todoList={todoList} />
+      </CalenderWrapper>
+      <ModalBackground />
+    </>
   );
 };
 
 export default CommunityEditCalendarModal;
 
 const CalenderWrapper = styled.body`
-  width: 390px;
-  max-height: 65vh;
+  width: 90%;
+  max-width: 390px;
+  max-height: 75%;
 
   background-color: #ffffff;
 
@@ -43,7 +48,7 @@ const CalenderWrapper = styled.body`
   justify-content: start;
 
   position: absolute;
-  top: 115px;
+  top: 80px;
 
   z-index: 100;
 
@@ -52,4 +57,6 @@ const CalenderWrapper = styled.body`
 
 const CalenderSection = styled(Calendar)`
   width: 390px;
+
+  border: 1px solid #ffffff;
 `;
