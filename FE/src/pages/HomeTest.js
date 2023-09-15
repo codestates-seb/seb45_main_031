@@ -1,6 +1,17 @@
 import { styled } from "styled-components";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const isAuthenticated = false; // 로그인 여부를 확인하는 조건 변수
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login"); // 로그인되지 않은 경우 로그인 페이지로 이동
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
     <MaxContainer>
       <Container>
