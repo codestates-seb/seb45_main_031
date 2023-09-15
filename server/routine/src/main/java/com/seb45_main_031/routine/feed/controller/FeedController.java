@@ -79,8 +79,8 @@ public class FeedController {
 
     // 피드 리스트 조회
     @GetMapping
-    public ResponseEntity getFeeds(@RequestParam(required = false, defaultValue = "1") int page,
-                                   @RequestParam(required = false, defaultValue = "10") int size,
+    public ResponseEntity getFeeds(@RequestParam int page,
+                                   @RequestParam int size,
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
         long findMemberId = memberService.findMemberId(accessToken);
@@ -88,9 +88,7 @@ public class FeedController {
         Page<Feed> pageFeeds = feedService.findFeeds(page - 1, size);
         List<Feed> feeds = pageFeeds.getContent();
 
-        return new ResponseEntity<>(
-                new MultiResponseDto<>(
-                        mapper.feedsToFeedResponseDtos(feeds, findMemberId), pageFeeds), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.feedsToFeedResponseDtos(feeds, findMemberId), pageFeeds), HttpStatus.OK);
     }
 
     // 피드 삭제
