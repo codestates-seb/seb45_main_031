@@ -45,17 +45,17 @@ public class MemberService {
     }
 
     private void verifyExistsEmail(String email){
-        Optional<Member> member = memberRepository.findByEmail(email);
+        Optional<Member> optionalMember = memberRepository.findByEmailAndSignupType(email, Member.SignupType.SERVER);
 
-        if(member.isPresent()){
+        if(optionalMember.isPresent()){
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
     }
 
     private void verifyExistsNickname(String nickname){
-        Optional<Member> member = memberRepository.findByNickname(nickname);
+        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
 
-        if(member.isPresent()){
+        if(optionalMember.isPresent()){
             throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_EXISTS);
         }
     }
@@ -107,6 +107,7 @@ public class MemberService {
     public Member createMember(Member member){
 
         verifyExistsEmail(member.getEmail());
+        verifyExistsNickname(member.getNickname());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);

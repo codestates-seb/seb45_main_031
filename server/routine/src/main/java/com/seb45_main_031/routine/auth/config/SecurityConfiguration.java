@@ -2,12 +2,10 @@ package com.seb45_main_031.routine.auth.config;
 
 import com.seb45_main_031.routine.auth.filter.JwtAuthenticationFilter;
 import com.seb45_main_031.routine.auth.filter.JwtVerificationFilter;
-import com.seb45_main_031.routine.auth.handler.CustomAccessDeniedHandler;
-import com.seb45_main_031.routine.auth.handler.CustomAuthenticationEntryPoint;
-import com.seb45_main_031.routine.auth.handler.CustomAuthenticationFailureHandler;
-import com.seb45_main_031.routine.auth.handler.CustomAuthenticationSuccessHandler;
+import com.seb45_main_031.routine.auth.handler.*;
 import com.seb45_main_031.routine.auth.jwt.JwtTokenizer;
 import com.seb45_main_031.routine.auth.utils.CustomAuthorityUtils;
+import com.seb45_main_031.routine.member.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,10 +28,14 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
+    private final MemberRepository memberRepository;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils customAuthorityUtils) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer,
+                                 CustomAuthorityUtils customAuthorityUtils,
+                                 MemberRepository memberRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.customAuthorityUtils = customAuthorityUtils;
+        this.memberRepository = memberRepository;
     }
 
     @Bean
@@ -55,7 +57,10 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/members/myPage/**").hasRole("USER")
-                        .anyRequest().permitAll());
+                        .anyRequest().permitAll()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenizer, customAuthorityUtils, memberRepository)));
 
         return http.build();
     }
