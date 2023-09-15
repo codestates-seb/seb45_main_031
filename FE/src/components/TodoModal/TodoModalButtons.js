@@ -33,16 +33,19 @@ const TodoModalButtons = ({ todoId, complete, changeComplete, deleteTodo }) => {
 export default TodoModalButtons;
 
 const TodoModalButton = styled.button`
-  width: 250px;
+  width: 80%;
+  max-width: 250px;
   height: 35px;
+
   font-size: 0.85rem;
 
-  margin: 10px;
+  margin-bottom: 15px;
   border-radius: 15px;
 
   background-color: #ececec;
 
   &:hover {
+    font-weight: bold;
     background-color: #d0d0d0;
   }
 `;

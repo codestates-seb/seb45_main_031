@@ -13,7 +13,8 @@ const Title = ({ TITLE }) => {
 export default Title;
 
 const TitleSection = styled.section`
-  width: 390px;
+  width: 90%;
+  max-width: 390px;
   height: 150px;
 
   padding: 10px 10px 0px 10px;

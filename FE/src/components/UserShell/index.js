@@ -15,7 +15,7 @@ const UserShell = ({
 }) => {
   return (
     <>
-      <InterfaceContainer>
+      <UserShellWrapper>
         <Date
           date={date}
           openCalender={openCalender}
@@ -23,15 +23,16 @@ const UserShell = ({
         />
         <User percent={percent} />
         <Filter filterList={filterList} filtering={filtering} filter={filter} />
-      </InterfaceContainer>
+      </UserShellWrapper>
     </>
   );
 };
 
 export default UserShell;
 
-const InterfaceContainer = styled.div`
-  width: 430px;
+const UserShellWrapper = styled.div`
+  width: 100vw;
+  max-width: 430px;
 
   background-color: #ececec;
 

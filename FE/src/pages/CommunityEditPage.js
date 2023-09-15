@@ -14,7 +14,6 @@ import {
   DEFAULT_FILTER,
 } from "../data/constants";
 import TagModal from "../components/TagModal";
-import ModalBackground from "../components/ModalBackground";
 import CommunityEditCalendarModal from "../components/CommunityEditCalendarModal";
 import EditTipContents from "../components/EditTipContents";
 import CommunityEditPost from "../components/CommunityEditPost";
@@ -27,7 +26,6 @@ const CommunityEditPage = () => {
   const accessToken = localUser.accessToken;
 
   const [date, setDate] = useState(getDateFormat());
-  const [isOpenModalBack, setIsOpenModalBack] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState(false);
   const [tagId, setTagId] = useState([]);
@@ -41,14 +39,12 @@ const CommunityEditPage = () => {
     getTodoList(date);
   }, []);
 
-  const openCalender = () => {
-    setIsOpenModalBack(true);
-    setIsOpenCalender(true);
+  const isCalender = () => {
+    setIsOpenCalender(!isOpenCalender);
   };
 
-  const closeCalender = () => {
-    setIsOpenModalBack(false);
-    setIsOpenCalender(false);
+  const isTagModal = () => {
+    setIsOpenTagModal(!isOpenTagModal);
   };
 
   const getTodoList = async (date) => {
@@ -89,16 +85,6 @@ const CommunityEditPage = () => {
     }
   };
 
-  const tagModalOpen = () => {
-    setIsOpenTagModal(true);
-    setIsOpenModalBack(true);
-  };
-
-  const tagModalClose = () => {
-    setIsOpenTagModal(false);
-    setIsOpenModalBack(false);
-  };
-
   const changeTag = (tagName) => {
     if (tagName === DEFAULT_FILTER) {
       const newTagId = [];
@@ -121,7 +107,7 @@ const CommunityEditPage = () => {
       setTodoList(newTodo);
     }
 
-    tagModalClose();
+    isTagModal();
   };
 
   const postFeed = async () => {
@@ -152,11 +138,10 @@ const CommunityEditPage = () => {
   return (
     <>
       <CommunityEditWrapper>
-        {isOpenModalBack && <ModalBackground />}
         {isOpenCalender && (
           <CommunityEditCalendarModal
             getTodoList={getTodoList}
-            closeCalender={closeCalender}
+            closeCalender={isCalender}
             date={date}
             todoList={todoList}
           />
@@ -164,7 +149,7 @@ const CommunityEditPage = () => {
         {isOpenTagModal && (
           <TagModal
             tags={tagList}
-            tagModalClose={tagModalClose}
+            tagModalClose={isTagModal}
             changeTag={changeTag}
           />
         )}
@@ -176,9 +161,9 @@ const CommunityEditPage = () => {
           />
           <CommunityEditPost
             date={date}
-            openCalender={openCalender}
+            openCalender={isCalender}
             tagName={tagName}
-            tagModalOpen={tagModalOpen}
+            tagModalOpen={isTagModal}
             content={content}
             setContent={setContent}
             navigate={navigate}
@@ -193,7 +178,7 @@ const CommunityEditPage = () => {
 export default CommunityEditPage;
 
 const CommunityEditWrapper = styled.div`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -201,13 +186,13 @@ const CommunityEditWrapper = styled.div`
 `;
 
 const EditContainer = styled.div`
-  width: 430px;
-  height: 100%;
+  width: 100%;
+  max-width: 430px;
 
   background-color: #ececec;
 
-  padding-top: 120px;
-  padding-bottom: 95px;
+  padding-top: 80px;
+  padding-bottom: 180px;
 
   display: flex;
   flex-direction: column;

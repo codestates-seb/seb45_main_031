@@ -3,12 +3,13 @@ import { styled } from "styled-components";
 import Exit from "./Exit";
 import TodoModalButtons from "./TodoModalButtons";
 import Todo from "./Todo";
+import ModalBackground from "../ModalBackground";
 
-const TodoModal = ({ todo, closeTodoModal, changeComplete, deleteTodo }) => {
+const TodoModal = ({ todo, isTodoModal, changeComplete, deleteTodo }) => {
   return (
     <>
       <TodoModalWrapper>
-        <ExitComponent closeTodoModal={closeTodoModal} />
+        <Exit isTodoModal={isTodoModal} />
         <Todo
           complete={todo.complete}
           tagName={todo.tagResponse.tagName}
@@ -22,6 +23,7 @@ const TodoModal = ({ todo, closeTodoModal, changeComplete, deleteTodo }) => {
           deleteTodo={deleteTodo}
         />
       </TodoModalWrapper>
+      <ModalBackground />
     </>
   );
 };
@@ -29,7 +31,8 @@ const TodoModal = ({ todo, closeTodoModal, changeComplete, deleteTodo }) => {
 export default TodoModal;
 
 const TodoModalWrapper = styled.div`
-  width: 340px;
+  width: 90%;
+  max-width: 380px;
 
   border: 1px solid #fff7cc;
   border-radius: 15px;
@@ -39,7 +42,7 @@ const TodoModalWrapper = styled.div`
   padding: 20px;
 
   position: absolute;
-  top: 30%;
+  top: 25%;
 
   z-index: 100;
 
@@ -47,15 +50,4 @@ const TodoModalWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const ExitComponent = styled(Exit)`
-  width: 300px;
-  height: 20px;
-
-  margin-bottom: 10px;
-
-  display: flex;
-  align-items: end;
-  justify-content: end;
 `;

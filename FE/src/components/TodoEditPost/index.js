@@ -4,6 +4,7 @@ import Buttons from "./Buttons";
 import Post from "./Post";
 
 const TodoEditPost = ({
+  isEdit,
   tagModalOpen,
   emojiModalOpen,
   changeName,
@@ -20,6 +21,7 @@ const TodoEditPost = ({
     <>
       <PostSection>
         <Post
+          isEdit={isEdit}
           tagModalOpen={tagModalOpen}
           emojiModalOpen={emojiModalOpen}
           changeName={changeName}
@@ -39,8 +41,8 @@ const TodoEditPost = ({
 export default TodoEditPost;
 
 const PostSection = styled.section`
-  width: 390px;
-  height: 500px;
+  width: 90%;
+  max-width: 390px;
 
   background-color: #ffffff;
 

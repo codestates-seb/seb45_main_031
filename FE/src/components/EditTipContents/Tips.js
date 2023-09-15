@@ -22,8 +22,8 @@ const Tips = ({ TIP_TITLE, TIPS }) => {
 export default Tips;
 
 const TipsSection = styled.section`
-  width: 390px;
-  height: 170px;
+  width: 90%;
+  max-width: 390px;
 
   background-color: #fff7cc;
 

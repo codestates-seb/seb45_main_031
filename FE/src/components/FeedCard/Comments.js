@@ -42,7 +42,7 @@ const Comments = ({
             />
           ))}
         </CommentsGroup>
-        {comments.length > 3 && (
+        {comments.length > 1 && (
           <MoreCommentButton onClick={() => changeMore()}>
             {moreActions ? "··· More Comment ···" : "··· Close Comment ···"}
           </MoreCommentButton>

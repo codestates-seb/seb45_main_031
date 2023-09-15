@@ -6,6 +6,9 @@ import write from "../assets/images/write.png";
 import list from "../assets/images/list.png";
 import community from "../assets/images/community.png";
 import mypage from "../assets/images/mypage.png";
+import directoryIcon from "../assets/images/directoryIcon.png";
+import directoryOnclickIcon from "../assets/images/directoryOnclickIcon.png";
+
 import getDateFormat from "../utils/getDateFormat";
 
 const Footer = () => {
@@ -15,7 +18,6 @@ const Footer = () => {
   const [clickColor, setClickColor] = useState("");
   const LogoClick = (event) => {
     setClickColor(event.target.alt);
-    console.log(event.target.alt);
   };
 
   return (
@@ -32,7 +34,7 @@ const Footer = () => {
               }}
             >
               <img src={write} alt="작성하기 버튼" />
-              작성하기
+              <p>작성하기</p>
             </LogoItem>
             {isModalOpen && (
               <ModalWrapper onClick={() => setIsModalOpen(false)}>
@@ -48,6 +50,23 @@ const Footer = () => {
             )}
             {/* </PageNavigation> */}
             <LogoItem
+              color={clickColor === "디렉토리 버튼"}
+              onClick={(event) => {
+                LogoClick(event);
+                navigate(`/directory`);
+              }}
+            >
+              <img
+                src={
+                  clickColor === "디렉토리 버튼"
+                    ? directoryOnclickIcon
+                    : directoryIcon
+                }
+                alt="디렉토리 버튼"
+              />
+              <p>디렉토리</p>
+            </LogoItem>
+            <LogoItem
               color={clickColor === "할일목록 버튼"}
               onClick={(event) => {
                 LogoClick(event);
@@ -55,7 +74,7 @@ const Footer = () => {
               }}
             >
               <img src={list} alt="할일목록 버튼" />
-              할일목록
+              <p> 할일목록</p>
             </LogoItem>
             <LogoItem
               color={clickColor === "커뮤니티 버튼"}
@@ -65,7 +84,7 @@ const Footer = () => {
               }}
             >
               <img src={community} alt="커뮤니티 버튼" />
-              커뮤니티
+              <p>커뮤니티</p>
             </LogoItem>
             <LogoItem
               color={clickColor === "마이페이지 버튼"}
@@ -75,7 +94,7 @@ const Footer = () => {
               }}
             >
               <img src={mypage} alt="마이페이지 버튼" />
-              마이페이지
+              <p>마이페이지</p>
             </LogoItem>
           </Logo>
         </FooterSpacer>
@@ -101,7 +120,8 @@ const FooterFixed = styled.div`
   border: 1px solid #d0d0d0;
   border-radius: 15px 15px 0 0;
   box-shadow: 0 -2px 2px 0 #d0d0d0;
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
   height: 70px;
 `;
 
@@ -116,15 +136,18 @@ const Logo = styled.div`
 `;
 
 const LogoItem = styled.button`
+  width: 20%;
   display: block;
-  /* color: #949597; */
   color: ${(props) => (props.color ? "#000000" : "#949597")};
   text-align: center;
   font-size: 0.7rem;
   margin: 1px;
   > img {
-    height: 32px;
+    height: 27px;
     object-fit: contain;
+  }
+  > p {
+    margin-top: 2px;
   }
 `;
 
@@ -149,8 +172,8 @@ const ModalContent = styled.div`
   height: 150px;
   border-radius: 15px;
   background-color: #ffffff;
-  margin-top: 630px;
-  margin-right: 130px;
+  margin-right: 120px;
+  bottom: 80px;
   opacity: 1;
 
   display: flex;

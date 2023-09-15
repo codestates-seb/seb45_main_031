@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 
 import getDateFormat from "../../utils/getDateFormat";
+import ModalButton from "./ModalButton";
 
 const localUser = JSON.parse(localStorage.getItem("localUser"));
 
@@ -17,14 +18,18 @@ const Comment = ({
     <>
       <CommentWrapper>
         <CommentUserName>{nickname}</CommentUserName>
-        <Content>{content}</Content>
-        <CreatedAt>{getDateFormat(createdAt)}</CreatedAt>
+        <ContentSection>
+          <Content>{content}</Content>
+          <CreatedAt>{getDateFormat(createdAt)}</CreatedAt>
+        </ContentSection>
         {Number(memberId) === Number(localUser.memberId) && (
           <ModalButton
-            onClick={() => openCommentModal(feedId, commentId, content)}
-          >
-            ···
-          </ModalButton>
+            feedId={feedId}
+            commentId={commentId}
+            memberId={memberId}
+            content={content}
+            openCommentModal={openCommentModal}
+          />
         )}
       </CommentWrapper>
     </>
@@ -34,16 +39,20 @@ const Comment = ({
 export default Comment;
 
 const CommentWrapper = styled.li`
+  width: 100%;
+
   margin: 5px;
 
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: start;
+  flex-wrap: wrap;
 `;
 
 const CommentUserName = styled.div`
-  width: 50px;
+  width: 100%;
+  max-width: 65px;
 
   font-size: 0.9rem;
   font-weight: bold;
@@ -51,28 +60,33 @@ const CommentUserName = styled.div`
   margin-right: 7px;
 `;
 
+const ContentSection = styled.section`
+  width: 100%;
+  max-width: 230px;
+
+  padding: 3px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+`;
+
 const Content = styled.div`
-  width: 200px;
+  width: 100%;
+
   font-size: 0.9rem;
+
+  justify-content: start;
 `;
 
 const CreatedAt = styled.div`
-  width: 50px;
+  width: 100%;
 
   font-size: 0.7rem;
   color: #949597;
-`;
 
-const ModalButton = styled.button`
-  font-size: 0.7rem;
-  color: #949597;
-
-  margin-left: 5px;
-  padding: 5px;
-  border: 1px solid #ececec;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ececec;
-  }
+  display: flex;
+  justify-content: end;
 `;

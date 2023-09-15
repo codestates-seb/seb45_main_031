@@ -29,8 +29,9 @@ const ChartWrapper = styled.section`
 `;
 
 const BarSection = styled.div`
-  width: 230px;
+  width: 85vw;
   height: 30px;
+  max-width: 240px;
 
   background-color: #d0d0d0;
 

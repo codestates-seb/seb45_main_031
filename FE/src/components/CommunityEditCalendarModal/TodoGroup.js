@@ -27,7 +27,8 @@ const TodoGroup = ({ todoList }) => {
 export default TodoGroup;
 
 const TodoSection = styled.ul`
-  width: 370px;
+  width: 90%;
+  max-width: 370px;
   height: 300px;
 
   margin: 20px 10px;
