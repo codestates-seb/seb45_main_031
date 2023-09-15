@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 import EmojiPicker from "emoji-picker-react";
 
-import { CLOSE_TEXT } from "../../data/constants";
+import ModalBackground from "../ModalBackground";
+import CloseButton from "../CloseButton";
 
 const EditEmojiModal = ({
   todoEmoji,
@@ -14,12 +15,11 @@ const EditEmojiModal = ({
       <ModalWrapper>
         <TodoEmojiSection>
           <Emoji onClick={() => emojiModalOpen()}>{todoEmoji}</Emoji>
-          <CloseButton onClick={() => emojiModalClose()}>
-            {CLOSE_TEXT}
-          </CloseButton>
+          <CloseButton isModal={emojiModalClose} />
         </TodoEmojiSection>
         <EmojiPicker onEmojiClick={(event) => changeTodoEmoji(event)} />
       </ModalWrapper>
+      <ModalBackground />
     </>
   );
 };
@@ -27,11 +27,13 @@ const EditEmojiModal = ({
 export default EditEmojiModal;
 
 const ModalWrapper = styled.div`
-  width: 390px;
-  height: 500px;
+  width: 90%;
+  max-width: 390px;
+  height: 80%;
+  max-height: 550px;
 
   position: absolute;
-  top: 30%;
+  top: 85px;
 
   z-index: 100;
 
@@ -43,31 +45,23 @@ const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+
+  overflow: over;
 `;
 
 const TodoEmojiSection = styled.section`
-  width: 340px;
+  width: 100%;
+
+  margin-bottom: 10px;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const CloseButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  margin-bottom: 30px;
-  border: 1px solid #ffb039;
-  border-radius: 15px;
-
-  &:hover {
-    background-color: #ffb039;
-  }
-`;
-
 const Emoji = styled.div`
-  width: 50px;
+  width: 50%;
+  max-width: 50px;
   height: 50px;
 
   font-size: 35px;

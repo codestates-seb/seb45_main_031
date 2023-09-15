@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
 
-import { CLOSE_TEXT } from "../../data/constants";
+import CloseButton from "../CloseButton";
 
 const Date = ({ date, closeCalender }) => {
   return (
     <>
       <DateWrapper>
         <DateText>{date}</DateText>
-        <CloseButton onClick={() => closeCalender()}>{CLOSE_TEXT}</CloseButton>
+        <CloseButton isModal={closeCalender} />
       </DateWrapper>
     </>
   );
@@ -18,7 +18,8 @@ export default Date;
 const DateWrapper = styled.section`
   width: 100%;
 
-  padding: 10px;
+  padding-top: 10px;
+  padding-left: 20px;
 
   display: flex;
   flex-direction: row;
@@ -27,27 +28,13 @@ const DateWrapper = styled.section`
 `;
 
 const DateText = styled.div`
-  font-size: 1.2rem;
-  color: #ffb039;
+  width: 100%;
+  height: 50px;
 
-  margin-left: 20px;
+  font-size: 1.2rem;
+  color: #949597;
 
   display: flex;
   align-items: center;
-  justify-content: center;
-`;
-
-const CloseButton = styled.button`
-  width: 30px;
-  height: 30px;
-
-  color: #949597;
-
-  border: 1px solid #d0d0d0;
-  border-radius: 15px;
-  margin: 10px 10px 5px 0px;
-
-  &:hover {
-    background-color: #d0d0d0;
-  }
+  justify-content: start;
 `;

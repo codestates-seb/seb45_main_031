@@ -1,21 +1,28 @@
 import { styled } from "styled-components";
+
 import { CLOSE_TEXT } from "../../data/constants";
+
+import ModalBackground from "../ModalBackground";
 
 const ErrorModal = ({ errorMessage, closeErrorModal }) => {
   return (
-    <Body>
-      <ErrorText>{errorMessage}</ErrorText>
-      <CloseErrorModalButton onClick={() => closeErrorModal()}>
-        {CLOSE_TEXT}
-      </CloseErrorModalButton>
-    </Body>
+    <>
+      <ModalWrapper>
+        <ErrorText>{errorMessage}</ErrorText>
+        <CloseErrorModalButton onClick={() => closeErrorModal()}>
+          {CLOSE_TEXT}
+        </CloseErrorModalButton>
+      </ModalWrapper>
+      <ModalBackground />
+    </>
   );
 };
 
 export default ErrorModal;
 
-const Body = styled.body`
-  width: 390px;
+const ModalWrapper = styled.body`
+  width: 90%;
+  max-width: 390px;
   height: 150px;
 
   border-radius: 15px;

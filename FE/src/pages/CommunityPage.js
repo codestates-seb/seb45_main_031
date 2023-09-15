@@ -4,7 +4,6 @@ import { useInView } from "react-intersection-observer";
 import axios from "axios";
 
 import FeedCard from "../components/FeedCard";
-import ModalBackground from "../components/ModalBackground";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import ErrorModal from "../components/ErrorModal";
 
@@ -22,9 +21,8 @@ const CommunityPage = () => {
   const [commentId, setCommentId] = useState();
   const [commentContent, setCommentContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isModalBack, setIsModalBack] = useState(false);
-  const [isDeleteModal, setIsDeleteModal] = useState(false);
-  const [isCommentModal, setIsCommentModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenCommentModal, setIsOpenCommentModal] = useState(false);
   const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
 
   const localUser = JSON.parse(localStorage.getItem("localUser"));
@@ -41,10 +39,39 @@ const CommunityPage = () => {
     }
   }, [inView]);
 
+  const isDeleteModal = (feedId) => {
+    setFeedId(feedId);
+    setIsOpenDeleteModal(!isOpenDeleteModal);
+  };
+
+  const isErrorModal = (message) => {
+    setErrorMessage(message);
+
+    setIsOpenErrorModal(!isOpenErrorModal);
+  };
+
+  const isCommentModal = (feedId, commentId, content) => {
+    if (content === undefined) {
+      setFeedId("");
+      setCommentId("");
+      setCommentContent("");
+    } else {
+      setFeedId(feedId);
+      setCommentId(commentId);
+      setCommentContent(content);
+    }
+
+    setIsOpenCommentModal(!isOpenCommentModal);
+  };
+
+  const changeComment = (event) => {
+    setCommentContent(event.target.value);
+  };
+
   const getFeedList = async (page) => {
     try {
       const { data } = await axios.get(`${URL}/feeds`, {
-        params: { page: page.page, size: 5 },
+        params: { page: page, size: 5 },
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
@@ -82,17 +109,6 @@ const CommunityPage = () => {
     }
   };
 
-  const openDeleteModal = (feedId) => {
-    setFeedId(feedId);
-    setIsModalBack(true);
-    setIsDeleteModal(true);
-  };
-
-  const closeDeleteModal = () => {
-    setIsModalBack(false);
-    setIsDeleteModal(false);
-  };
-
   const deleteFeed = async () => {
     try {
       await axios.delete(`${URL}/feeds/${feedId}`, {
@@ -101,7 +117,7 @@ const CommunityPage = () => {
 
       setFeedId();
       getFeedList(1);
-      closeDeleteModal();
+      isDeleteModal();
     } catch (error) {
       console.error(error);
     }
@@ -125,27 +141,10 @@ const CommunityPage = () => {
     }
   };
 
-  const changeComment = (event) => {
-    setCommentContent(event.target.value);
-  };
-
-  const openErrorModal = (message) => {
-    setErrorMessage(message);
-
-    setIsOpenErrorModal(true);
-    setIsModalBack(true);
-  };
-
-  const closeErrorModal = () => {
-    setErrorMessage("");
-    setIsOpenErrorModal(false);
-    setIsModalBack(false);
-  };
-
   const createComment = async (feedId, content) => {
     try {
       if (content.length === 0) {
-        return openErrorModal("댓글 내용을 입력 해주세요.");
+        return isErrorModal("댓글 내용을 입력 해주세요.");
       }
 
       const newComment = {
@@ -164,22 +163,6 @@ const CommunityPage = () => {
     }
   };
 
-  const openCommentModal = (feedId, commentId, content) => {
-    setFeedId(feedId);
-    setCommentId(commentId);
-    setCommentContent(content);
-    setIsModalBack(true);
-    setIsCommentModal(true);
-  };
-
-  const closeCommentModal = () => {
-    setFeedId();
-    setCommentId();
-    setCommentContent("");
-    setIsModalBack(false);
-    setIsCommentModal(false);
-  };
-
   const patchComment = async (commentId, content) => {
     try {
       const {
@@ -193,7 +176,7 @@ const CommunityPage = () => {
       );
 
       changeFeed(data);
-      closeCommentModal();
+      isCommentModal();
     } catch (error) {
       console.error(error);
     }
@@ -206,7 +189,7 @@ const CommunityPage = () => {
       });
 
       changeFeed({ feedId });
-      closeCommentModal();
+      isCommentModal();
     } catch (error) {
       console.error(error);
     }
@@ -241,7 +224,7 @@ const CommunityPage = () => {
       );
 
       //임시 알럿 모달
-      openErrorModal("목록 리스트 가져오기에 성공하였습니다.");
+      isErrorModal("목록 리스트 가져오기에 성공하였습니다.");
     } catch (error) {
       console.error(error);
     }
@@ -250,25 +233,24 @@ const CommunityPage = () => {
   return (
     <>
       <CommunityWrapper>
-        {isModalBack && <ModalBackground />}
         {isOpenErrorModal && (
           <ErrorModal
             errorMessage={errorMessage}
-            closeErrorModal={closeErrorModal}
+            closeErrorModal={isErrorModal}
           />
         )}
-        {isDeleteModal && (
+        {isOpenDeleteModal && (
           <DeleteConfirmModal
-            closeDeleteModal={closeDeleteModal}
+            closeDeleteModal={isDeleteModal}
             deleteFeed={deleteFeed}
           />
         )}
-        {isCommentModal && (
+        {isOpenCommentModal && (
           <CommentModal
             feedId={feedId}
             commentId={commentId}
             content={commentContent}
-            closeCommentModal={closeCommentModal}
+            closeCommentModal={isCommentModal}
             changeComment={changeComment}
             patchComment={patchComment}
             deleteComment={deleteComment}
@@ -288,12 +270,12 @@ const CommunityPage = () => {
                   likeCount={feed.likeCount}
                   feedLikeInfo={feed.feedLikeInfo}
                   comments={feed.parentResponses}
-                  openDeleteModal={openDeleteModal}
+                  openDeleteModal={isDeleteModal}
                   isLike={isLike}
                   commentContent={commentContent}
                   changeComment={changeComment}
                   createComment={createComment}
-                  openCommentModal={openCommentModal}
+                  openCommentModal={isCommentModal}
                   getFeedTodoList={getFeedTodoList}
                 />
               </>
@@ -309,7 +291,7 @@ const CommunityPage = () => {
 export default CommunityPage;
 
 const CommunityWrapper = styled.body`
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -317,23 +299,29 @@ const CommunityWrapper = styled.body`
 `;
 
 const CommunityContainer = styled.div`
-  width: 430px;
-  height: 100%;
+  width: 100%;
+  max-width: 430px;
 
   background-color: #ececec;
 
-  padding-top: 120px;
-  padding-bottom: 95px;
+  padding-top: 80px;
+  padding-bottom: 180px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: scroll;
+`;
+
+const CardGroup = styled.ul`
+  width: 100%;
+  max-width: 430px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-contents: center;
-
-  overflow: scroll;
 `;
-
-const CardGroup = styled.ul``;
 
 const InfinityScroll = styled.div`
   width: 100%;

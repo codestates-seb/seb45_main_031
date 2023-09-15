@@ -17,8 +17,8 @@ const Todo = ({ complete, tagName, content, emoji }) => {
 export default Todo;
 
 const TodoWrapper = styled.section`
-  width: 300px;
-  height: 150px;
+  width: 90%;
+  max-width: 300px;
 
   margin-bottom: 30px;
   border: 1px solid #ffd900;
@@ -31,12 +31,15 @@ const TodoWrapper = styled.section`
 `;
 
 const ContentsSection = styled.div`
-  width: 300px;
+  width: 100%;
+
+  padding: 15px;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const Tag = styled.span`
@@ -45,7 +48,6 @@ const Tag = styled.span`
 
   background: #ececec;
 
-  margin: 15px;
   border-radius: 15px;
 
   display: flex;
@@ -54,9 +56,16 @@ const Tag = styled.span`
 `;
 
 const Title = styled.p`
-  width: 200px;
+  width: 65%;
+  height: 40px;
 
   font-size: 0.9erm;
+
+  padding-left: 5px;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
 `;
 
 const Emoji = styled.div`

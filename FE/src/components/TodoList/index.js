@@ -28,10 +28,13 @@ const TodoList = ({ todoGroup, changeTodo }) => {
 export default TodoList;
 
 const ListContainer = styled.div`
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
   height: 100%;
 
   background-color: #ececec;
+
+  padding-bottom: 100px;
 
   display: flex;
   flex-direction: column;
@@ -41,7 +44,7 @@ const ListContainer = styled.div`
 `;
 
 const TodoGroup = styled.ul`
-  width: 390px;
+  width: 90%;
 
   margin-bottom: 90px;
 
