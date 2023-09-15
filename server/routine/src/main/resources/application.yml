@@ -15,7 +15,7 @@ spring:
     multipart:
       max-file-size: 5MB # 업로드되는 단일 파일 최대 크기 5MB
       max-request-size: 5MB # 요청에 포함된 모든 파일 총 크기 5MB
-  h2:
+  h2:gi
     console:
       enabled: true
       path: /h2
