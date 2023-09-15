@@ -10,9 +10,6 @@ const emailRegex =
   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-// const accessToken =
-//   "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJ1c2VybmFtZSI6ImFiY2RAZ21haWwuY29tIiwic3ViIjoiYWJjZEBnbWFpbC5jb20iLCJpYXQiOjE2OTM0NDg3NjksImV4cCI6MTY5MzQ0OTA2OX0.gAqT-8waOAQ_PWyHIGPSmg6EcMDF0du1nklkIDYtpgA";
-
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -54,6 +51,25 @@ const LoginPage = () => {
       navigate("/todo");
       console.log(response);
     } catch (error) {
+      if (error.response) {
+        // 서버로부터 응답이 온 경우
+        if (error.response.status === 401) {
+          // 401 인증 실패
+          alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+        } else if (error.response.status === 404) {
+          // 404 존재하지 않는 아이디일 때 처리할 내용
+          alert("존재하지 않는 아이디입니다.");
+        } else {
+          // 기타 오류 처리
+          alert("로그인에 실패했습니다. 다시 시도해주세요.");
+        }
+      } else if (error.request) {
+        // 요청이 전송되지 않은 경우 (네트워크 오류 등)
+        alert("요청을 보낼 수 없습니다. 네트워크 연결을 확인하세요.");
+      } else {
+        // 그 외의 오류 처리
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      }
       console.error(error);
     }
   };
