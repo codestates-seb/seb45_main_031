@@ -31,7 +31,7 @@ const SignUpPage = () => {
     event.preventDefault();
     axios
       .post(`${URL}/members/signup`, user, {})
-      .than((response) => {
+      .then((response) => {
         navigate("/login");
         console.log(response);
       })
