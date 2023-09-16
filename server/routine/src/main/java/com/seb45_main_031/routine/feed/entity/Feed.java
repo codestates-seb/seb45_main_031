@@ -24,7 +24,7 @@ public class Feed extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
 
-    @Column(nullable = false)
+    @Column(length = 2000)
     private String content;
 
     private int likeCount;

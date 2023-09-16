@@ -1,6 +1,5 @@
 package com.seb45_main_031.routine.feed.service;
 
-import com.seb45_main_031.routine.auth.jwt.JwtTokenizer;
 import com.seb45_main_031.routine.exception.BusinessLogicException;
 import com.seb45_main_031.routine.exception.ExceptionCode;
 import com.seb45_main_031.routine.feed.entity.Feed;
@@ -27,15 +26,13 @@ public class FeedService {
     private final FeedTagRepository feedTagRepository;
     private final FeedTodoRepository feedTodoRepository;
     private final MemberService memberService;
-    private final JwtTokenizer jwtTokenizer;
 
     public FeedService(FeedRepository feedRepository, FeedTagRepository feedTagRepository, FeedTodoRepository feedTodoRepository,
-                       MemberService memberService, JwtTokenizer jwtTokenizer) {
+                       MemberService memberService) {
         this.feedRepository = feedRepository;
         this.feedTagRepository = feedTagRepository;
         this.feedTodoRepository = feedTodoRepository;
         this.memberService = memberService;
-        this.jwtTokenizer = jwtTokenizer;
     }
 
     // 피드 작성
@@ -108,14 +105,6 @@ public class FeedService {
         return findFeed;
     }
 
-    // 액세스 토큰에서 회원ID 찾기
-    public long findMemberId(String accessToken) {
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        long memberId = jwtTokenizer.getMemberIdFromAccessToken(accessToken, base64EncodedSecretKey);
-
-        return memberId;
-    }
-
     public Page<Feed> findFeedsByMember(int page, int size, long memberId, String accessToken){
 
         Member findMember = memberService.findverifiedMember(memberId);
@@ -132,6 +121,5 @@ public class FeedService {
         Page<Feed> pageFeeds = feedRepository.findByFeedIdIn(feedIds, pageRequest);
 
         return pageFeeds;
-
     }
 }

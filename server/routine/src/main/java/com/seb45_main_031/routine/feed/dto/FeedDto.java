@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +21,7 @@ public class FeedDto {
 
         private long memberId;
 
-        @NotBlank(message = "내용을 작성해주세요.")
+        @Size(min = 1, max = 2000, message = "내용은 문자의 종류와 관계없이 1자 이상 2000자 이하로 입력해주세요(띄어쓰기 포함)")
         private String content;
 
         @Valid
@@ -36,7 +36,7 @@ public class FeedDto {
     public static class Patch {
         private long feedId;
 
-        @NotBlank(message = "내용을 작성해주세요.")
+        @Size(min = 1, max = 2000, message = "내용은 문자의 종류와 관계없이 1자 이상 2000자 이하로 입력해주세요(띄어쓰기 포함)")
         private String content;
 
         @Valid
