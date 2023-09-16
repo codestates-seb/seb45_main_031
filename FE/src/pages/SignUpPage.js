@@ -29,6 +29,21 @@ const SignUpPage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+
+    if (user.password !== user.passwordConfirm) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return; // 회원가입 중단
+    } else if (
+      !user.email ||
+      !user.nickname ||
+      !user.password ||
+      !user.passwordConfirm
+    ) {
+      alert("모든 칸에 입력 해주세요.");
+    } else {
+      alert("회원가입이 성공적으로 완료되었습니다.");
+    }
+
     axios
       .post(`${URL}/members/signup`, user, {})
       .then((response) => {
@@ -39,6 +54,7 @@ const SignUpPage = () => {
         console.log(error);
       });
   };
+
   return (
     <Container>
       <SignUpContainer>
@@ -142,7 +158,13 @@ const SignUpPage = () => {
         {/*Confirm*/}
         <ConfirmContainer>
           <ConfirmBtn onClick={(event) => onSubmit(event)}>확인</ConfirmBtn>
-          <CancelBtn to="/login">취소</CancelBtn>
+          <CancelBtn
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            취소
+          </CancelBtn>
         </ConfirmContainer>
       </SignUpContainer>
     </Container>
@@ -345,6 +367,9 @@ const ConfirmBtn = styled.button`
 
   &:hover {
     background-color: #676767;
+  }
+  &:disabled {
+    color: black;
   }
 `;
 const CancelBtn = styled.button`
