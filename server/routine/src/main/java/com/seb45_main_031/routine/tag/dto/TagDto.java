@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 
 
 public class TagDto {
@@ -11,6 +12,14 @@ public class TagDto {
     @Getter
     @Setter
     public static class Post{
+        @NotBlank
+        private String tagName;
+    }
+
+    @Getter
+    @Setter
+    public static class Patch{
+        private long tagId;
         private String tagName;
     }
 

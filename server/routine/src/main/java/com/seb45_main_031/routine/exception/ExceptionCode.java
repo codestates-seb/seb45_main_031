@@ -12,6 +12,7 @@ public enum ExceptionCode {
     COMMENT_NOT_FOUND(404, "Comment not found"),
     TODO_NOT_FOUND(404, "Todo not found"),
     TAG_NOT_FOUND(404, "Tag not found"),
+    TAG_EXISTS(409, "Tag exists"),
     TODOSTORAGE_NOT_FOUND(404, "TodoStorage not found"),
     SAVEDTODO_NOT_FOUND(404, "SavedTodo not found"),
     FILE_INPUT_STREAM_ERROR(500, "Failed to read image file"),
