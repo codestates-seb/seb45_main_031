@@ -122,6 +122,9 @@ public interface TodoMapper {
                 .filter(complete -> complete == Todo.Complete.DONE)
                 .count();
 
+        Member anyMember = todos.stream()
+                .map(todo -> todo.getMember())
+                .findAny().orElse(null);
 
 
         TodoDto.AllResponse allResponse = TodoDto.AllResponse.builder()
@@ -129,6 +132,11 @@ public interface TodoMapper {
                 .completeCount(completeCount)
                 .todoResponses(responses)
                 .build();
+
+        if (anyMember != null){
+            allResponse.setMemberId(anyMember.getMemberId());
+            allResponse.setMemberLevel(anyMember.getLevel());
+        }
 
         return allResponse;
     }

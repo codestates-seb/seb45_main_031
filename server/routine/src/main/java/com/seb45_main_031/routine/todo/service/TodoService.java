@@ -185,24 +185,30 @@ public class TodoService {
 
         memberService.checkMemberId(findTodo.getMember().getMemberId(), accessToken);
 
+
         long findMemberId = findTodo.getMember().getMemberId();
         LocalDate findDate = findTodo.getDate();
 
         double beforePercent = calculatePercent(findMemberId, findDate);
 
+
         if(todo.getComplete() != findTodo.getComplete()){
 
             findTodo.setComplete(todo.getComplete());
+
+            if (findDate.isBefore(LocalDate.now()) || findDate.isEqual(LocalDate.now())) {
+                findTodo = todoRepository.save(findTodo);
+            }
+            else {
+                throw new BusinessLogicException(ExceptionCode.TODO_DATE_NOT_PROPER);
+            }
         }
-
-
-        Todo updatedTodo = todoRepository.save(findTodo);
 
         double afterPercent = calculatePercent(findMemberId, findDate);
 
         setExpAndLevel(findMemberId, beforePercent, afterPercent);
 
-        return updatedTodo;
+        return findTodo;
     }
 
 
