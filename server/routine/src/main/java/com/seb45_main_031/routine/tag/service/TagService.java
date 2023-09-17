@@ -31,8 +31,31 @@ public class TagService {
         return findTag;
     }
 
+    private void verifyExistsTagName(String tagName){
+        Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
+
+        if(optionalTag.isPresent()){
+            throw new BusinessLogicException(ExceptionCode.TAG_EXISTS);
+        }
+    }
+
     public Tag createTag(Tag tag){
+        verifyExistsTagName(tag.getTagName());
         return tagRepository.save(tag);
+    }
+
+    public Tag updateTag(Tag tag){
+        Tag findTag = findVerifiedTag(tag.getTagId());
+
+        Optional.ofNullable(tag.getTagName())
+                .ifPresent(tagName -> {
+                    if(!tagName.equals(findTag.getTagName())){
+                        verifyExistsTagName(tagName);
+                    }
+                    findTag.setTagName(tagName);
+                });
+
+        return tagRepository.save(findTag);
     }
 
     public Tag findTag(long tagId){
