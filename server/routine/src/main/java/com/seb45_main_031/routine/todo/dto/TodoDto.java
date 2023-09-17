@@ -95,6 +95,8 @@ public class TodoDto {
 
         private int todoCount;
         private int completeCount;
+        private long memberId;
+        private int memberLevel;
     }
 
     @Getter
