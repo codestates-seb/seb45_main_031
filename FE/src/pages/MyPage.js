@@ -32,7 +32,7 @@ export default function MyPage() {
           <Title>내 정보</Title>
           <ProfileInfo />
         </ProfileSection>
-        {/* <MyPostSection /> */}
+        <MyPostSection />
         <LogoutSection onLogout={handleLogout} />
       </Container>
     </MaxContainer>
@@ -55,7 +55,7 @@ const ProfileInfo = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         const userData = response.data.data;
-
+        console.log(userData.nickname);
         //사용자 정보를 상태로 설정
         setLocalUser(userData);
       } catch (error) {
@@ -89,20 +89,24 @@ const ProfileInfo = () => {
 };
 
 // Section 내 게시물 보기
-// const MyPostSection = () => {
-//   const localUser = JSON.parse(localStorage.getItem("localUser"));
-//   const memberId = localUser.memberId;
-//   const accessToken = localUser.accessToken;
+const MyPostSection = () => {
+  // const localUser = JSON.parse(localStorage.getItem("localUser"));
+  // const memberId = localUser.memberId;
+  // const accessToken = localUser.accessToken;
 
-//   return (
-//     <>
-//       <Title className="myPost">내 게시물 보기</Title>
-//       <MyPostContainer>
-//         <ShowMyPost />
-//       </MyPostContainer>
-//     </>
-//   );
-// };
+  return (
+    <>
+      <MyPostTitle>내 게시물 보기</MyPostTitle>
+      <MyPostContainer>
+        <PostCard>
+          <div>개발 중인 기능입니다</div>
+          <div>곧 만나요!</div>
+        </PostCard>
+        {/* <ShowMyPost /> */}
+      </MyPostContainer>
+    </>
+  );
+};
 
 // const UserPosts = ({ userId }) => {
 //   // 특정 사용자의 게시물 필터링
@@ -192,6 +196,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
+  overflow-y: scroll;
 `;
 
 const BaseTitle = styled.div`
@@ -335,17 +340,36 @@ const LogoutButton = styled(GreyButton)`
 `;
 
 // 내 게시물 보기 스타일
-// const MyPostContainer = styled.div`
-//   background-color: #fff;
-//   max-height: 380px;
-//   overflow-y: scroll;
-//   padding: 20px;
-// `;
+const MyPostContainer = styled.div`
+  background-color: #ececee;
+  height: 1500px;
+  width: 100%;
+  /* max-height: 380px; */
+  /* overflow-y: scroll; */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-// const MyPostTitle = styled.div`
-//   ${BaseTitle}
-//   padding: 5px 20px 5px 20px;
-// `;
+const MyPostTitle = styled(BaseTitle)`
+  padding: 20px;
+  width: 100%;
+`;
+
+const PostCard = styled.div`
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 300px;
+  justify-content: center;
+  align-items: center;
+  color: #949597;
+  gap: 0.5rem;
+`;
 
 // const MyPostList = styled.ul`
 //   border-radius: 15px;
