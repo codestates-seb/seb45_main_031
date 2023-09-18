@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import write from "../assets/images/write.png";
+import writeB from "../assets/images/writeB.png";
 import list from "../assets/images/list.png";
+import listB from "../assets/images/listB.png";
 import community from "../assets/images/community.png";
+import communityB from "../assets/images/communityB.png";
 import mypage from "../assets/images/mypage.png";
+import mypageB from "../assets/images/mypageB.png";
 import directoryIcon from "../assets/images/directoryIcon.png";
 import directoryOnclickIcon from "../assets/images/directoryOnclickIcon.png";
 
@@ -16,6 +20,7 @@ const Footer = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clickColor, setClickColor] = useState("");
+
   const LogoClick = (event) => {
     setClickColor(event.target.alt);
   };
@@ -33,7 +38,10 @@ const Footer = () => {
                 setIsModalOpen(true);
               }}
             >
-              <img src={write} alt="작성하기 버튼" />
+              <img
+                src={clickColor === "작성하기 버튼" ? writeB : write}
+                alt="작성하기 버튼"
+              />
               <p>작성하기</p>
             </LogoItem>
             {isModalOpen && (
@@ -73,7 +81,10 @@ const Footer = () => {
                 navigate(`/todo/${getDateFormat()}`);
               }}
             >
-              <img src={list} alt="할일목록 버튼" />
+              <img
+                src={clickColor === "할일목록 버튼" ? listB : list}
+                alt="할일목록 버튼"
+              />
               <p> 할일목록</p>
             </LogoItem>
             <LogoItem
@@ -83,7 +94,10 @@ const Footer = () => {
                 navigate("/community");
               }}
             >
-              <img src={community} alt="커뮤니티 버튼" />
+              <img
+                src={clickColor === "커뮤니티 버튼" ? communityB : community}
+                alt="커뮤니티 버튼"
+              />
               <p>커뮤니티</p>
             </LogoItem>
             <LogoItem
@@ -93,7 +107,10 @@ const Footer = () => {
                 navigate("/mypage");
               }}
             >
-              <img src={mypage} alt="마이페이지 버튼" />
+              <img
+                src={clickColor === "마이페이지 버튼" ? mypageB : mypage}
+                alt="마이페이지 버튼"
+              />
               <p>마이페이지</p>
             </LogoItem>
           </Logo>
@@ -106,6 +123,8 @@ const Footer = () => {
 export default Footer;
 
 const Container = styled.div`
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,13 +135,15 @@ const Container = styled.div`
 const FooterFixed = styled.div`
   position: fixed;
   bottom: 0;
-  background-color: #fff;
-  border: 1px solid #d0d0d0;
-  border-radius: 15px 15px 0 0;
-  box-shadow: 0 -2px 2px 0 #d0d0d0;
+
+  height: 70px;
   width: 100%;
   max-width: 430px;
-  height: 70px;
+
+  background-color: #fff;
+  border-top: 1px solid #ececec;
+  border-radius: 15px 15px 0 0;
+  box-shadow: 0 4px 4px -4px #ececec;
 `;
 
 const FooterSpacer = styled.div`
@@ -148,6 +169,7 @@ const LogoItem = styled.button`
   }
   > p {
     margin-top: 2px;
+    font-family: "TheJamsil5Bold";
   }
 `;
 
@@ -192,6 +214,7 @@ const PageButton = styled.button`
   border-radius: 15px;
   font-size: 1.1rem;
   text-align: center;
+  font-family: "HakgyoansimWoojuR";
   background-color: #ffe866;
   &:visited {
     background-color: #d0d0d0;
