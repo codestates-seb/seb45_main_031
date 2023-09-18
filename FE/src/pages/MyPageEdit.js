@@ -26,7 +26,7 @@ export default function MyPageEdit() {
   return (
     <MaxContainer>
       <Container>
-        <Section className="myProfile">
+        <MyProfile>
           <Title>프로필</Title>
           <Label>프로필 사진</Label>
           <ariticle>
@@ -36,8 +36,8 @@ export default function MyPageEdit() {
             </Profile>
           </ariticle>
           <EditNickname />
-        </Section>
-        <Section className="myLevel">
+        </MyProfile>
+        <MyLevel>
           <div>
             <Title>
               등급 조회
@@ -45,21 +45,21 @@ export default function MyPageEdit() {
             </Title>
           </div>
           <Badges>
-            <div className="badge">
+            <Badge>
               <img src={level0} alt="레벨0" />
-            </div>
-            <div className="badge">
+            </Badge>
+            <Badge>
               <img src={level1} alt="레벨1" />
-            </div>
-            <div className="badge">
+            </Badge>
+            <Badge>
               <img src={level2} alt="레벨2" />
-            </div>
-            <div className="badge">
+            </Badge>
+            <Badge>
               <img src={level3} alt="레벨3" />
-            </div>
+            </Badge>
           </Badges>
-          <CancelMembership navigate={navigate} />
-        </Section>
+          <CancelMembershipButton navigate={navigate} />
+        </MyLevel>
       </Container>
     </MaxContainer>
   );
@@ -121,9 +121,9 @@ const EditProfile = () => {
 
 // 닉네임 변경
 const EditNickname = () => {
-  const [currentNickname, setCurrentNickname] = useState("");
   const [newNickname, setNewNickname] = useState("");
   const localUser = JSON.parse(localStorage.getItem("localUser"));
+  console.log(localUser);
 
   const editProfile = () => {
     axios
@@ -139,7 +139,7 @@ const EditNickname = () => {
         },
       )
       .then(() => {
-        setCurrentNickname(newNickname); //닉네임 변경 후 상태 업데이트
+        setNewNickname(newNickname); //닉네임 변경 후 상태 업데이트
         localUser.nickname = newNickname;
         localStorage.setItem("localUser", JSON.stringify(localUser));
         alert("닉네임 변경이 완료됐습니다");
@@ -165,7 +165,7 @@ const EditNickname = () => {
   };
 
   useEffect(() => {
-    setCurrentNickname(localUser.nickname); //컴포넌트가 마운트될 때 현재 닉네임 설정
+    setNewNickname(localUser.nickname); //컴포넌트가 마운트될 때 현재 닉네임 설정
   }, [localUser.nickname]);
 
   return (
@@ -174,7 +174,7 @@ const EditNickname = () => {
       <InputBoxWrapper>
         <InputBox
           type="text"
-          placeholder={currentNickname}
+          placeholder={localUser.nickname}
           value={newNickname}
           onChange={(event) => handleNicknameChange(event)}
         />
@@ -185,7 +185,7 @@ const EditNickname = () => {
 };
 
 //회원 탈퇴 영역 - 회원 탈퇴 버튼
-const CancelMembership = ({ navigate }) => {
+const CancelMembershipButton = ({ navigate }) => {
   const [isModalOpen, setIsMOdalOpen] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -251,10 +251,10 @@ const CancelMembership = ({ navigate }) => {
               />
             </InputPassword>
             <ButtonWrapper>
-              <YesNoButton className="yes" onClick={handleConfirmCancel}>
+              <YesNoButton yes onClick={handleConfirmCancel}>
                 예
               </YesNoButton>
-              <YesNoButton className="no" onClick={handleModalClose}>
+              <YesNoButton no onClick={handleModalClose}>
                 아니오
               </YesNoButton>
             </ButtonWrapper>
@@ -293,7 +293,7 @@ const Title = styled.div`
   margin: 10px;
 `;
 
-const Section = styled.div`
+const BaseSection = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: left;
@@ -302,25 +302,16 @@ const Section = styled.div`
   padding: 10px;
   margin: 0 20px 15px 20px;
   box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
+`;
 
-  &.myProfile {
-    margin-top: 90px;
-  }
+const MyProfile = styled(BaseSection)`
+  margin-top: 90px;
+`;
 
-  &.myLevel {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 100px;
-  }
-
-  &.cancelMembership {
-    color: #949597;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    height: 500px;
-    margin-bottom: 110px;
-  }
+const MyLevel = styled(BaseSection)`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 100px;
 `;
 
 const Label = styled.label`
@@ -395,19 +386,9 @@ const YesNoButton = styled.button`
   border-radius: 15px;
   font-size: 0.85rem;
   margin-right: 1.5rem;
-
-  &.yes {
-    background-color: #ececec;
-    &:hover {
-      background-color: #d0d0d0;
-    }
-  }
-
-  &.no {
-    background-color: #ffe866;
-    &:hover {
-      background-color: #ffd900;
-    }
+  background-color: ${(props) => (props.yes ? "#ececec" : "#ffe866")};
+  &:hover {
+    background-color: ${(props) => (props.yes ? "#d0d0d0" : "#ffd900")};
   }
 `;
 
@@ -421,7 +402,6 @@ const Profile = styled.div`
 
   .photo {
     width: 100px;
-    /* display: flex; */
   }
 `;
 
@@ -492,12 +472,12 @@ const Badges = styled.article`
   grid-template-rows: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
+`;
 
-  .badge {
-    width: 100px;
-    height: 100px;
-    margin: auto;
-  }
+const Badge = styled.div`
+  width: 100px;
+  height: 100px;
+  margin: auto;
 `;
 
 //회원탈퇴 영역
