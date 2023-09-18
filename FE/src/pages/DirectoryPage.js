@@ -8,6 +8,8 @@ import DirectoryButton from "../components/DirectoryButton";
 import CategoryModal from "../components/CategoryModal";
 
 const DirectoryPage = () => {
+  const { nickname } = JSON.parse(localStorage.getItem("localUser"));
+
   const navigate = useNavigate();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -38,7 +40,7 @@ const DirectoryPage = () => {
           />
         )}
         <DirectorySection>
-          <DirectoryTitle />
+          <DirectoryTitle nickname={nickname} />
           <DirectoryList openModal={isModal} navigate={navigate} />
           <DirectoryButton />
         </DirectorySection>
