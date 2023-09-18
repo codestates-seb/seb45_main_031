@@ -22,9 +22,9 @@ const CommunityModifyPage = () => {
   const { feedId } = useParams();
   const navigate = useNavigate();
 
-  const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const memberId = localUser.memberId;
-  const accessToken = localUser.accessToken;
+  const { memberId, accessToken } = JSON.parse(
+    localStorage.getItem("localUser"),
+  );
 
   const [date, setDate] = useState(getDateFormat());
   const [isOpenCalender, setIsOpenCalender] = useState(false);

@@ -1,8 +1,9 @@
 import GlobalStyles from "./styles/GlobalStyles";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import RootLayout from "./pages/RootLayout";
-import ProfileLayout from "./pages/ProfileLayout";
+import RootLayout from "./Layouts/RootLayout";
+import ProfileLayout from "./Layouts/ProfileLayout";
+import LoginLayout from "./Layouts/LoginLayout";
 
 import Home from "./pages/HomeTest";
 import TodoPage from "./pages/TodoPage";
@@ -18,16 +19,23 @@ import CommunityModifyPage from "./pages/CommunityModifyPage";
 import DirectoryPage from "./pages/DirectoryPage";
 import DirectoryDetailPage from "./pages/DirectoryDetailPage";
 import Page from "./pages/Page";
+import ScrapTodoEditPage from "./pages/ScrapTodoEditPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
-    // errorElement: 에러페이지 만들면 추가
+    element: <LoginLayout />,
     children: [
-      { index: true, element: <Home /> },
       { path: "/signup", element: <SignUpPage /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/login/google", element: <Page /> },
+    ],
+  },
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
 
       { path: "/todo", element: <TodoPage /> },
       { path: "/todo/edit", element: <TodoEditPage /> },
@@ -41,9 +49,12 @@ const router = createBrowserRouter([
       { path: "/directory", element: <DirectoryPage /> },
       { path: "/directory/:categoryId", element: <DirectoryDetailPage /> },
 
-      { path: "/mypage", element: <MyPage /> },
+      {
+        path: "/scrap/todo/:feedId",
+        element: <ScrapTodoEditPage />,
+      },
 
-      { path: "/login/google", element: <Page /> },
+      { path: "/mypage", element: <MyPage /> },
     ],
   },
   {

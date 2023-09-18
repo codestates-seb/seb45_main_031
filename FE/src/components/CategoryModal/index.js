@@ -5,18 +5,18 @@ import CloseButton from "../CloseButton";
 
 import { DELETE_TEXT, MODIFY_TEXT } from "../../data/constants";
 
-const CategoryModal = ({ closeModal, navigate, todoStorageId }) => {
+const CategoryModal = ({ closeModal }) => {
   return (
     <>
       <ModalWrapper>
         <CloseButton isModal={closeModal} />
         <ButtonSection>
-          <Button
-            onClick={() => navigate(`/directory/modify/${todoStorageId}`)}
-          >
+          <Button onClick={() => alert("개발중인 기능입니다.")}>
             {MODIFY_TEXT}
           </Button>
-          <Button>{DELETE_TEXT}</Button>
+          <Button onClick={() => alert("개발중인 기능입니다.")}>
+            {DELETE_TEXT}
+          </Button>
         </ButtonSection>
       </ModalWrapper>
       <ModalBackground />
@@ -28,6 +28,7 @@ export default CategoryModal;
 
 const ModalWrapper = styled.div`
   width: 90%;
+  max-width: 390px;
   height: 150px;
 
   position: absolute;
