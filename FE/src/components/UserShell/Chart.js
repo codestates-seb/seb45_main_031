@@ -44,7 +44,8 @@ const ProgressBar = styled.div`
   width: ${(props) => props.percent + "%"};
   height: 30px;
 
-  background-color: #ffe866;
+  background-color: ${(props) =>
+    props.percent === 100 ? "#FFB039" : "#ffe866"};
 
   border-radius: 15px;
 

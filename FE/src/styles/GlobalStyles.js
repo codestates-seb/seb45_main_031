@@ -66,6 +66,8 @@ const GlobalStyles = createGlobalStyle`
     border: none;
     background: none;
     cursor: pointer;
+
+    font-family: "HakgyoansimWoojuR";
   }
 `;
 

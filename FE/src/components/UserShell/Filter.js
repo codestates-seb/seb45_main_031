@@ -26,7 +26,7 @@ const FilterSection = styled.section`
 
   background-color: #ffffff;
 
-  padding: 10px 10px 10px 0px;
+  padding: 10px;
 
   overflow-x: scroll;
   white-space: nowrap;
@@ -34,12 +34,16 @@ const FilterSection = styled.section`
 
 const FilterButton = styled.button`
   font-size: 0.85rem;
-  background-color: ${(props) =>
-    props.filter === props.value ? "#ffe866" : "#ececec"};
-
-  border-radius: 15px;
 
   margin-top: 3px;
   margin-left: 10px;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 20px;
+  border: 1px solid
+    ${(props) => (props.filter === props.value ? "#ffe866" : "#d0d0d0")};
+  border-radius: 15px;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.filter === props.value ? "#ffe866" : "#d0d0d0"};
+  }
 `;

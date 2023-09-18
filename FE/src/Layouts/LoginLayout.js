@@ -20,7 +20,7 @@ const Body = styled.body`
   width: 100vw;
   height: 100vh;
 
-  background-color: #ffd900;
+  background-color: #fff7cc;
 
   display: flex;
   flex-direction: column;
