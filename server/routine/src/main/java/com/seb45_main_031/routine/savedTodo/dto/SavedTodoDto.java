@@ -23,10 +23,8 @@ public class SavedTodoDto {
         @Size(max = 50)
         private String emoji;
 
-        @NotBlank
         private long todoStorageId;
 
-        @NotBlank
         private long tagId;
 
         private long memberId;
