@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+﻿import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -8,7 +8,7 @@ import axios from "axios";
 
 const emailRegex =
   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{10,}$/;
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -32,16 +32,7 @@ const SignUpPage = () => {
 
     if (user.password !== user.passwordConfirm) {
       alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      return; // 회원가입 중단
-    } else if (
-      !user.email ||
-      !user.nickname ||
-      !user.password ||
-      !user.passwordConfirm
-    ) {
-      alert("모든 칸에 입력 해주세요.");
-    } else {
-      alert("회원가입이 성공적으로 완료되었습니다.");
+      return; // 회원가입 중단.
     }
 
     axios
@@ -51,6 +42,20 @@ const SignUpPage = () => {
         console.log(response);
       })
       .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 409) {
+            alert("ID 나 Nickname이 중복됩니다.");
+          } else if (error.response.status === 400) {
+            alert("모든 칸에 입력 해주세요.");
+          } else {
+            alert("로그인에 실패했습니다. 다시 시도해주세요.");
+          }
+        } else if (error.request) {
+          // 요청이 전송되지 않은 경우 (네트워크 오류 등)
+          alert("요청을 보낼 수 없습니다. 네트워크 연결을 확인하세요.");
+        } else {
+          alert("오류가 발생했습니다. 다시 시도해주세요.");
+        }
         console.log(error);
       });
   };
@@ -98,12 +103,12 @@ const SignUpPage = () => {
               <div
                 style={{
                   display:
-                    user.nickname.length < 2 || user.nickname.length > 8
+                    user.nickname.length < 2 || user.nickname.length > 10
                       ? "block"
                       : "none",
                 }}
               >
-                {"2글자 이상 8글자 미만으로 입력해주세요."}
+                {"2글자 이상 10글자 미만으로 입력해주세요."}
               </div>
             </NickNameErrorMassage>
           </NickNameContainer>
@@ -127,7 +132,7 @@ const SignUpPage = () => {
                 }}
               >
                 {
-                  "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요. "
+                  "8글자 이상, 1자 이상의 영문, 1개 이상의 숫자를 포함시켜주세요."
                 }
               </div>
             </PasswordErrorMassage>
@@ -157,7 +162,12 @@ const SignUpPage = () => {
         </InputForm>
         {/*Confirm*/}
         <ConfirmContainer>
-          <ConfirmBtn onClick={(event) => onSubmit(event)}>확인</ConfirmBtn>
+          <ConfirmBtn
+            onClick={(event) => onSubmit(event)}
+            // disabled={handerSignUp}
+          >
+            확인
+          </ConfirmBtn>
           <CancelBtn
             onClick={() => {
               navigate("/login");
@@ -368,9 +378,6 @@ const ConfirmBtn = styled.button`
   &:hover {
     background-color: #676767;
   }
-  &:disabled {
-    color: black;
-  }
 `;
 const CancelBtn = styled.button`
   height: 50px;
@@ -383,7 +390,5 @@ const CancelBtn = styled.button`
 
   &:hover {
     background-color: #676767;
-  }
-  &.action {
   }
 `;
