@@ -12,6 +12,7 @@ const UserShell = ({
   filterList,
   filtering,
   filter,
+  userStatus,
 }) => {
   return (
     <>
@@ -21,7 +22,7 @@ const UserShell = ({
           openCalender={openCalender}
           isOpenCalender={isOpenCalender}
         />
-        <User percent={percent} />
+        <User userStatus={userStatus} percent={percent} />
         <Filter filterList={filterList} filtering={filtering} filter={filter} />
       </UserShellWrapper>
     </>
