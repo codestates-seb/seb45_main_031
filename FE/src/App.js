@@ -1,4 +1,5 @@
 import GlobalStyles from "./styles/GlobalStyles";
+import GlobalFonts from "./styles/GlobalFonts";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import RootLayout from "./Layouts/RootLayout";
@@ -20,55 +21,114 @@ import DirectoryPage from "./pages/DirectoryPage";
 import DirectoryDetailPage from "./pages/DirectoryDetailPage";
 import Page from "./pages/Page";
 import ScrapTodoEditPage from "./pages/ScrapTodoEditPage";
+import authLoginCheck from "./utils/authLoginCheck";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LoginLayout />,
-    children: [
-      { path: "/signup", element: <SignUpPage /> },
-      { path: "/login", element: <LoginPage /> },
-      { path: "/login/google", element: <Page /> },
-    ],
-  },
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [
-      { index: true, element: <Home /> },
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <LoginLayout />,
+//     children: [
+//       { path: "/signup", element: <SignUpPage /> },
+//       { path: "/login", element: <LoginPage /> },
+//       { path: "/receive-token.html", element: <Page /> },
+//     ],
+//   },
+//   {
+//     path: "/",
+//     element: <RootLayout />,
+//     children: [
+//       { index: true, element: <Home /> },
 
-      { path: "/todo", element: <TodoPage /> },
-      { path: "/todo/edit", element: <TodoEditPage /> },
-      { path: "/todo/modify/:todoId", element: <TodoModifyPage /> },
-      { path: "/todo/:today", element: <TodoPage /> },
+//       { path: "/todo", element: <TodoPage /> },
+//       { path: "/todo/edit", element: <TodoEditPage /> },
+//       { path: "/todo/modify/:todoId", element: <TodoModifyPage /> },
+//       { path: "/todo/:today", element: <TodoPage /> },
 
-      { path: "/community", element: <CommunityPage /> },
-      { path: "/community/edit", element: <CommunityEditPage /> },
-      { path: "/community/modify/:feedId", element: <CommunityModifyPage /> },
+//       { path: "/community", element: <CommunityPage /> },
+//       { path: "/community/edit", element: <CommunityEditPage /> },
+//       { path: "/community/modify/:feedId", element: <CommunityModifyPage /> },
 
-      { path: "/directory", element: <DirectoryPage /> },
-      { path: "/directory/:categoryId", element: <DirectoryDetailPage /> },
+//       { path: "/directory", element: <DirectoryPage /> },
+//       { path: "/directory/:categoryId", element: <DirectoryDetailPage /> },
 
+//       {
+//         path: "/scrap/todo/:feedId",
+//         element: <ScrapTodoEditPage />,
+//       },
+
+//       { path: "/mypage", element: <MyPage /> },
+//     ],
+//   },
+//   {
+//     path: "/mypage/edit",
+//     element: <ProfileLayout />,
+//     children: [{ index: true, element: <MyPageEdit /> }],
+//   },
+// ]);
+
+const getRouter = (isLogin) => {
+  if (isLogin) {
+    return createBrowserRouter([
       {
-        path: "/scrap/todo/:feedId",
-        element: <ScrapTodoEditPage />,
-      },
+        path: "/",
+        element: <LoginLayout />,
+        children: [
+          { index: true, element: <Home /> },
 
-      { path: "/mypage", element: <MyPage /> },
-    ],
-  },
-  {
-    path: "/mypage/edit",
-    element: <ProfileLayout />,
-    children: [{ index: true, element: <MyPageEdit /> }],
-  },
-]);
+          { path: "/signup", element: <SignUpPage /> },
+          { path: "/login", element: <LoginPage /> },
+          { path: "/receive-token.html", element: <Page /> },
+        ],
+      },
+    ]);
+  }
+
+  return createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      children: [
+        { index: true, element: <Home /> },
+
+        { path: "/todo", element: <TodoPage /> },
+        { path: "/todo/edit", element: <TodoEditPage /> },
+        { path: "/todo/modify/:todoId", element: <TodoModifyPage /> },
+        { path: "/todo/:today", element: <TodoPage /> },
+
+        { path: "/community", element: <CommunityPage /> },
+        { path: "/community/edit", element: <CommunityEditPage /> },
+        { path: "/community/modify/:feedId", element: <CommunityModifyPage /> },
+
+        { path: "/directory", element: <DirectoryPage /> },
+        { path: "/directory/:categoryId", element: <DirectoryDetailPage /> },
+
+        {
+          path: "/scrap/todo/:feedId",
+          element: <ScrapTodoEditPage />,
+        },
+
+        { path: "/mypage", element: <MyPage /> },
+      ],
+    },
+    {
+      path: "/mypage/edit",
+      element: <ProfileLayout />,
+      children: [{ index: true, element: <MyPageEdit /> }],
+    },
+  ]);
+};
+
+// getRouter 라는 함수를 만들기 > isLogin 판별식 받고 ? 로그인 상태면 위의 배열을 반환 : 아니면 아래 반환
 
 function App() {
+  const isLogin = authLoginCheck();
+
   return (
     <>
+      {JSON.stringify(isLogin)}
       <GlobalStyles />
-      <RouterProvider router={router} />
+      <GlobalFonts />
+      <RouterProvider router={getRouter(isLogin)} />
     </>
   );
 }
