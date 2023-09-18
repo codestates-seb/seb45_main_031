@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { URL } from "../data/constants";
@@ -25,6 +25,12 @@ const LoginPage = () => {
       [userType]: event.target.value,
     });
   };
+  const handleGoogleLogin = () => {
+    window.location.href =
+      "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google";
+  };
+
+  //로그인 정보 저장후 "/todo"로 가는 코드 만들기
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -53,20 +59,16 @@ const LoginPage = () => {
       if (error.response) {
         // 서버로부터 응답이 온 경우
         if (error.response.status === 401) {
-          // 401 인증 실패
           alert("아이디 또는 비밀번호가 올바르지 않습니다.");
         } else if (error.response.status === 404) {
-          // 404 존재하지 않는 아이디일 때 처리할 내용
           alert("존재하지 않는 아이디입니다.");
         } else {
-          // 기타 오류 처리
           alert("로그인에 실패했습니다. 다시 시도해주세요.");
         }
       } else if (error.request) {
         // 요청이 전송되지 않은 경우 (네트워크 오류 등)
         alert("요청을 보낼 수 없습니다. 네트워크 연결을 확인하세요.");
       } else {
-        // 그 외의 오류 처리
         alert("오류가 발생했습니다. 다시 시도해주세요.");
       }
       console.error(error);
@@ -77,7 +79,7 @@ const LoginPage = () => {
     <Container>
       <LoginStyled>
         <LoginText>Login</LoginText>
-        <GoogleButton>
+        <GoogleButton onClick={handleGoogleLogin}>
           <GoogleIcon src={googleIcon} alt="구글 이미지" />
           <GoogleText>Sign in with Google</GoogleText>
         </GoogleButton>
@@ -128,8 +130,12 @@ const LoginPage = () => {
         {/*confirm*/}
         <ConfirmContainer>
           <LoginButton onClick={(event) => onSubmit(event)}>로그인</LoginButton>
-          <SignUpButton>
-            <NavLink to="/signup">회원가입</NavLink>
+          <SignUpButton
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            회원가입
           </SignUpButton>
         </ConfirmContainer>
       </LoginStyled>
