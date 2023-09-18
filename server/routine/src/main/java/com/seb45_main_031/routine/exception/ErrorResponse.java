@@ -40,7 +40,8 @@ public class ErrorResponse {
         this.fieldErrors = bindingResult.getFieldErrors()
                 .stream().map(error -> new FieldError(
                         error.getField(),
-                        error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
+                        error.getRejectedValue() == null || error.getField().equals("password") ?
+                                "" : error.getRejectedValue().toString(),
                         error.getDefaultMessage()
                 )).collect(Collectors.toList());;
     }

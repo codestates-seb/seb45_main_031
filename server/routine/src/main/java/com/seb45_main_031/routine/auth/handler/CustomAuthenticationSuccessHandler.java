@@ -40,6 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//        response.setCharacterEncoding();
         response.getWriter().write(gson.toJson(loginUserInfo, LoginUserInfo.class));
 
     }
