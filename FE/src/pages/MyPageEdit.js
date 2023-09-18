@@ -71,10 +71,25 @@ const EditProfile = () => {
 
   const openModal = () => {
     setIsMOdalOpen(true);
-    alert("개발 중인 기능입니다.");
   };
   const closeModal = () => {
     setIsMOdalOpen(false);
+  };
+
+  const handleUploadPhoto = () => {
+    //사진 업로드 기능 추가 (advanced)
+    //- 파일 선택 창을 열고 선택한 파일을 서버로 업로드
+    //- 업로드 완료 후 모달 닫기
+    alert("개발 중인 기능입니다");
+    closeModal();
+  };
+
+  const handleDeletePhoto = () => {
+    //사진 삭제 기능 추가 (advanced)
+    //- 서버에서 현재 프로필 사진 삭제
+    //- 삭제 완료 후 모달 닫기
+    alert("개발 중인 기능입니다");
+    closeModal();
   };
 
   return (
@@ -90,8 +105,12 @@ const EditProfile = () => {
             </div>
             <div>프로필 사진 설정</div>
             <div className="editProfile">
-              <ModalButton className="update">사진 업로드</ModalButton>
-              <ModalButton className="delete">사진 삭제</ModalButton>
+              <ModalButton className="update" onClick={handleUploadPhoto}>
+                사진 업로드
+              </ModalButton>
+              <ModalButton className="delete" onClick={handleDeletePhoto}>
+                사진 삭제
+              </ModalButton>
             </div>
           </ModalContent>
         </ModalOverlay>
