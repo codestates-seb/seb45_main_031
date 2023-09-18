@@ -49,7 +49,6 @@ const LoginPage = () => {
       localStorage.setItem("localUser", JSON.stringify(localUser));
 
       navigate("/todo");
-      console.log(response);
     } catch (error) {
       if (error.response) {
         // 서버로부터 응답이 온 경우
@@ -152,9 +151,12 @@ const LoginStyled = styled.div`
   justify-content: center;
   background-color: #fff;
 
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
   height: 100vh;
-  padding-top: 200px;
+  padding: 150px 0px;
+
+  overflow: auto;
 `;
 const LoginText = styled.div`
   display: flex;
@@ -162,21 +164,27 @@ const LoginText = styled.div`
   font-size: 50px;
 `;
 const GoogleButton = styled.button`
+  width: 100%;
+  max-width: 300px;
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: auto;
   margin-top: 30px;
   margin-bottom: 30px;
+  border: 1px solid #d0d0d0;
+  border-radius: 15px;
+  padding: 10px 20px;
 `;
 const GoogleIcon = styled.img`
   display: flex;
   padding-right: 10px;
-  height: 40px;
-  width: 50px;
+  height: 25px;
+  width: 35px;
   margin-right: 20px;
 `;
 const GoogleText = styled.span`
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #949597;
 `;
 
@@ -199,7 +207,8 @@ const EmailContainer = styled.div`
 `;
 const InputId = styled.input`
   height: 50px;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   padding-left: 15px;
 
   border: 1px solid #949597;
@@ -233,7 +242,8 @@ const PasswordContainer = styled.div`
 `;
 const InputPassword = styled.input`
   height: 50px;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   padding-left: 15px;
 
   border: 1px solid #949597;

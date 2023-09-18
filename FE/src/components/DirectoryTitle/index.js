@@ -1,13 +1,10 @@
 import { styled } from "styled-components";
 
-const localUser = JSON.parse(localStorage.getItem("localUser"));
-const userNickname = localUser.nickname;
-
-const DirectoryTitle = () => {
+const DirectoryTitle = ({ nickname }) => {
   return (
     <>
       <TitleWrapper>
-        <Title>{`' ${userNickname} '님 안녕하세요! 🥳`}</Title>
+        <Title>{`' ${nickname} '님 안녕하세요! 🥳`}</Title>
       </TitleWrapper>
     </>
   );

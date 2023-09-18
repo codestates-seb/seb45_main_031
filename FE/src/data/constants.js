@@ -41,3 +41,5 @@ export const COMMUNITY_EDIT_CONTENT_LABEL = "게시글 내용";
 export const DEFAULT_TODO_EMOJI = "🏃";
 export const SCRAP_BUTTON = "가져오기";
 export const WARNING_TEXT = "정말로 삭제하시겠습니까?";
+export const SCRAP_TO_TODO_TEXT = "할일목록으로 가져오기";
+export const SCRAP_TO_DIRECTORY_TEXT = "디렉토리로 가져오기";

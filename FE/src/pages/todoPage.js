@@ -19,34 +19,12 @@ import {
 import "react-calendar/dist/Calendar.css";
 import TodoCalendarModal from "../components/TodoCalendarModal";
 
-//삭제 될 로그인 파트 ==================================================
-axios
-  .post(`${URL}/auth/login`, {
-    email: "abcd1234@gmail.com",
-    password: "abcd1234",
-  })
-  .then(({ data, headers }) => {
-    const localUser = {
-      email: data.email,
-      memberId: data.memberId,
-      nickname: data.nickname,
-      exp: data.exp,
-      level: data.level,
-      image: data.image,
-      accessToken: headers.authorization,
-      refresh: headers.refresh,
-    };
-    localStorage.setItem("localUser", JSON.stringify(localUser));
-  });
-
-//삭제 될 로그인 파트 ==================================================
-
 const TodoPage = () => {
   const { today } = useParams();
 
-  const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const memberId = localUser.memberId;
-  const accessToken = localUser.accessToken;
+  const { memberId, accessToken } = JSON.parse(
+    localStorage.getItem("localUser"),
+  );
 
   const [date, setDate] = useState(getDateFormat(today));
   const [meta, setMeta] = useState({
@@ -138,6 +116,10 @@ const TodoPage = () => {
   };
 
   const changeComplete = async (todoId, complete) => {
+    if (date > getDateFormat()) {
+      return alert("오늘보다 늦은 날짜의 할일을 완료할 수 없습니다.");
+    }
+
     try {
       await axios.patch(
         `${URL}/todos/complete/${todoId}`,

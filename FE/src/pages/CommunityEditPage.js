@@ -21,9 +21,9 @@ import CommunityEditPost from "../components/CommunityEditPost";
 const CommunityEditPage = () => {
   const navigate = useNavigate();
 
-  const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const memberId = localUser.memberId;
-  const accessToken = localUser.accessToken;
+  const { memberId, accessToken } = JSON.parse(
+    localStorage.getItem("localUser"),
+  );
 
   const [date, setDate] = useState(getDateFormat());
   const [isOpenCalender, setIsOpenCalender] = useState(false);
@@ -112,6 +112,10 @@ const CommunityEditPage = () => {
 
   const postFeed = async () => {
     try {
+      if (content.length === 0) {
+        return alert("내용을 작성해주세요.");
+      }
+
       const feedIdGroup = todoList.map((todo) => {
         return { todoId: todo.todoId };
       });
@@ -122,8 +126,6 @@ const CommunityEditPage = () => {
         feedTagDtos: tagId,
         feedTodoDtos: feedIdGroup,
       };
-
-      console.log(newFeed);
 
       await axios.post(`${URL}/feeds`, newFeed, {
         headers: { Authorization: `Bearer ${accessToken}` },
