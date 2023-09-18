@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-import "react-calendar/dist/Calendar.css"; // css import
+import "react-calendar/dist/Calendar.css";
 
 import getDateFormat from "../utils/getDateFormat";
 import { tags } from "../data/tags";
@@ -19,24 +19,20 @@ import EditEmojiModal from "../components/EditEmojiModal";
 import EditTipContents from "../components/EditTipContents";
 import TodoEditPost from "../components/TodoEditPost";
 import TodoCalendarModal from "../components/TodoCalendarModal";
-import ErrorModal from "../components/ErrorModal";
 
 const TodoModifyPage = () => {
   const { todoId } = useParams();
   const navigate = useNavigate();
-  const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const accessToken = localUser.accessToken;
+  const { accessToken } = JSON.parse(localStorage.getItem("localUser"));
 
   const [isOpenEmojiModal, setIsOpenEmojiModal] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState(false);
-  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
   const [todoEmoji, setTodoEmoji] = useState("");
   const [content, setContent] = useState("");
   const [tagId, setTagId] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(getDateFormat());
-  const [errorMessage, setErrorMessage] = useState("");
   const [inputCount, setInputCount] = useState(0);
 
   useEffect(() => {
@@ -73,11 +69,6 @@ const TodoModifyPage = () => {
     setIsOpenCalender(!isOpenCalender);
   };
 
-  const isErrorModal = (message) => {
-    setErrorMessage(message);
-    setIsOpenErrorModal(!isOpenErrorModal);
-  };
-
   const changeTodoEmoji = (value) => {
     setTodoEmoji(value.emoji);
   };
@@ -103,13 +94,13 @@ const TodoModifyPage = () => {
   const patchTodo = async () => {
     try {
       if (content === "") {
-        return isErrorModal("할 일 이름은 필수 항목 입니다.");
+        return alert("할 일 이름은 필수 항목 입니다.");
       }
       if (inputCount > 60) {
-        return isErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
+        return alert("할 일 이름의 최대 글자수를 초과하였습니다.");
       }
       if (tagId === "") {
-        return isErrorModal("태그는 필수 항목 입니다.");
+        return alert("태그는 필수 항목 입니다.");
       }
 
       const newDate = getDateFormat(date);
@@ -133,12 +124,6 @@ const TodoModifyPage = () => {
   return (
     <>
       <TodoEditWrapper>
-        {isOpenErrorModal && (
-          <ErrorModal
-            errorMessage={errorMessage}
-            closeErrorModal={isErrorModal}
-          />
-        )}
         {isOpenEmojiModal && (
           <EditEmojiModal
             todoEmoji={todoEmoji}

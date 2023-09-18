@@ -16,7 +16,6 @@ import {
 } from "../data/constants";
 import countContentLength from "../utils/countContentLength";
 import TagModal from "../components/TagModal";
-import ErrorModal from "../components/ErrorModal";
 import EditEmojiModal from "../components/EditEmojiModal";
 import TodoEditPost from "../components/TodoEditPost";
 import EditTipContents from "../components/EditTipContents";
@@ -24,19 +23,16 @@ import TodoCalendarModal from "../components/TodoCalendarModal";
 
 const TodoEditPage = () => {
   const navigate = useNavigate();
-  const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const accessToken = localUser.accessToken;
+  const { accessToken } = JSON.parse(localStorage.getItem("localUser"));
 
   const [isOpenEmojiModal, setIsOpenEmojiModal] = useState(false);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenTagModal, setIsOpenTagModal] = useState(false);
-  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
   const [todoEmoji, setTodoEmoji] = useState(DEFAULT_TODO_EMOJI);
   const [content, setContent] = useState("");
   const [tagId, setTagId] = useState("");
   const [todoTag, setTodoTag] = useState("");
   const [date, setDate] = useState(getDateFormat());
-  const [errorMessage, setErrorMessage] = useState("");
   const [inputCount, setInputCount] = useState(0);
 
   const isEmojiModal = () => {
@@ -73,25 +69,19 @@ const TodoEditPage = () => {
     isCalendar();
   };
 
-  const isErrorModal = (message) => {
-    setErrorMessage(message);
-
-    setIsOpenErrorModal(!isOpenErrorModal);
-  };
-
   const postTodo = async () => {
     try {
       if (content === "") {
-        return isErrorModal("할 일 이름은 필수 항목 입니다.");
+        return alert("할 일 이름은 필수 항목 입니다.");
       }
       if (inputCount > 60) {
-        return isErrorModal("할 일 이름의 최대 글자수를 초과하였습니다.");
+        return alert("할 일 이름의 최대 글자수를 초과하였습니다.");
       }
       if (tagId === "") {
-        return isErrorModal("태그는 필수 항목 입니다.");
+        return alert("태그는 필수 항목 입니다.");
       }
       if (getDateFormat() > getDateFormat(date)) {
-        return isErrorModal("오늘보다 빠른 날짜는 선택할 수 없습니다.");
+        return alert("오늘보다 빠른 날짜는 선택할 수 없습니다.");
       }
 
       const newDate = getDateFormat(date);
@@ -115,12 +105,6 @@ const TodoEditPage = () => {
   return (
     <>
       <TodoEditWrapper>
-        {isOpenErrorModal && (
-          <ErrorModal
-            errorMessage={errorMessage}
-            closeErrorModal={isErrorModal}
-          />
-        )}
         {isOpenEmojiModal && (
           <EditEmojiModal
             todoEmoji={todoEmoji}

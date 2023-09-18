@@ -5,10 +5,10 @@ import axios from "axios";
 
 import FeedCard from "../components/FeedCard";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
-import ErrorModal from "../components/ErrorModal";
 
 import { URL } from "../data/constants";
 import CommentModal from "../components/CommentModal";
+import ScrapButtonModal from "../components/ScrapButtonModal";
 
 const CommunityPage = () => {
   const [ref, inView] = useInView();
@@ -20,14 +20,13 @@ const CommunityPage = () => {
   const [feedId, setFeedId] = useState();
   const [commentId, setCommentId] = useState();
   const [commentContent, setCommentContent] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenCommentModal, setIsOpenCommentModal] = useState(false);
-  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
+  const [isOpenScrapModal, setIsOpenScrapModal] = useState(false);
 
-  const localUser = JSON.parse(localStorage.getItem("localUser"));
-  const memberId = localUser.memberId;
-  const accessToken = localUser.accessToken;
+  const { memberId, accessToken } = JSON.parse(
+    localStorage.getItem("localUser"),
+  );
 
   useEffect(() => {
     getFeedList(1);
@@ -42,12 +41,6 @@ const CommunityPage = () => {
   const isDeleteModal = (feedId) => {
     setFeedId(feedId);
     setIsOpenDeleteModal(!isOpenDeleteModal);
-  };
-
-  const isErrorModal = (message) => {
-    setErrorMessage(message);
-
-    setIsOpenErrorModal(!isOpenErrorModal);
   };
 
   const isCommentModal = (feedId, commentId, content) => {
@@ -144,7 +137,7 @@ const CommunityPage = () => {
   const createComment = async (feedId, content) => {
     try {
       if (content.length === 0) {
-        return isErrorModal("댓글 내용을 입력 해주세요.");
+        return alert("댓글 내용을 입력 해주세요.");
       }
 
       const newComment = {
@@ -195,49 +188,20 @@ const CommunityPage = () => {
     }
   };
 
-  const getFeedTodoList = async (feedId) => {
-    try {
-      const {
-        data: { data },
-      } = await axios.get(`${URL}/feeds/${feedId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
-      scrapTodoList(data.todoResponses);
-    } catch (error) {
-      console.error(error);
-    }
+  const isScrapModal = () => {
+    setIsOpenScrapModal(!isOpenScrapModal);
   };
 
-  const scrapTodoList = async (todoList) => {
-    try {
-      const newTodoList = todoList.map((todo) => {
-        return { date: todo.date, content: todo.content, tagId: todo.tagId };
-      });
-
-      await axios.post(
-        `${URL}/todos/todoList`,
-        { postList: newTodoList },
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      );
-
-      //임시 알럿 모달
-      isErrorModal("목록 리스트 가져오기에 성공하였습니다.");
-    } catch (error) {
-      console.error(error);
-    }
+  const getFeedTodoList = async (feedId) => {
+    setFeedId(feedId);
+    isScrapModal(feedId);
   };
 
   return (
     <>
       <CommunityWrapper>
-        {isOpenErrorModal && (
-          <ErrorModal
-            errorMessage={errorMessage}
-            closeErrorModal={isErrorModal}
-          />
+        {isOpenScrapModal && (
+          <ScrapButtonModal isScrapModal={isScrapModal} feedId={feedId} />
         )}
         {isOpenDeleteModal && (
           <DeleteConfirmModal
@@ -281,7 +245,7 @@ const CommunityPage = () => {
               </>
             ))}
           </CardGroup>
-          {page.page <= page.totalPages && <InfinityScroll ref={ref} />}
+          <InfinityScroll ref={ref} />
         </CommunityContainer>
       </CommunityWrapper>
     </>
