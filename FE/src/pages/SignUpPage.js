@@ -163,9 +163,14 @@ const SignUpContainer = styled.div`
   justify-content: center;
   background-color: #fff;
 
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
   height: 100vh;
-  padding-top: 150px;
+
+  padding-top: 100px;
+  padding-bottom: 130px;
+
+  overflow: auto;
 `;
 const SignUpText = styled.div`
   display: flex;
@@ -173,21 +178,27 @@ const SignUpText = styled.div`
   font-size: 40px;
 `;
 const GoogleButton = styled.button`
+  width: 100%;
+  max-width: 300px;
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: auto;
   margin-top: 30px;
   margin-bottom: 30px;
+  border: 1px solid #d0d0d0;
+  border-radius: 15px;
+  padding: 10px 20px;
 `;
 const GoogleIcon = styled.img`
   display: flex;
   padding-right: 10px;
-  height: 40px;
-  width: 50px;
+  height: 25px;
+  width: 35px;
   margin-right: 20px;
 `;
 const GoogleText = styled.span`
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #949597;
 `;
 
