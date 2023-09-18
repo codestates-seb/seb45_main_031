@@ -5,12 +5,18 @@ import axios from "axios";
 
 import { URL } from "../data/constants";
 import googleIcon from "../assets/images/google.png";
+import authLoginCheck from "../utils/authLoginCheck";
 
 const emailRegex =
   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 const LoginPage = () => {
+  const isLogin = authLoginCheck();
+  if (isLogin) {
+    return window.location.replace("/todo");
+  }
+
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -143,6 +149,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const LoginStyled = styled.div`

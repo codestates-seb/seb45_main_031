@@ -9,8 +9,14 @@ import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import { URL } from "../data/constants";
 import CommentModal from "../components/CommentModal";
 import ScrapButtonModal from "../components/ScrapButtonModal";
+import authLoginCheck from "../utils/authLoginCheck";
 
 const CommunityPage = () => {
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
+
   const [ref, inView] = useInView();
   const [page, setPage] = useState({
     page: 1,
@@ -65,7 +71,7 @@ const CommunityPage = () => {
     try {
       const { data } = await axios.get(`${URL}/feeds`, {
         params: { page: page, size: 5 },
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `${accessToken}` },
       });
 
       const newPage = {
@@ -260,6 +266,8 @@ const CommunityWrapper = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const CommunityContainer = styled.div`

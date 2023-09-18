@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { URL } from "../data/constants";
 
-const authLoginCheck = async () => {
+const authLoginCheck = () => {
   const localUser = localStorage.getItem("localUser");
 
   if (localUser === null) {
@@ -10,27 +10,21 @@ const authLoginCheck = async () => {
   }
 
   const newLocalUser = JSON.parse(localUser);
-
-  const {
-    headers: { authorization },
-  } = await axios.post(
-    `${URL}/members/renewAccessToken`,
-    {},
-    {
-      headers: { Refresh: newLocalUser.refresh },
-    },
-  );
-
-  console.log("authorization : ", authorization);
-
-  if (authorization === undefined) {
-    return false;
-  }
-
-  newLocalUser.accessToken = authorization;
-
-  localStorage.setItem("localUser", JSON.stringify(newLocalUser));
-
+  axios
+    .post(
+      `${URL}/members/renewAccessToken`,
+      {},
+      {
+        headers: { Refresh: newLocalUser.refresh },
+      },
+    )
+    .then((response) => {
+      newLocalUser.accessToken = response.headers.authorization;
+      localStorage.setItem("localUser", JSON.stringify(newLocalUser));
+    })
+    .catch(() => {
+      return window.location.replace("/login");
+    });
   return true;
 };
 
