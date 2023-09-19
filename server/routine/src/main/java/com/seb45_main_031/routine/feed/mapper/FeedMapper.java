@@ -114,7 +114,7 @@ public interface FeedMapper {
                 .memberId(feed.getMember().getMemberId())
                 .nickname(feed.getMember().getNickname())
                 .content(feed.getContent())
-                .likeCount(feed.getLikeCount())
+                .likeCount(feed.getFeedLikes().size())
                 .createdAt(feed.getCreatedAt())
                 .modifiedAt(feed.getModifiedAt())
                 .build();
