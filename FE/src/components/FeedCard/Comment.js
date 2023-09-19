@@ -3,9 +3,8 @@ import { styled } from "styled-components";
 import getDateFormat from "../../utils/getDateFormat";
 import ModalButton from "./ModalButton";
 
-const localUser = JSON.parse(localStorage.getItem("localUser"));
-
 const Comment = ({
+  loginMemberId,
   feedId,
   commentId,
   memberId,
@@ -22,7 +21,7 @@ const Comment = ({
           <Content>{content}</Content>
           <CreatedAt>{getDateFormat(createdAt)}</CreatedAt>
         </ContentSection>
-        {Number(memberId) === Number(localUser.memberId) && (
+        {Number(memberId) === Number(loginMemberId) && (
           <ModalButton
             feedId={feedId}
             commentId={commentId}
@@ -79,6 +78,8 @@ const Content = styled.div`
   font-size: 0.9rem;
 
   justify-content: start;
+
+  word-break: break-all;
 `;
 
 const CreatedAt = styled.div`

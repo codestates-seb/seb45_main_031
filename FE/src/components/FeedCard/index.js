@@ -6,6 +6,7 @@ import PostContents from "./PostContents";
 import PostUser from "./PostUser";
 
 const FeedCard = ({
+  loginMemberId,
   feedId,
   memberId,
   nickname,
@@ -28,6 +29,7 @@ const FeedCard = ({
     <>
       <CardContainer>
         <PostUser
+          loginMemberId={loginMemberId}
           feedId={feedId}
           memberId={memberId}
           nickname={nickname}
@@ -57,6 +59,7 @@ const FeedCard = ({
           getFeedTodoList={getFeedTodoList}
         />
         <Comments
+          loginMemberId={loginMemberId}
           feedId={feedId}
           comments={comments}
           commentId={commentId}

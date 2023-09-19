@@ -29,12 +29,12 @@ const CommunityPage = () => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenCommentModal, setIsOpenCommentModal] = useState(false);
   const [isOpenScrapModal, setIsOpenScrapModal] = useState(false);
+  const [userStatus, setUserStatus] = useState(isLogin);
 
-  const { memberId, accessToken } = JSON.parse(
-    localStorage.getItem("localUser"),
-  );
+  const { memberId, accessToken } = userStatus;
 
   useEffect(() => {
+    setUserStatus(isLogin);
     getFeedList(1);
   }, []);
 
@@ -231,6 +231,7 @@ const CommunityPage = () => {
             {feedList.map((feed) => (
               <>
                 <FeedCard
+                  loginMemberId={memberId}
                   feedId={feed.feedId}
                   memberId={feed.memberId}
                   nickname={feed.nickname}

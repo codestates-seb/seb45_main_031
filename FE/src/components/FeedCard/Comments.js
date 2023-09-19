@@ -5,6 +5,7 @@ import CommentCreate from "./CommentCreate";
 import Comment from "./Comment";
 
 const Comments = ({
+  loginMemberId,
   feedId,
   comments,
   commentContent,
@@ -31,6 +32,7 @@ const Comments = ({
         <CommentsGroup more={moreActions}>
           {comments.map((comment, idx) => (
             <Comment
+              loginMemberId={loginMemberId}
               key={idx}
               feedId={feedId}
               commentId={comment.commentId}

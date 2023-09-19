@@ -4,12 +4,11 @@ import { useNavigate } from "react-router-dom";
 import getDateFormat from "../../utils/getDateFormat";
 import { FEED_DELETE_TEXT, FEED_MODIFY_TEXT } from "../../data/constants";
 
-const localUser = JSON.parse(localStorage.getItem("localUser"));
-
 //더미데이터
 import imgUrl from "../../assets/images/memberImg.jpeg";
 
 const PostUser = ({
+  loginMemberId,
   feedId,
   memberId,
   nickname,
@@ -28,7 +27,7 @@ const PostUser = ({
           <UserName>{nickname}</UserName>
           <PostCreatedAt>{getDateFormat(createdAt)}</PostCreatedAt>
         </PostElement>
-        {Number(memberId) === Number(localUser.memberId) && (
+        {Number(memberId) === Number(loginMemberId) && (
           <PostButtons>
             <PostButton onClick={() => navigate(`/community/modify/${feedId}`)}>
               {FEED_MODIFY_TEXT}
