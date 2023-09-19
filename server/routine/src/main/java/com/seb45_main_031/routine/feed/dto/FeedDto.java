@@ -1,6 +1,5 @@
 package com.seb45_main_031.routine.feed.dto;
 
-import com.seb45_main_031.routine.feedLike.entity.FeedLike;
 import com.seb45_main_031.routine.feedTag.dto.FeedTagDto;
 import com.seb45_main_031.routine.feedTodo.dto.FeedTodoDto;
 import com.seb45_main_031.routine.todo.entity.Todo;
@@ -104,7 +103,7 @@ public class FeedDto {
     public static class FeedLikeInfo {
         private long memberId;
         private String nickname;
-        private FeedLike.FeedLikes feedLikes;
+        private String feedLikes;
     }
 
     @Getter

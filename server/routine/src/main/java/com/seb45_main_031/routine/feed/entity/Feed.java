@@ -29,9 +29,6 @@ public class Feed extends Auditable {
 
     private int likeCount;
 
-    @Version
-    private int version;
-
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;

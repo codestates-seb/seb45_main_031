@@ -26,11 +26,5 @@ public class FeedLike {
     @JoinColumn(name = "FEED_ID")
     private Feed feed;
 
-    @Enumerated(EnumType.STRING)
-    private FeedLikes feedLikes;
-
-    public enum FeedLikes{
-        LIKE,
-        NONE;
-    }
+    private String feedLikes = "LIKE";
 }

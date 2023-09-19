@@ -25,11 +25,11 @@ public interface FeedLikeMapper {
         return feedLike;
     }
 
-    default FeedLikeDto.Response FeedLikeToFeedLikeResponseDto(FeedLike feedLike) {
+    default FeedLikeDto.Response FeedToFeedLikeResponseDto(Feed feed) {
 
         FeedLikeDto.Response response = FeedLikeDto.Response.builder()
-                .feedId(feedLike.getFeed().getFeedId())
-                .likeCount(feedLike.getFeed().getLikeCount())
+                .feedId(feed.getFeedId())
+                .likeCount(feed.getFeedLikes().size()) // 좋아요 리스트 size를 가져와서 likeCount로 설정
                 .build();
 
         return response;
