@@ -2,6 +2,7 @@ package com.seb45_main_031.routine.todo.controller;
 
 import com.seb45_main_031.routine.dto.SingleResponseDto;
 
+import com.seb45_main_031.routine.member.entity.Member;
 import com.seb45_main_031.routine.member.service.MemberService;
 import com.seb45_main_031.routine.todo.dto.TodoDto;
 import com.seb45_main_031.routine.todo.entity.Todo;
@@ -119,8 +120,10 @@ public class TodoController {
                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
         List<Todo> todos = todoService.findTodos(date, memberId, accessToken);
+        long findMemberId = memberService.findMemberId(accessToken);
+        Member findMember = memberService.findverifiedMember(findMemberId);
 
-        return new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoAllResponseDtos(todos)), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.todosToTodoAllResponseDtos(todos, findMember)), HttpStatus.OK);
     }
 
 
