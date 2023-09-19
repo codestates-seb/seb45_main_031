@@ -55,8 +55,8 @@ server:
       force-response: true
 mail:
   address:
-    admin: admin@gmail.com
+    admin: ${ADMIN_EMAIL}
 jwt:
-  key: aaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbb # ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 600
+  refresh-token-expiration-minutes: 1440
