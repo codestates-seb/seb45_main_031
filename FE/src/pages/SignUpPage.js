@@ -8,7 +8,7 @@ import axios from "axios";
 
 const emailRegex =
   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{10,}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 const SignUpPage = () => {
   const navigate = useNavigate();
