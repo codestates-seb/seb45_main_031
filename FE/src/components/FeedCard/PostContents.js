@@ -101,4 +101,6 @@ const ScrapButton = styled.button`
 
 const TextDiv = styled.div`
   margin: 5px;
+
+  word-break: break-all;
 `;
