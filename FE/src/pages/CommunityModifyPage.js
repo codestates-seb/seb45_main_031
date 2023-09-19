@@ -122,8 +122,6 @@ const CommunityModifyPage = () => {
         }
       });
 
-      console.log(newTagId);
-
       setTagId(newTagId);
       setTagName(DEFAULT_FILTER);
       setTodoList(meta);

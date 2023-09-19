@@ -33,7 +33,7 @@ const LoginPage = () => {
   };
   const handleGoogleLogin = () => {
     window.location.href =
-      "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google";
+      "http://ec2-43-201-27-253.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google";
   };
 
   //로그인 정보 저장후 "/todo"로 가는 코드 만들기
