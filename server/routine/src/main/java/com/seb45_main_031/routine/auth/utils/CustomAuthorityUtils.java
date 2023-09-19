@@ -15,7 +15,7 @@ public class CustomAuthorityUtils {
     @Value("${mail.address.admin}")
     private String adminMailAddress;
 
-    private final List<String> ADMIN_ROLE = List.of("ADMIN", "USER");
+    private final List<String> ADMIN_ROLE = List.of("USER", "ADMIN");
     private final List<String> USER_ROLE = List.of("USER");
 
     // 권한 정보 생성하는 메소드
