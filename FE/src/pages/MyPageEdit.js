@@ -14,14 +14,15 @@ import level0 from "../assets/images/level0.png";
 import level1 from "../assets/images/level1.png";
 import level2 from "../assets/images/level2.png";
 import level3 from "../assets/images/level3.png";
+import authLoginCheck from "../utils/authLoginCheck";
 
 export default function MyPageEdit() {
-  const navigate = useNavigate();
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
 
-  //마이페이지 진입 시 로그인 상태 확인 (utilitiy 함수 완성되면 추가)
-  // useEffect(() => {
-  //   checkLoginStatus();
-  // }, [navigate]);
+  const navigate = useNavigate();
 
   return (
     <MaxContainer>
@@ -273,6 +274,8 @@ const MaxContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const Container = styled.div`

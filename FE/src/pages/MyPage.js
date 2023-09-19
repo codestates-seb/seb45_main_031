@@ -8,17 +8,16 @@ import axios from "axios";
 
 import { URL } from "../data/constants";
 
-// import { checkLoginStatus } from "../utils/checkLoginStatus";//utility 함수 추가하기
-
 import { ReactComponent as ProfileSvg } from "../assets/images/profile.svg";
+import authLoginCheck from "../utils/authLoginCheck";
 
 export default function MyPage() {
-  const navigate = useNavigate();
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
 
-  //마이페이지 진입 시 로그인 상태 확인 (utilitiy 함수 완성되면 추가)
-  // useEffect(() => {
-  //   checkLoginStatus();
-  // }, [navigate]);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     //로그아웃 시 로그인 상태 삭제
@@ -185,6 +184,8 @@ const MaxContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const Container = styled.div`

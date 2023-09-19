@@ -7,6 +7,7 @@ import TodoCalendarModal from "../components/TodoCalendarModal";
 import TagModal from "../components/TagModal";
 
 import getDateFormat from "../utils/getDateFormat";
+import authLoginCheck from "../utils/authLoginCheck";
 
 import {
   DEFAULT_FILTER,
@@ -17,6 +18,11 @@ import {
 import ScrapEdit from "../components/ScrapEdit";
 
 const ScrapTodoEditPage = () => {
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
+
   const navigate = useNavigate();
 
   const { feedId } = useParams();
@@ -147,6 +153,8 @@ const EditWrapper = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const EditSection = styled.section`

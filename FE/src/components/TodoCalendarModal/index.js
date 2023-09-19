@@ -23,4 +23,6 @@ const CalendarModal = styled(Calendar)`
   top: 115px;
 
   z-index: 100;
+
+  font-family: "HakgyoansimWoojuR";
 `;

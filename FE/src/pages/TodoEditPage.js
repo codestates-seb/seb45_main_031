@@ -5,6 +5,7 @@ import axios from "axios";
 
 import "react-calendar/dist/Calendar.css";
 
+import authLoginCheck from "../utils/authLoginCheck";
 import getDateFormat from "../utils/getDateFormat";
 import { tags } from "../data/tags";
 import {
@@ -15,6 +16,7 @@ import {
   TODO_TIPS,
 } from "../data/constants";
 import countContentLength from "../utils/countContentLength";
+
 import TagModal from "../components/TagModal";
 import EditEmojiModal from "../components/EditEmojiModal";
 import TodoEditPost from "../components/TodoEditPost";
@@ -22,6 +24,11 @@ import EditTipContents from "../components/EditTipContents";
 import TodoCalendarModal from "../components/TodoCalendarModal";
 
 const TodoEditPage = () => {
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
+
   const navigate = useNavigate();
   const { accessToken } = JSON.parse(localStorage.getItem("localUser"));
 
@@ -157,6 +164,8 @@ const TodoEditWrapper = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const TodoEditSection = styled.section`

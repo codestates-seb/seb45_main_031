@@ -6,8 +6,10 @@ import axios from "axios";
 import TodoModal from "../components/TodoModal";
 import UserShell from "../components/UserShell";
 import TodoList from "../components/TodoList";
+import TodoCalendarModal from "../components/TodoCalendarModal";
 
 import getDateFormat from "../utils/getDateFormat";
+import authLoginCheck from "../utils/authLoginCheck";
 
 import {
   URL,
@@ -17,14 +19,16 @@ import {
 } from "../data/constants";
 
 import "react-calendar/dist/Calendar.css";
-import TodoCalendarModal from "../components/TodoCalendarModal";
 
 const TodoPage = () => {
-  const { today } = useParams();
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
 
-  const { memberId, accessToken } = JSON.parse(
-    localStorage.getItem("localUser"),
-  );
+  const localUser = JSON.parse(localStorage.getItem("localUser"));
+
+  const { today } = useParams();
 
   const [date, setDate] = useState(getDateFormat(today));
   const [meta, setMeta] = useState({
@@ -34,11 +38,14 @@ const TodoPage = () => {
   });
   const [todo, setTodo] = useState({});
   const [todoGroup, setTodoGroup] = useState([]);
+  const [userStatus, setUserStatus] = useState(localUser);
   const [filterList, setFilterList] = useState(DEFAULT_FILTER_LIST);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
   const [percent, setPercent] = useState(DEFAULT_PERCENT);
   const [isOpenCalender, setIsOpenCalender] = useState(false);
   const [isOpenTodoModal, setIsOpenTodoModal] = useState(false);
+
+  const { memberId, accessToken } = userStatus;
 
   useEffect(() => {
     getTodoList(date);
@@ -91,6 +98,10 @@ const TodoPage = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
+      localUser.level = data.memberLevel;
+      localStorage.setItem("localUser", JSON.stringify(localUser));
+      setUserStatus(localUser);
+
       const tagNames = data.todoResponses.map((todo) => {
         return todo.tagResponse.tagName;
       });
@@ -131,6 +142,7 @@ const TodoPage = () => {
         },
       );
 
+      setFilter(DEFAULT_FILTER);
       getTodoList(date);
 
       isTodoModal();
@@ -175,6 +187,7 @@ const TodoPage = () => {
           filterList={filterList}
           filtering={filtering}
           filter={filter}
+          userStatus={userStatus}
         />
         <TodoList todoGroup={todoGroup} changeTodo={changeTodo} />
       </TodoWrapper>
@@ -190,4 +203,6 @@ const TodoWrapper = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;

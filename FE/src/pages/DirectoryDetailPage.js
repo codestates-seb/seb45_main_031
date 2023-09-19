@@ -3,8 +3,14 @@ import { styled } from "styled-components";
 
 import DirectoryDetailTitle from "../components/DirectoryDetailTitle";
 import DirectoryDetailTodoGroup from "../components/DirectoryDetailTodoGroup";
+import authLoginCheck from "../utils/authLoginCheck";
 
 const DirectoryDetailPage = () => {
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
+
   //dummy
   const category = "수영";
   const savedTodoGroup = [
@@ -180,6 +186,8 @@ const DirectoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const DirectorySection = styled.section`

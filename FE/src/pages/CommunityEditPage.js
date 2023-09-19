@@ -17,8 +17,14 @@ import TagModal from "../components/TagModal";
 import CommunityEditCalendarModal from "../components/CommunityEditCalendarModal";
 import EditTipContents from "../components/EditTipContents";
 import CommunityEditPost from "../components/CommunityEditPost";
+import authLoginCheck from "../utils/authLoginCheck";
 
 const CommunityEditPage = () => {
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
+
   const navigate = useNavigate();
 
   const { memberId, accessToken } = JSON.parse(
@@ -185,6 +191,8 @@ const CommunityEditWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const EditContainer = styled.div`

@@ -3,11 +3,11 @@ import { styled } from "styled-components";
 import Chart from "./Chart";
 import userTrophy from "../../utils/userTrophy";
 
-const User = ({ percent }) => {
+const User = ({ percent, userStatus }) => {
   return (
     <>
       <UserSection>
-        <TrophyImg src={userTrophy()} />
+        <TrophyImg src={userTrophy(userStatus)} />
         <Chart percent={percent} />
       </UserSection>
     </>

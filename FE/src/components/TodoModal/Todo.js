@@ -21,7 +21,7 @@ const TodoWrapper = styled.section`
   max-width: 300px;
 
   margin-bottom: 30px;
-  border: 1px solid #ffd900;
+  border: 1px solid #d0d0d0;
   border-radius: 15px;
 
   display: flex;

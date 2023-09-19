@@ -1,4 +1,5 @@
 import GlobalStyles from "./styles/GlobalStyles";
+import GlobalFonts from "./styles/GlobalFonts";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import RootLayout from "./Layouts/RootLayout";
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/signup", element: <SignUpPage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/login/google", element: <Page /> },
+      { path: "/receive-token.html", element: <Page /> },
     ],
   },
   {
@@ -68,6 +69,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
+      <GlobalFonts />
       <RouterProvider router={router} />
     </>
   );

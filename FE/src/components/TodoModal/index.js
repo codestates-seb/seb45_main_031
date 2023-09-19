@@ -34,7 +34,7 @@ const TodoModalWrapper = styled.div`
   width: 90%;
   max-width: 380px;
 
-  border: 1px solid #fff7cc;
+  border: 1px solid #d0d0d0;
   border-radius: 15px;
 
   background-color: #ffffff;

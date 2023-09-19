@@ -6,8 +6,14 @@ import DirectoryTitle from "../components/DirectoryTitle";
 import DirectoryList from "../components/DirectoryList";
 import DirectoryButton from "../components/DirectoryButton";
 import CategoryModal from "../components/CategoryModal";
+import authLoginCheck from "../utils/authLoginCheck";
 
 const DirectoryPage = () => {
+  const isLogin = authLoginCheck();
+  if (!isLogin) {
+    return window.location.replace("/login");
+  }
+
   const { nickname } = JSON.parse(localStorage.getItem("localUser"));
 
   const navigate = useNavigate();
@@ -57,6 +63,8 @@ const DirectoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: "HakgyoansimWoojuR";
 `;
 
 const DirectorySection = styled.section`
