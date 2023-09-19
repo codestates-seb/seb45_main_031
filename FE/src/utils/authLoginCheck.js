@@ -25,7 +25,8 @@ const authLoginCheck = () => {
     .catch(() => {
       return window.location.replace("/login");
     });
-  return true;
+
+  return JSON.parse(localStorage.getItem("localUser"));
 };
 
 export default authLoginCheck;
