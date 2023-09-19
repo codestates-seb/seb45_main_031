@@ -105,7 +105,7 @@ public interface TodoMapper {
     List<TodoDto.Response> todosToTodoResponseDtos(List<Todo> todos);
 
 
-    default TodoDto.AllResponse todosToTodoAllResponseDtos(List<Todo> todos){
+    default TodoDto.AllResponse todosToTodoAllResponseDtos(List<Todo> todos, Member member){
 
         List<TodoDto.Response> responses = todosToTodoResponseDtos(todos);
 
@@ -122,21 +122,13 @@ public interface TodoMapper {
                 .filter(complete -> complete == Todo.Complete.DONE)
                 .count();
 
-        Member anyMember = todos.stream()
-                .map(todo -> todo.getMember())
-                .findAny().orElse(null);
-
-
         TodoDto.AllResponse allResponse = TodoDto.AllResponse.builder()
                 .todoCount(todoCount)
                 .completeCount(completeCount)
                 .todoResponses(responses)
+                .memberId(member.getMemberId())
+                .memberLevel(member.getLevel())
                 .build();
-
-        if (anyMember != null){
-            allResponse.setMemberId(anyMember.getMemberId());
-            allResponse.setMemberLevel(anyMember.getLevel());
-        }
 
         return allResponse;
     }
