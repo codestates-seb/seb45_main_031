@@ -23,6 +23,7 @@ const authLoginCheck = () => {
       localStorage.setItem("localUser", JSON.stringify(newLocalUser));
     })
     .catch(() => {
+      localStorage.clear();
       return window.location.replace("/login");
     });
 

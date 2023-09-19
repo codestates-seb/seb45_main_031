@@ -55,7 +55,6 @@ const ProfileInfo = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         const userData = response.data.data;
-        console.log(userData.nickname);
         //사용자 정보를 상태로 설정
         setLocalUser(userData);
       } catch (error) {

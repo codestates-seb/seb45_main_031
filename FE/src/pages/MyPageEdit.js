@@ -124,7 +124,6 @@ const EditProfile = () => {
 const EditNickname = () => {
   const [newNickname, setNewNickname] = useState("");
   const localUser = JSON.parse(localStorage.getItem("localUser"));
-  console.log(localUser);
 
   const editProfile = () => {
     axios
