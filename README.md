@@ -70,10 +70,10 @@
   </tr>
   <tr>
     <td>
-      <img src=""  alt="로그인" width = "500" height = "300">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/a3747610-daba-4b15-975f-f8a2fe9b3d3c"  alt="로그인" width = "300" height = "617">
     </td>
     <td>
-      <img src= "" alt="회원가입" width = "500" height = "300">
+      <img src= "https://github.com/codestates-seb/seb45_main_031/assets/122342184/9f65e714-5371-4faf-9104-47b9cced30f4" alt="회원가입" width = "300" height = "617">
     </td>
    </tr> 
   <tr>
@@ -86,10 +86,10 @@
   </tr>
   <tr>
     <td>
-      <img src="" alt="마이페이지"  width = "500" height = "300">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/9992f1c5-05af-494a-9383-5df18e60fed7" alt="마이페이지"  width = "300" height = "617">
     </td>
     <td>
-      <img src= "" alt="마이페이지 프로필편집"  width = "500" height = "300">
+      <img src= "https://github.com/codestates-seb/seb45_main_031/assets/122342184/f2807e8b-50bf-4d6a-99f6-2f420bd3916f" alt="마이페이지 더보기"  width = "350" height = "617">
     </td>
    </tr>
    <tr>
