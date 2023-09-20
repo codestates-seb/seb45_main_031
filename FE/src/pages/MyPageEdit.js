@@ -123,9 +123,25 @@ const EditProfile = () => {
 // 닉네임 변경
 const EditNickname = () => {
   const [newNickname, setNewNickname] = useState("");
+  const [nicknameError, setNicknameError] = useState(""); //닉네임 유효성 검사 에러메시지 추가
   const localUser = JSON.parse(localStorage.getItem("localUser"));
+  const trimmedNickname = newNickname.replace(/\s/g, "");
 
   const editProfile = () => {
+    if (newNickname.trim() === "") {
+      setNicknameError("닉네임은 필수값입니다");
+      return;
+    }
+
+    if (newNickname.length > 10) {
+      setNicknameError("닉네임은 최대 10글자까지 가능합니다");
+      return;
+    }
+
+    if (newNickname !== newNickname.trim() || newNickname !== trimmedNickname) {
+      setNicknameError("닉네임에 공백이 포함될 수 없습니다");
+    }
+
     axios
       .patch(
         `${URL}/members/${localUser.memberId}`,
@@ -154,14 +170,11 @@ const EditNickname = () => {
 
   const handleNicknameChange = (event) => {
     setNewNickname(event.target.value);
+    setNicknameError(""); //닉네임 변경될 때 에러 메시지 초기화
   };
 
   const handleSaveClick = () => {
-    if (newNickname.trim() !== "") {
-      editProfile();
-    } else {
-      alert("닉네임은 필수값입니다");
-    }
+    editProfile();
   };
 
   useEffect(() => {
@@ -180,6 +193,7 @@ const EditNickname = () => {
         />
         <SaveButton onClick={() => handleSaveClick()}>저장</SaveButton>
       </InputBoxWrapper>
+      {nicknameError && <ErrorText>{nicknameError}</ErrorText>}
     </>
   );
 };
@@ -459,6 +473,14 @@ const SaveButton = styled.button`
     cursor: pointer;
     color: #232629;
   }
+`;
+
+const ErrorText = styled.div`
+  font-size: 0.7rem;
+  color: firebrick;
+  margin: 0;
+  padding: 5px 10px;
+  margin-right: 120px;
 `;
 
 // 회원 등급 영역
