@@ -35,4 +35,140 @@
   </tbody>
 </table>
 </br>
-</br>
+
+<details>
+<summary>BE</summary>
+<div markdown="1">
+<br>
+  
+**BE 김시영 (팀장)**
+
+- 내용
+- 내용
+
+<br>
+
+**BE 이은지**
+
+- 내용
+- 내용
+  
+<br>
+
+**BE 홍기현**
+
+- 내용
+- 내용
+
+</details>
+<details>
+<summary>FE</summary>
+<div markdown="2">
+<br>
+  
+**FE 김혜란 (부팀장)**
+
+- 내용
+- 내용
+
+<br>
+
+**FE 권주영**
+
+- 내용
+- 내용
+  
+<br>
+
+**FE 최수연 (서기)**
+
+- 내용
+- 내용
+
+</div>
+</details>
+<br><br /><br /><br />
+
+## ⚙️ Stacks
+
+<br /><br /><br /><br />
+
+## 🔎 Service preview
+<html>
+<table>
+  <tr>
+    <th>
+      로그인
+    </th>
+    <th>
+      회원가입
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src=""  alt="로그인" width = "500" height = "300">
+    </td>
+    <td>
+      <img src= "" alt="회원가입" width = "500" height = "300">
+    </td>
+   </tr> 
+  <tr>
+    <th>
+      마이페이지
+    </th>
+    <th>
+      마이페이지 더보기
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="" alt="마이페이지"  width = "500" height = "300">
+    </td>
+    <td>
+      <img src= "" alt="마이페이지 프로필편집"  width = "500" height = "300">
+    </td>
+   </tr>
+   <tr>
+    <th>
+      할 일 목록
+    </th> 
+    <th>
+      할 일 목록 작성/수정
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="" alt="할 일 목록" width = "500" height = "300">
+    </td>
+    <td>
+      <img src="" alt="할 일 목록 작성/수정"  width = "500" height = "300">
+    </td>
+  </tr> 
+   <tr>
+    <th>
+      커뮤니티
+    </th> 
+    <th>
+      커뮤니티 게시글 작성/수정
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="" alt="커뮤니티" width = "500" height = "300">
+    </td>
+    <td>
+      <img src="" alt="커뮤니티 게시글 작성/수정"  width = "500" height = "300">
+    </td>
+  </tr> 
+</table>
+<br><br><br><br>
+  
+## 🗂️ 프로젝트 문서
+
+[팀 노션페이지](https://www.notion.so/codestates/eb203c506d1042f8be1e4c382bcb4bde?pvs=4)
+[사용자요구사항정의서](https://docs.google.com/spreadsheets/d/1vS--muT_pmMt04dagtKrNRhPSxrM1re_MmMDIo1f1w4/edit?usp=sharing)
+[화면설계서](https://www.figma.com/file/tiWXG5ZlDyYR6V6VlbvUAV/Untitled?type=design&node-id=20%3A17&mode=design&t=H9AXxgUyfnOQuIdY-1)
+[API명세서](https://documenter.getpostman.com/view/27565496/2s9Y5YT3S4)
+[개발자체크리스트](https://docs.google.com/spreadsheets/d/1vS--muT_pmMt04dagtKrNRhPSxrM1re_MmMDIo1f1w4/edit?usp=sharing)
+[서비스메뉴얼](https://docs.google.com/document/d/1h8oMnDe36dX22l8rD6UOzgsc2LXahw2kFAdNjJ3N9oo/edit?usp=sharing)
+
