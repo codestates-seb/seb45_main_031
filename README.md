@@ -165,10 +165,10 @@
   
 ## 🗂️ 프로젝트 문서
 
-[팀 노션페이지](https://www.notion.so/codestates/eb203c506d1042f8be1e4c382bcb4bde?pvs=4)
-[사용자요구사항정의서](https://docs.google.com/spreadsheets/d/1vS--muT_pmMt04dagtKrNRhPSxrM1re_MmMDIo1f1w4/edit?usp=sharing)
-[화면설계서](https://www.figma.com/file/tiWXG5ZlDyYR6V6VlbvUAV/Untitled?type=design&node-id=20%3A17&mode=design&t=H9AXxgUyfnOQuIdY-1)
-[API명세서](https://documenter.getpostman.com/view/27565496/2s9Y5YT3S4)
-[개발자체크리스트](https://docs.google.com/spreadsheets/d/1vS--muT_pmMt04dagtKrNRhPSxrM1re_MmMDIo1f1w4/edit?usp=sharing)
-[서비스메뉴얼](https://docs.google.com/document/d/1h8oMnDe36dX22l8rD6UOzgsc2LXahw2kFAdNjJ3N9oo/edit?usp=sharing)
+[팀 노션페이지](https://www.notion.so/codestates/eb203c506d1042f8be1e4c382bcb4bde?pvs=4) <br><br>
+[사용자요구사항정의서](https://docs.google.com/spreadsheets/d/1vS--muT_pmMt04dagtKrNRhPSxrM1re_MmMDIo1f1w4/edit?usp=sharing) <br><br>
+[화면설계서](https://www.figma.com/file/tiWXG5ZlDyYR6V6VlbvUAV/Untitled?type=design&node-id=20%3A17&mode=design&t=H9AXxgUyfnOQuIdY-1) <br><br>
+[API명세서](https://documenter.getpostman.com/view/27565496/2s9Y5YT3S4) <br><br>
+[개발자체크리스트](https://docs.google.com/spreadsheets/d/1vS--muT_pmMt04dagtKrNRhPSxrM1re_MmMDIo1f1w4/edit?usp=sharing) <br><br>
+[서비스메뉴얼](https://docs.google.com/document/d/1h8oMnDe36dX22l8rD6UOzgsc2LXahw2kFAdNjJ3N9oo/edit?usp=sharing) <br><br>
 
