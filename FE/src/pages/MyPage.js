@@ -180,6 +180,7 @@ const useLogout = () => {
 // 공통 스타일
 const MaxContainer = styled.div`
   width: 100vw;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,9 +189,9 @@ const MaxContainer = styled.div`
 `;
 
 const Container = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 430px;
-  background-color: #ececec;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -328,7 +329,8 @@ const LogoutContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background-color: #ffffff;
+  background-color: #fff;
+  margin-bottom: 80px;
 `;
 
 const LogoutButton = styled(GreyButton)`
