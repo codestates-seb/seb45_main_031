@@ -94,34 +94,50 @@
    </tr>
    <tr>
     <th>
-      할 일 목록
+      할 일 목록 작성
     </th> 
     <th>
-      할 일 목록 작성/수정
+      할 일 목록 수정
     </th>
   </tr>
   <tr>
     <td>
-      <img src="" alt="할 일 목록" width = "500" height = "300">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/0b2adb70-b1f8-488e-beb4-c6b1d80c8168" alt="할 일 목록 작성" width = "300" height = "617">
     </td>
     <td>
-      <img src="" alt="할 일 목록 작성/수정"  width = "500" height = "300">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/23d60ea4-4bda-4216-85f0-6126c5e5089a" alt="할 일 목록 수정"  width = "300" height = "617">
     </td>
   </tr> 
-   <tr>
+  <tr>
     <th>
-      커뮤니티
+      커뮤니티 게시글 작성
     </th> 
     <th>
-      커뮤니티 게시글 작성/수정
+      커뮤니티 게시글 수정
     </th>
   </tr>
   <tr>
     <td>
-      <img src="" alt="커뮤니티" width = "500" height = "300">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/636c9ac0-a599-4ff3-99d4-d3416f0da235" alt="커뮤니티 게시글 작성" width = "300" height = "617">
     </td>
     <td>
-      <img src="" alt="커뮤니티 게시글 작성/수정"  width = "500" height = "300">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4029f44c-f635-4e84-ab2d-7b9ea2549fa4" alt="커뮤니티 게시글 수정"  width = "300" height = "617">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      커뮤니티 게시글 할 일 목록으로 가져오기
+    </th> 
+    <th>
+      커뮤니티 게시글 디렉토리로 가져오기
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4c430434-e54c-45a0-b315-ebfbd03b4f60" alt="할 일 목록으로 가져오기" width = "300" height = "617">
+    </td>
+    <td>
+      <span>개발중</span>
     </td>
   </tr> 
 </table>
