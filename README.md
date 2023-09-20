@@ -1,5 +1,7 @@
 
 ## 📌 프로젝트 개요
+![image](https://github.com/codestates-seb/seb45_main_031/assets/116875965/b3e12431-61d5-4849-92d1-8a134be480fd)
+
 <br />
 
 - **`프로젝트 명` :** Healthier - 더 건강하게
