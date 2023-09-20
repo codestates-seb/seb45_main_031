@@ -26,8 +26,6 @@
       <td align="center"><a href="https://github.com/OKSY"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPulAZ4KWIIQpmrxkcAMWGqYLcDjG-77AKP-lDlP0B-sYIeHaEy0lc6FXWwPfwMZAMAXM&usqp=CAU" width="100px;" alt=""/><br /><sub><b> BE 김시영 (팀장)</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/KIHYUN940"><img src="https://i.namu.wiki/i/JNn_wH7DTyzMGd4GP9piVsXN8utv_vr07dyZQCokfjlW-u6azZc4dA7BkNrroTEByeJ9trqwzsxFbak4NJH47Mw169Un8a6gu-WxtGzxyg36YBLernVq__gO48l6LXy_h0y2xqxHghI6vECCyBD9aQ.webp" width="100px;" alt=""/><br /><sub><b> BE 홍기현</b></sub></a><br /></td>
 <td align="center"><a href="https://github.com/2-eun-ji"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUcnrmsAeZBH6YfCW8Fd_i_t9Ddt6CLSAng&usqp=CAU" width="100px;" alt=""/><br /><sub><b> BE 이은지</b></sub></a><br /></td>
-    </tr>
-     <tr/>
 <td align="center"><a href="https://github.com/kimmand0o0"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLXWtDqeZ1j7JO7lj6yV4ElcPCIVIlXYxEg&usqp=CAU" width="100px;" alt=""/><br /><sub><b>FE 김혜란 (부팀장)</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/jooy45"><img src="https://www.16personalities.com/static/images/personality-types/avatars/isfj-defender.png" width="100px;" alt=""/><br /><sub><b>FE 권주영</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/lynne-choi"><img src="https://www.16personalities.com/static/images/personality-types/avatars/enfj-protagonist.png" width="100px;" alt=""/><br /><sub><b>FE 최수연 (서기)</b></sub></a><br /></td>
@@ -87,13 +85,32 @@
 
 </div>
 </details>
-<br><br /><br /><br />
+<br><br />
 
-## ⚙️ Stacks
+## ⚙️ 기술 스택 (작성 중)
+### <span> ⚙️ **Tools** </span>
+| Github | Discord | Notion |
+| :---: | :---: |:---:|
+| <img alt="github logo" src="https://techstack-generator.vercel.app/github-icon.svg" width="65" height="65"> | <img alt="Discord logo" src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62595384e89d1d54d704ece7_3437c10597c1526c3dbd98c737c2bcae.svg" height="65" width="65"> |<img alt="Notion logo" src="https://www.notion.so/cdn-cgi/image/format=auto,width=640,quality=100/front-static/shared/icons/notion-app-icon-3d.png" height="65" width="65">|
 
+<br />
+
+### <span> 🖥 **Front-end** </span>
+| Html | CSS | JavaScript | React | Styled-<br>Components | AWS |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| <img alt="Html" src ="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/440px-HTML5_logo_and_wordmark.svg.png" width="65" height="65" /> | <div style="display: flex; align-items: flex-start;"><img src="https://user-images.githubusercontent.com/111227745/210204643-4c3d065c-59ec-481d-ac13-cea795730835.png" alt="CSS" width="50" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="75" height="75" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://styled-components.com/logo.png" alt="styled-components icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div> |
+
+<br />
+
+### <span>🔒 **Back-end** </span>
+| Java | mySQL | Spring | Spring<br>Boot | JWT|Spring<br/>Security | AWS |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div> | <img alt="spring logo" src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="50" width="50" > | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" > | <img alt="spring-boot logo" src="https://play-lh.googleusercontent.com/3C-hB-KWoyWzZjUnRsXUPu-bqB3HUHARMLjUe9OmPoHa6dQdtJNW30VrvwQ1m7Pln3A" width="65" height="65" >| <img alt="spring-boot logo" src="https://blog.kakaocdn.net/dn/dIQDQP/btqZ09ESd8T/0ibqtotW52OaJS8HznXDQK/img.png" width="65" height="65" > | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div> | 
+
+<br />
 <br /><br /><br /><br />
 
-## 🔎 Service preview
+## 🔎 서비스 미리보기 (작성 중)
 <html>
 <table>
   <tr>
