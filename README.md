@@ -4,7 +4,10 @@
 
 - **`프로젝트 명` :** Healthier - 더 건강하게
 - **`프로젝트 기간` :** 2023.08.24 - 2023.09.19
-- **`한줄 소개` :** 운동일지 & 습관형성 커뮤니티
+- **`서비스` :** 운동일지 & 습관형성 커뮤니티 (헬스케어/건강 및 피트니스)
+- **`Wiki` :** <a href="https://github.com/codestates-seb/seb45_main_031/wiki" target="_blank">🔖 Wiki</a>
+- **`배포 링크` :** <a href="http://seb45main31.s3-website.ap-northeast-2.amazonaws.com/" target="_blank">🌐 HEALTHIER</a>
+
 
 <br />
 <br />
