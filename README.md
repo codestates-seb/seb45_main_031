@@ -20,101 +20,13 @@
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center">
-        <a href="https://github.com/0KSY">
-          <img width="100px" alt="ESTJ" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/b5dc37f2-9a11-4713-95b4-e9d324a01fd7"><br />
-          <sub><b>BE 김시영 (팀장)</b></sub>
-        </a><br />
-      </td>
-      <td align="center">
-        <a href="https://github.com/KIHYUN940">
-          <img width="100" alt="INFJ" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/19c1b1c7-a208-4d6c-8775-76a445e9fac1"><br />
-          <sub><b> BE 홍기현</b></sub>
-        </a><br />
-      </td>
-      <td align="center">
-        <a href="https://github.com/2-eun-ji">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUcnrmsAeZBH6YfCW8Fd_i_t9Ddt6CLSAng&usqp=CAU" width="100px;" alt="ESFP"/><br />
-          <sub><b> BE 이은지</b></sub>
-        </a><br />
-      </td>
-      <td align="center">
-        <a href="https://github.com/kimmand0o0">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLXWtDqeZ1j7JO7lj6yV4ElcPCIVIlXYxEg&usqp=CAU" width="100px;" alt="INTP"/><br />
-          <sub><b>FE 김혜란 (부팀장)</b></sub>
-        </a><br />
-      </td>
-      <td align="center">
-        <a href="https://github.com/jooy45">
-          <img src="https://www.16personalities.com/static/images/personality-types/avatars/isfj-defender.png" width="100px;" alt="ISFJ"/><br />
-          <sub><b>FE 권주영</b></sub>
-        </a><br />
-      </td>
-      <td align="center">
-        <a href="https://github.com/lynne-choi">
-          <img src="https://www.16personalities.com/static/images/personality-types/avatars/enfj-protagonist.png" width="100px;" alt="ENFJ"/>
-          <br /><sub><b>FE 최수연 (서기)</b></sub>
-        </a><br />
-      </td>
-  </tbody>
-</table>
-</br>
 
-<details>
-<summary>BE</summary>
-<div markdown="1">
-<br>
-  
-**BE 김시영 (팀장)**
+|<img width="100px" alt="김시영" src="https://media.discordapp.net/attachments/1144087619534340177/1153915233694392350/123.jpg?width=722&height=1000"><br />|<img width="100px" alt="홍기현" src="https://media.discordapp.net/attachments/1144087619534340177/1153914955796586506/8798dfece673781d.PNG?width=1050&height=1044">|<img width="100px" alt="이은지" src="https://media.discordapp.net/attachments/1144087619534340177/1153914425540096122/2023-09-20_1.43.38.png?width=742&height=910">|<img width="100px" alt="김혜란" src="https://media.discordapp.net/attachments/1144087619534340177/1153914120937160724/image.png?width=1024&height=1062">|<img width="100px" alt="권주영" src="https://media.discordapp.net/attachments/1144087619534340177/1153915573856641104/9a240f79ad5be406.PNG?width=810&height=918">|<img width="100px" alt="최수연" src="https://media.discordapp.net/attachments/1144087619534340177/1153914410448982097/image.png?width=1126&height=1230">|
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|[김시영](https://github.com/0KSY)|[홍기현](https://github.com/KIHYUN940)|[이은지](https://github.com/2-eun-ji)|[김혜란](https://github.com/kimmand0o0)|[권주영](https://github.com/jooy45)|[최수연](https://github.com/lynne-choi)|
+|BE 팀장|BE|BE|FE 부팀장|FE|FE 서기|
 
-- 내용
-- 내용
-
-<br>
-
-**BE 이은지**
-
-- 내용
-- 내용
-  
-<br>
-
-**BE 홍기현**
-
-- 내용
-- 내용
-
-</details>
-<details>
-<summary>FE</summary>
-<div markdown="2">
-<br>
-  
-**FE 김혜란 (부팀장)**
-
-- 내용
-- 내용
-
-<br>
-
-**FE 권주영**
-
-- 내용
-- 내용
-  
-<br>
-
-**FE 최수연 (서기)**
-
-- 내용
-- 내용
-
-</div>
-</details>
-<br><br />
+<br><br><br><br>
 
 ## ⚙️ 기술 스택 (작성 중)
 ### <span> ⚙️ **Tools** </span>
