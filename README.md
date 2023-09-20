@@ -24,30 +24,40 @@
   <tbody>
     <tr>
       <td align="center">
-        <a href="https://github.com/OKSY">
-        <img width="100px" alt="ESTJ" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/b5dc37f2-9a11-4713-95b4-e9d324a01fd7"><br />
-        <sub><b>BE 김시영 (팀장)</b></sub></a><br /></td>
+        <a href="https://github.com/0KSY">
+          <img width="100px" alt="ESTJ" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/b5dc37f2-9a11-4713-95b4-e9d324a01fd7"><br />
+          <sub><b>BE 김시영 (팀장)</b></sub>
+        </a><br />
+      </td>
       <td align="center">
         <a href="https://github.com/KIHYUN940">
-        <img width="100" alt="INFJ" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/19c1b1c7-a208-4d6c-8775-76a445e9fac1"><br />
-        <sub><b> BE 홍기현</b></sub></a><br /></td>
+          <img width="100" alt="INFJ" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/19c1b1c7-a208-4d6c-8775-76a445e9fac1"><br />
+          <sub><b> BE 홍기현</b></sub>
+        </a><br />
+      </td>
       <td align="center">
         <a href="https://github.com/2-eun-ji">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUcnrmsAeZBH6YfCW8Fd_i_t9Ddt6CLSAng&usqp=CAU" width="100px;" alt="ESFP"/><br />
-        <sub><b> BE 이은지</b></sub></a><br /></td>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUcnrmsAeZBH6YfCW8Fd_i_t9Ddt6CLSAng&usqp=CAU" width="100px;" alt="ESFP"/><br />
+          <sub><b> BE 이은지</b></sub>
+        </a><br />
+      </td>
       <td align="center">
         <a href="https://github.com/kimmand0o0">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLXWtDqeZ1j7JO7lj6yV4ElcPCIVIlXYxEg&usqp=CAU" width="100px;" alt="INTP"/><br />
-        <sub><b>FE 김혜란 (부팀장)</b></sub></a><br /></td>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLXWtDqeZ1j7JO7lj6yV4ElcPCIVIlXYxEg&usqp=CAU" width="100px;" alt="INTP"/><br />
+          <sub><b>FE 김혜란 (부팀장)</b></sub>
+        </a><br />
+      </td>
       <td align="center">
         <a href="https://github.com/jooy45">
-        <img src="https://www.16personalities.com/static/images/personality-types/avatars/isfj-defender.png" width="100px;" alt="ISFJ"/><br />
-        <sub><b>FE 권주영</b></sub></a><br /></td>
+          <img src="https://www.16personalities.com/static/images/personality-types/avatars/isfj-defender.png" width="100px;" alt="ISFJ"/><br />
+          <sub><b>FE 권주영</b></sub>
+        </a><br />
+      </td>
       <td align="center">
         <a href="https://github.com/lynne-choi">
-        <img src="https://www.16personalities.com/static/images/personality-types/avatars/enfj-protagonist.png" width="100px;" alt="ENFJ"/>
-        <br /><sub><b>FE 최수연 (서기)</b>
-        </sub></a><br />
+          <img src="https://www.16personalities.com/static/images/personality-types/avatars/enfj-protagonist.png" width="100px;" alt="ENFJ"/>
+          <br /><sub><b>FE 최수연 (서기)</b></sub>
+        </a><br />
       </td>
   </tbody>
 </table>
