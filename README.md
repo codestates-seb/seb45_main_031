@@ -4,11 +4,12 @@
 
 <br />
 
-- **`프로젝트 명` :** Healthier - 더 건강하게
+- **`프로젝트 명` :** HEALTHIER - 더 건강하게
 - **`프로젝트 기간` :** 2023.08.24 - 2023.09.19
 - **`서비스` :** 운동일지 & 습관형성 커뮤니티 (헬스케어/건강 및 피트니스)
-- **`Wiki` :** <a href="https://github.com/codestates-seb/seb45_main_031/wiki" target="_blank">🔖 Wiki</a>
 - **`배포 링크` :** <a href="http://seb45main31.s3-website.ap-northeast-2.amazonaws.com/" target="_blank">🌐 HEALTHIER</a>
+- **`게스트 계정` :** 🔒 ID | guest@<k>gmail.com 🔑 Password | 1234qwer
+- **`Wiki` :** <a href="https://github.com/codestates-seb/seb45_main_031/wiki" target="_blank">🔖 Wiki</a>
 
 
 <br />
@@ -21,7 +22,7 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
-|<img width="100px" alt="김시영" src="https://media.discordapp.net/attachments/1144087619534340177/1153915233694392350/123.jpg?width=722&height=1000"><br />|<img width="100px" alt="홍기현" src="https://media.discordapp.net/attachments/1144087619534340177/1153914955796586506/8798dfece673781d.PNG?width=1050&height=1044">|<img width="100px" alt="이은지" src="https://media.discordapp.net/attachments/1144087619534340177/1153914425540096122/2023-09-20_1.43.38.png?width=742&height=910">|<img width="100px" alt="김혜란" src="https://media.discordapp.net/attachments/1144087619534340177/1153914120937160724/image.png?width=1024&height=1062">|<img width="100px" alt="권주영" src="https://media.discordapp.net/attachments/1144087619534340177/1153915573856641104/9a240f79ad5be406.PNG?width=810&height=918">|<img width="100px" alt="최수연" src="https://media.discordapp.net/attachments/1144087619534340177/1153914410448982097/image.png?width=1126&height=1230">|
+|<img width="90px" height="100px" alt="김시영" src="https://media.discordapp.net/attachments/1144087619534340177/1153915233694392350/123.jpg?width=722&height=1000"><br />|<img width="100px" alt="홍기현" src="https://media.discordapp.net/attachments/1144087619534340177/1153914955796586506/8798dfece673781d.PNG?width=1050&height=1044">|<img width="90px" height="100px" alt="이은지" src="https://media.discordapp.net/attachments/1144087619534340177/1153914425540096122/2023-09-20_1.43.38.png?width=742&height=910">|<img width="95px" height="100px" alt="김혜란" src="https://media.discordapp.net/attachments/1144087619534340177/1153914120937160724/image.png?width=1024&height=1062">|<img width="90px" height="100px" alt="권주영" src="https://media.discordapp.net/attachments/1144087619534340177/1153915573856641104/9a240f79ad5be406.PNG?width=810&height=918">|<img width="95px" height="100px" alt="최수연" src="https://media.discordapp.net/attachments/1144087619534340177/1153914410448982097/image.png?width=1126&height=1230">|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |[김시영](https://github.com/0KSY)|[홍기현](https://github.com/KIHYUN940)|[이은지](https://github.com/2-eun-ji)|[김혜란](https://github.com/kimmand0o0)|[권주영](https://github.com/jooy45)|[최수연](https://github.com/lynne-choi)|
 |BE 팀장|BE|BE|FE 부팀장|FE|FE 서기|
