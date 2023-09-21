@@ -133,8 +133,8 @@ const EditNickname = () => {
       return;
     }
 
-    if (newNickname.length > 10) {
-      setNicknameError("닉네임은 최대 10글자까지 가능합니다");
+    if (newNickname.length < 2 || newNickname.length > 10) {
+      setNicknameError("닉네임은 최소 2글자 이상, 최대 10글자까지 가능합니다");
       return;
     }
 
