@@ -15,19 +15,26 @@ spring:
     multipart:
       max-file-size: 5MB # 업로드되는 단일 파일 최대 크기 5MB
       max-request-size: 5MB # 요청에 포함된 모든 파일 총 크기 5MB
-  h2:
-    console:
-      enabled: true
-      path: /h2
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
+
   datasource:
-    url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://RDS_URL:PORT/MySQL_Database_Name?useSSL=false&characterEncoding=UTF-8&serverTimeZone=Asia/Seoul
+    username: ${RDS_MySQL_USERNAME}
+    password: ${RDS_MySQL_PASSWORD}
+
   jpa:
     hibernate:
-      ddl-auto: create  # (1) ??? ?? ??
-    show-sql: true      # (2) SQL ?? ??
+      ddl-auto: create #none -> 배포시 변경필요
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true  # (3) SQL pretty print
+        format_sql: true
   sql:
     init:
       data-locations: classpath*:db/h2/data.sql
@@ -39,6 +46,7 @@ spring:
           google:
             clientId: ${G_CLIENT_ID}
             clientSecret: ${G_CLIENT_SECRET}
+            redirect-uri: https://healthier31.store/login/oauth2/code/google
             scope:
               - email
               - profile

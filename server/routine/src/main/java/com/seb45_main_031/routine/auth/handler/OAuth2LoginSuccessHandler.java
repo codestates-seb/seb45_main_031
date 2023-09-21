@@ -127,21 +127,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
         queryParams.add("memberId", String.valueOf(member.getMemberId()));
-        queryParams.add("email", member.getEmail());
-        queryParams.add("nickname", member.getNickname());
-        queryParams.add("exp", String.valueOf(member.getExp()));
-        queryParams.add("level", String.valueOf(member.getLevel()));
-//        queryParams.add("image", member.getImage());
-        if(member.getImage() != null){
-            queryParams.add("image", member.getImage());
-        }
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
-                .host("seb45main31.s3-website.ap-northeast-2.amazonaws.com") // s3 url
-//                .port(80)
-                .path("/receive-token.html") // 쿼리 파라미터 전달되는 정보 받을 프론트 측 s3 url path
+                .scheme("https")
+                .host("healthier31.vercel.app")
+                .port(443)
+                .path("/receive")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
