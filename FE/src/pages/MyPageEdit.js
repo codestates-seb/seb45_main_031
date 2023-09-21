@@ -123,7 +123,8 @@ const EditProfile = () => {
 // 닉네임 변경
 const EditNickname = () => {
   const [newNickname, setNewNickname] = useState("");
-  const [nicknameError, setNicknameError] = useState(""); //닉네임 유효성 검사 에러메시지 추가
+  const [nicknameError, setNicknameError] = useState("");
+
   const localUser = JSON.parse(localStorage.getItem("localUser"));
   const trimmedNickname = newNickname.replace(/\s/g, "");
 
@@ -156,8 +157,6 @@ const EditNickname = () => {
       )
       .then(() => {
         setNewNickname(newNickname); //닉네임 변경 후 상태 업데이트
-        localUser.nickname = newNickname;
-        localStorage.setItem("localUser", JSON.stringify(localUser));
         alert("닉네임 변경이 완료됐습니다");
       })
       .catch((error) => {
@@ -178,8 +177,24 @@ const EditNickname = () => {
   };
 
   useEffect(() => {
-    setNewNickname(localUser.nickname); //컴포넌트가 마운트될 때 현재 닉네임 설정
-  }, [localUser.nickname]);
+    const { accessToken, memberId } = JSON.parse(
+      localStorage.getItem("localUser"),
+    );
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${URL}/members/myPage/${memberId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const userData = response.data.data;
+        setNewNickname(userData.nickname); //컴포넌트가 마운트될 때 localUser의 nickname을 초기값으로 설정
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -187,7 +202,7 @@ const EditNickname = () => {
       <InputBoxWrapper>
         <InputBox
           type="text"
-          placeholder={localUser.nickname}
+          placeholder={newNickname}
           value={newNickname}
           onChange={(event) => handleNicknameChange(event)}
         />
