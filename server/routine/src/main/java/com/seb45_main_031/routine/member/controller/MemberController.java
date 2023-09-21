@@ -91,18 +91,6 @@ public class MemberController {
     }
 
 
-    @GetMapping
-    public ResponseEntity getMembers(@RequestParam @Positive int page,
-                                     @RequestParam @Positive int size){
-
-        Page<Member> pageMembers = memberService.findMembers(page - 1, size);
-
-        List<Member> members = pageMembers.getContent();
-
-        return new ResponseEntity(
-                new MultiResponseDto<>(mapper.membersToMemberResponseDtos(members), pageMembers), HttpStatus.OK);
-    }
-
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId,
                                        @RequestBody MemberDto.Password passwordDto,
