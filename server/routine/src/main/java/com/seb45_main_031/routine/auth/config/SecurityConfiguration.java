@@ -124,7 +124,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://seb45main31.s3-website.ap-northeast-2.amazonaws.com", "https://healthier31.vercel"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
 
