@@ -19,7 +19,7 @@ import CommunityEditPage from "./pages/CommunityEditPage";
 import CommunityModifyPage from "./pages/CommunityModifyPage";
 import DirectoryPage from "./pages/DirectoryPage";
 import DirectoryDetailPage from "./pages/DirectoryDetailPage";
-import Page from "./pages/Page";
+import GooglePage from "./pages/GooglePage";
 import ScrapTodoEditPage from "./pages/ScrapTodoEditPage";
 
 const router = createBrowserRouter([
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/signup", element: <SignUpPage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/receive-token.html", element: <Page /> },
+      { path: "/receive", element: <GooglePage /> },
     ],
   },
   {
