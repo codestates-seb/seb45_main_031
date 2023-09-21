@@ -57,7 +57,7 @@
 <br />
 <br /><br /><br /><br />
 
-## 🔎 서비스 미리보기 & 주요 기능
+## 🔎 서비스 주요 기능
 <html>
 <table>
   <tr>
@@ -70,10 +70,10 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/a3747610-daba-4b15-975f-f8a2fe9b3d3c"  alt="로그인" width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/a3747610-daba-4b15-975f-f8a2fe9b3d3c"  alt="로그인" width = "350" height = "617">
     </td>
     <td>
-      <img src= "https://github.com/codestates-seb/seb45_main_031/assets/122342184/9f65e714-5371-4faf-9104-47b9cced30f4" alt="회원가입" width = "300" height = "617">
+      <img src= "https://github.com/codestates-seb/seb45_main_031/assets/122342184/9f65e714-5371-4faf-9104-47b9cced30f4" alt="회원가입" width = "350" height = "617">
     </td>
    </tr> 
   <tr>
@@ -86,7 +86,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/9992f1c5-05af-494a-9383-5df18e60fed7" alt="마이페이지"  width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/9992f1c5-05af-494a-9383-5df18e60fed7" alt="마이페이지"  width = "350" height = "617">
     </td>
     <td>
       <img src= "https://github.com/codestates-seb/seb45_main_031/assets/122342184/f2807e8b-50bf-4d6a-99f6-2f420bd3916f" alt="마이페이지 더보기"  width = "350" height = "617">
@@ -102,10 +102,10 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/0b2adb70-b1f8-488e-beb4-c6b1d80c8168" alt="할 일 목록 작성" width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/0b2adb70-b1f8-488e-beb4-c6b1d80c8168" alt="할 일 목록 작성" width = "350" height = "617">
     </td>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/23d60ea4-4bda-4216-85f0-6126c5e5089a" alt="할 일 목록 수정"  width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/23d60ea4-4bda-4216-85f0-6126c5e5089a" alt="할 일 목록 수정"  width = "350" height = "617">
     </td>
   </tr> 
   <tr>
@@ -118,10 +118,10 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/636c9ac0-a599-4ff3-99d4-d3416f0da235" alt="커뮤니티 게시글 작성" width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/636c9ac0-a599-4ff3-99d4-d3416f0da235" alt="커뮤니티 게시글 작성" width = "350" height = "617">
     </td>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4029f44c-f635-4e84-ab2d-7b9ea2549fa4" alt="커뮤니티 게시글 수정"  width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4029f44c-f635-4e84-ab2d-7b9ea2549fa4" alt="커뮤니티 게시글 수정"  width = "350" height = "617">
     </td>
   </tr>
   <tr>
@@ -129,15 +129,15 @@
       커뮤니티 게시글 할 일 목록으로 가져오기
     </th> 
     <th>
-      커뮤니티 게시글 디렉토리로 가져오기
+      구글 OAuth 로그인
     </th>
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4c430434-e54c-45a0-b315-ebfbd03b4f60" alt="할 일 목록으로 가져오기" width = "300" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4c430434-e54c-45a0-b315-ebfbd03b4f60" alt="할 일 목록으로 가져오기" width = "350" height = "617">
     </td>
     <td>
-      <span>개발중</span>
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/f83856f7-9aa7-41e4-b07b-9f93e4ff389a" alt="OAuth 로그인" width = "350" height = "617">
     </td>
   </tr> 
 </table>
