@@ -45,14 +45,14 @@
 <br />
 
 ### <span>🔒 **Sever** </span>
-| Java | mySQL | Spring | Spring<br>Boot | JWT |Spring<br/>Security | ERDCloud | gradle | cyberduck | OAuth |
+| Java | mySQL | Spring | Spring<br>Boot | JWT |Spring<br/>Security | ERDCloud | gradle | cyberduck | OAuth 2.0 |
 | :---: | :---: | :---: | :---: | :---: | :---: |:---: |:---: |:---: |:---: |
-| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/java-icon.svg" alt="java" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="mySQL" width="65" height="65" /></div> | <img alt="spring logo" src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="50" width="50" > | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" > | <img alt="spring-boot logo" src="https://play-lh.googleusercontent.com/3C-hB-KWoyWzZjUnRsXUPu-bqB3HUHARMLjUe9OmPoHa6dQdtJNW30VrvwQ1m7Pln3A" width="65" height="65" >| <img alt="spring-boot logo" src="https://blog.kakaocdn.net/dn/dIQDQP/btqZ09ESd8T/0ibqtotW52OaJS8HznXDQK/img.png" width="65" height="65" > | <div style="display: flex; align-items: flex-start;"><img src="https://cdn-1.webcatalog.io/catalog/erdcloud/erdcloud-icon-filled-256.png?v=1675593733233" alt="ERDCloud" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://cdn.icon-icons.com/icons2/2389/PNG/512/gradle_logo_icon_145224.png" alt="gradle" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://cdn.fosstodon.org/accounts/avatars/109/698/908/353/278/292/original/35c46e804eb89b94.png" alt="cyberduck" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oauth_logo.svg/360px-Oauth_logo.svg.png" alt="cyberduck" width="70" height="70" /></div> | 
+| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/java-icon.svg" alt="java" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="mySQL" width="65" height="65" /></div> | <img alt="spring logo" src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="50" width="50" > | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" > | <img alt="jwt logo" src="https://play-lh.googleusercontent.com/3C-hB-KWoyWzZjUnRsXUPu-bqB3HUHARMLjUe9OmPoHa6dQdtJNW30VrvwQ1m7Pln3A" width="65" height="65" >| <img alt="spring-security logo" src="https://blog.kakaocdn.net/dn/dIQDQP/btqZ09ESd8T/0ibqtotW52OaJS8HznXDQK/img.png" width="70" height="70" > | <div style="display: flex; align-items: flex-start;"><img src="https://cdn-1.webcatalog.io/catalog/erdcloud/erdcloud-icon-filled-256.png?v=1675593733233" alt="ERDCloud" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://cdn.icon-icons.com/icons2/2389/PNG/512/gradle_logo_icon_145224.png" alt="gradle" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://cdn.fosstodon.org/accounts/avatars/109/698/908/353/278/292/original/35c46e804eb89b94.png" alt="cyberduck" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://oauth.net/images/oauth-2-sm.png" alt="cyberduck" width="70" height="70" /></div> | 
 
 <br />
 
 ### <span>🌐 **Deploy** </span>
-| AWS EC2 | AWS RDS | AWS S3 | AWS Route53 | Vercel | Https |
+| AWS EC2 | AWS RDS | AWS S3 | AWS Route 53 | Vercel | Https |
 | :---: | :---: | :---: | :---: |:---: |:---: |
 | <img alt="EC2" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/AWS_Simple_Icons_Compute_Amazon_EC2_Instances.svg/1200px-AWS_Simple_Icons_Compute_Amazon_EC2_Instances.svg.png" height="50" width="50" > | <img alt="rds" src="https://cdn.holistics.io/landing/databases/amazon-rds.png" width="90" height="65" > |  <img alt="s3" src="https://blog.kakaocdn.net/dn/bhgVa4/btrsrUGkdxI/6d3ZFKCrBbFvVROmjwuIUk/img.png" width="90" height="90"> | <div style="display: flex; align-items: flex-start;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNsp_abfIsWbhMHZrguSo8joiMn9-9MLWgWOwuMfkDO90Kkw2Jli-yflZlg_cbysyLquI&usqp=CAU" alt="icon" width="65" height="65" /></div> | <img alt="vercel logo" src="https://pipedream.com/s.v0/app_XaLh2x/logo/orig" height="60" width="60">| <img alt="https logo" src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/2100b06c-8996-48b2-843b-aae535d78c6b" height="90" width="80"> |
 
@@ -132,7 +132,7 @@
       커뮤니티 게시글 할 일 목록으로 가져오기
     </th> 
     <th>
-      구글 OAuth 로그인
+      OAuth 2.0 구글 로그인
     </th>
   </tr>
   <tr>
@@ -140,7 +140,7 @@
       <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/4c430434-e54c-45a0-b315-ebfbd03b4f60" alt="할 일 목록으로 가져오기" width = "350" height = "617">
     </td>
     <td>
-      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/f83856f7-9aa7-41e4-b07b-9f93e4ff389a" alt="OAuth 로그인" width = "350" height = "617">
+      <img src="https://github.com/codestates-seb/seb45_main_031/assets/122342184/f83856f7-9aa7-41e4-b07b-9f93e4ff389a" alt="OAuth 2.0 로그인" width = "350" height = "617">
     </td>
   </tr> 
 </table>
