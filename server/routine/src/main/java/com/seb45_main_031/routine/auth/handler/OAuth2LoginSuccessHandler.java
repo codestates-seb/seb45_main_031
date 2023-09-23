@@ -71,7 +71,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         Optional<Member> findMemberByNickname = memberRepository.findByNickname(nickname);
 
         if(findMemberByNickname.isPresent()){
-            nickname = nickname + System.currentTimeMillis();
+            nickname = nickname + (int)(Math.random() * 10000);
             member.setNickname(nickname);
         }
         else{
