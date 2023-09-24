@@ -64,4 +64,12 @@ public class MemberDto {
         private String image;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class ImageResponse{
+        private long memberId;
+        private String image;
+    }
+
 }
