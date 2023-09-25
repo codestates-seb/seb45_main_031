@@ -18,6 +18,9 @@ public interface MemberMapper {
 
     List<MemberDto.Response> membersToMemberResponseDtos(List<Member> members);
 
+    MemberDto.ImageResponse memberToMemberImageResponseDto(Member member);
+
+
 
 
 }

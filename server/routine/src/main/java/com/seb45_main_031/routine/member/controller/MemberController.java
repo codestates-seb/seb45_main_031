@@ -47,12 +47,12 @@ public class MemberController {
     }
 
     @PostMapping("/image")
-    public ResponseEntity postImage(@RequestParam("file") MultipartFile multipartFile,
+    public ResponseEntity postImage(@RequestPart("file") MultipartFile multipartFile,
                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken){
 
-        memberService.uploadImage(multipartFile, accessToken);
+        Member member = memberService.uploadImage(multipartFile, accessToken);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberImageResponseDto(member)), HttpStatus.CREATED);
     }
 
 
