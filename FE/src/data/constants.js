@@ -1,5 +1,4 @@
-export const URL =
-  "http://ec2-3-34-99-175.ap-northeast-2.compute.amazonaws.com:8080";
+export const URL = "https://healthier31.store";
 
 export const DATE_OPEN_TEXT = "달력보기";
 export const DATE_CLOSE_TEXT = "달력닫기";

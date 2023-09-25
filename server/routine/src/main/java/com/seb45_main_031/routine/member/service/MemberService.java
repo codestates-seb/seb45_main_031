@@ -120,7 +120,7 @@ public class MemberService {
 
     }
 
-    public void uploadImage(MultipartFile multipartFile, String accessToken){
+    public Member uploadImage(MultipartFile multipartFile, String accessToken){
         long findMemberId = findMemberId(accessToken);
         Member findMember = findverifiedMember(findMemberId);
 
@@ -132,7 +132,7 @@ public class MemberService {
             findMember.setImage(imageUrl);
         }
 
-        memberRepository.save(findMember);
+        return memberRepository.save(findMember);
     }
 
     public String renewAccessToken(String refreshToken){
